@@ -7,15 +7,20 @@
 {{ if eq .osid "linux-ubuntu" }}
     sudo apt install zsh
     sudo apt install neovim
+    sudo apt install nodejs
 {{ else if eq .osid "linux-fedora" }}
     sudo dnf install zsh
     sudo dnf install neovim
+    sudo dnf install nodejs
 {{ end }}
 
 
 #######################################
 # other
 #######################################
+
+# python 3 for nvim
+python3 -m pip install pynvim
 
 # change default shell to zsh
 chsh -s $(which zsh)

@@ -12,3 +12,11 @@
     type = "git-repo"
     url = "https://github.com/zsh-users/zsh-autosuggestions.git"
     refreshPeriod = "168h"
+
+# i3wm themes
+[".config/rofi/themes/Dracula1.rafi"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/dracula/rofi/master/theme/config1.rasi"
+[".config/rofi/themes/Dracula2.rafi"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/dracula/rofi/master/theme/config2.rasi"

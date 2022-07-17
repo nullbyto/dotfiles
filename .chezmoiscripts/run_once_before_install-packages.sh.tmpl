@@ -35,21 +35,21 @@ PACKAGES=(
 # i3wm setup
 read -p "$(echo -e "Do you wish to install packages to setup ${LGREEN}i3wm${NC} [y/N]: ")" yn
 case $yn in
-    [Yy]* ) PACKAGES+=(i3-gaps dunst feh picom polybar);;
+    [Yy]* ) PACKAGES+=(i3-gaps dunst feh rofi picom polybar xbacklight nmtui nm-applet blueman pavucontrol);;
     * ) ;;
 esac
 
 for pkg in ${PACKAGES[@]}
 do
     {{ if eq .osid "linux-ubuntu" }}
-    if ! dpkg -l | grep $pkg > /dev/null; then
+    if ! dpkg -l | grep -w $pkg > /dev/null; then
         sudo apt-get install $pkg
     else
         echo -e "${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed."
     fi
 
     {{ else if eq .osid "linux-fedora" }}
-    if ! dnf list installed | grep $pkg > /dev/null; then
+    if ! dnf list installed | grep -w $pkg > /dev/null; then
         sudo dnf install $pkg
     else
         echo -e "${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed."

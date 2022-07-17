@@ -33,7 +33,11 @@ PACKAGES=(
 )
 
 # i3wm setup
-PACKAGES+=(i3-gaps dunst feh picom polybar)
+read -p "$(echo -e "Do you wish to install packages to setup ${LGREEN}i3wm${NC} [y/N]: ")" yn
+case $yn in
+    [Yy]* ) PACKAGES+=(i3-gaps dunst feh picom polybar);;
+    * ) ;;
+esac
 
 for pkg in ${PACKAGES[@]}
 do

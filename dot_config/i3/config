@@ -69,7 +69,7 @@ bindsym $mod+Shift+q kill
 #bindsym $mod+d exec --no-startup-id dmenu_run
 
 # rofi
-bindsym $mod+d exec "rofi -modi drun, window -show drun"
+bindsym $mod+d exec "rofi -modi drun,window,run -show drun"
 # Combi mode
 #bindsym $mod+d exec "rofi -show combi -combi-modes drun,windows,run -modes combi"
 

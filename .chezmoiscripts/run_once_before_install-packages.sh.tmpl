@@ -1,33 +1,56 @@
 #!/bin/bash
 
+set -e
+
 #######################################
 # Colors
 #######################################
 
+NC='\033[0m'
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
+LGREEN='\033[1;32m'
 BLUE='\033[0;34m'
+LBLUE='\033[1;34m'
 RED='\033[0;31m'
-NC='\033[0m'
 
 #######################################
 # Init
 #######################################
 
-echo -e "${GREEN}Installing packages...${NC}"
+echo -e "${BLUE}Installing packages...${NC}"
 
 #######################################
 # install distro-specific packages
 #######################################
 
-PACKAGES="zsh neovim python3-pip nodejs"
+PACKAGES=(
+    zsh 
+    neovim
+    python3
+    python3-pip 
+    nodejs
+)
 
-for pack in $PACKAGES
+# i3wm setup
+PACKAGES+=(i3-gaps dunst feh picom polybar)
+
+for pkg in ${PACKAGES[@]}
 do
     {{ if eq .osid "linux-ubuntu" }}
-    sudo apt install $pack
+    if ! dpkg -l | grep $pkg > /dev/null; then
+        sudo apt-get install $pkg
+    else
+        echo -e "${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed."
+    fi
+
     {{ else if eq .osid "linux-fedora" }}
-    sudo dnf install $pack
+    if ! dnf list installed | grep $pkg > /dev/null; then
+        sudo dnf install $pkg
+    else
+        echo -e "${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed."
+    fi
+
     {{ end }}
 done
 
@@ -35,14 +58,37 @@ done
 # other
 #######################################
 
-# python 3 for nvim
-python3 -m pip install pynvim
+PYPKGS=(
+    pynvim
+)
 
-# change default shell to zsh
-chsh -s $(which zsh)
+# python 3 for nvim
+for pkg in ${PYPKGS[@]}
+do
+    if ! pip list | grep $pkg > /dev/null; then
+        python3 -m pip install $pkg
+    else
+        echo -e "${BLUE}INFO: ${LGREEN}[PY] ${pkg}${NC} already installed."
+    fi
+done
 
 # oh-my-zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+pkg=oh-my-zsh
+if [ -z $ZSH ] ; then
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+    echo -e "${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed."
+fi
 
+#######################################
+# Commands
+#######################################
+
+# change default shell to zsh
+if ! which zsh > /dev/null ; then
+    chsh -s $(which zsh)
+else
+    echo -e "${BLUE}INFO: ${GREEN}chsh${NC} already done."
+fi
 
 echo -e "${CYAN}Script finished!${NC}"

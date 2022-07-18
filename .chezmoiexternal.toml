@@ -14,9 +14,9 @@
     refreshPeriod = "168h"
 
 # i3wm themes
-[".config/rofi/themes/Dracula1.rafi"]
+[".config/rofi/themes/Dracula1.rasi"]
     type = "file"
     url = "https://raw.githubusercontent.com/dracula/rofi/master/theme/config1.rasi"
-[".config/rofi/themes/Dracula2.rafi"]
+[".config/rofi/themes/Dracula2.rasi"]
     type = "file"
     url = "https://raw.githubusercontent.com/dracula/rofi/master/theme/config2.rasi"

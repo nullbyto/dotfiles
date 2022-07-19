@@ -37,7 +37,7 @@ PACKAGES=(
 read -p "$(echo -e "Do you wish to install packages to setup ${LGREEN}i3wm${NC} [y/N]: ")" yn
 
 case $yn in
-    [Yy]* ) PACKAGES+=(i3-gaps dunst feh rofi picom polybar brightnessctl NetworkManager-tui blueman pavucontrol); PACKAGES +=(i3status-rust);;
+    [Yy]* ) PACKAGES+=(i3-gaps dunst feh rofi picom polybar brightnessctl NetworkManager-tui blueman pavucontrol);;
     * ) ;;
 esac
 
@@ -46,6 +46,7 @@ esac
 {{ else if eq .osid "linux-fedora" }}
     # enable copr repo for i3status-rust
     sudo dnf copr enable atim/i3status-rust -y
+    PACKAGES+=(i3status-rust)
     
     sudo dnf install ${PACKAGES[@]}
 {{ end }}

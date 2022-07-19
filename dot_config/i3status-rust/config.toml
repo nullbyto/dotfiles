@@ -40,6 +40,7 @@ buttons = ["prev", "play", "next"]
 
 [[block]]
 block = "sound"
+on_click = "pavucontrol"
 
 [[block]]
 block = "keyboard_layout"

@@ -1,0 +1,61 @@
+theme = "nord-dark"
+icons = "awesome"
+
+
+[[block]]
+block = "disk_space"
+path = "/"
+info_type = "available"
+unit = "GB"
+interval = 20
+warning = 20.0
+alert = 10.0
+#format = "/: {icon} {used}/{total} ({available} free)"
+format = "/: {icon} {used}/{total}"
+
+[[block]]
+block = "memory"
+display_type = "memory"
+format_mem = "{mem_used}/{mem_total}({mem_used_percents})"
+format_swap = "{swap_used}/{swap_total}({swap_used_percents})"
+
+[[block]]
+block = "cpu"
+
+[[block]]
+block = "load"
+interval = 5
+
+[[block]]
+block = "networkmanager"
+on_click = "alacritty -e nmtui"
+interface_name_exclude = []
+interface_name_include = []
+#ap_format = "{ssid^10}"
+device_format = "{icon}"
+
+[[block]]
+block = "music"
+buttons = ["prev", "play", "next"]
+
+[[block]]
+block = "sound"
+
+[[block]]
+block = "keyboard_layout"
+driver = "setxkbmap"
+on_click = "xkb-switch -n"
+interval = 1
+format = " {layout}"
+
+[[block]]
+block = "time"
+interval = 5
+format = "%a %d/%m %R"
+
+[[block]]
+block = "custom"
+command = "echo \uf011"
+#on_click = "systemctl `echo -e 'suspend\npoweroff\nreboot' | rofi -dmenu`"
+on_click = "rofi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu"
+interval = "once"

@@ -37,7 +37,7 @@ PACKAGES=(
 read -p "$(echo -e "Do you wish to install packages to setup ${LGREEN}i3wm${NC} [y/N]: ")" yn
 
 case $yn in
-    [Yy]* ) PACKAGES+=(i3-gaps dunst feh rofi picom polybar brightnessctl NetworkManager-tui blueman pavucontrol);;
+    [Yy]* ) PACKAGES+=(i3-gaps dunst feh rofi picom polybar brightnessctl NetworkManager-tui blueman pavucontrol playerctl);;
     * ) ;;
 esac
 

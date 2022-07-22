@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 #######################################
 # Colors
 #######################################
@@ -29,26 +27,37 @@ PACKAGES=(
     neovim
     alacritty
     python3
-    python3-pip 
+    python-pip 
     nodejs
+    npm
 )
 
 # i3wm setup
 read -p "$(echo -e "Do you wish to install packages to setup ${LGREEN}i3wm${NC} [y/N]: ")" yn
 
 case $yn in
-    [Yy]* ) PACKAGES+=(i3-gaps dunst feh rofi picom polybar brightnessctl NetworkManager-tui blueman pavucontrol playerctl);;
+    [Yy]* ) PACKAGES+=(i3-gaps dunst feh rofi picom polybar brightnessctl NetworkManager-tui blueman pulseaudio pavucontrol playerctl);;
     * ) ;;
 esac
 
 {{ if eq .osid "linux-ubuntu" }}
     sudo apt-get install ${PACKAGES[@]}
+
 {{ else if eq .osid "linux-fedora" }}
-    # enable copr repo for i3status-rust
+    # enable copr repor for i3status-rust
     sudo dnf copr enable atim/i3status-rust -y
     PACKAGES+=(i3status-rust)
-    
+
     sudo dnf install ${PACKAGES[@]}
+
+{{ else if eq .osid "linux-arch" }}
+    delete=NetworkManager-tui
+    PACKAGES=(${PACKAGES[@]/$delete})
+
+    PACKAGES+=(i3status-rust)
+
+    sudo pacman -S ${PACKAGES[@]} --needed
+
 {{ end }}
 
 #######################################
@@ -81,8 +90,14 @@ fi
 # Commands
 #######################################
 
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
 # change default shell to zsh
-if ! which zsh > /dev/null ; then
+if ! command -v zsh > /dev/null ; then
     chsh -s $(which zsh)
 else
     echo -e "${BLUE}INFO: ${GREEN}chsh${NC} already done."

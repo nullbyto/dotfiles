@@ -16,8 +16,8 @@ format = "/: {icon} {used}/{total}"
 [[block]]
 block = "memory"
 display_type = "memory"
-format_mem = "{mem_used}/{mem_total}({mem_used_percents})"
-format_swap = "{swap_used}/{swap_total}({swap_used_percents})"
+format_mem = "{mem_used_percents}"
+format_swap = "{swap_used_percents}"
 
 [[block]]
 block = "cpu"
@@ -43,11 +43,23 @@ block = "sound"
 on_click = "pavucontrol"
 
 [[block]]
+block = "hueshift"
+click_temp = 2000
+
+[[block]]
+block = "backlight"
+
+[[block]]
 block = "keyboard_layout"
 driver = "setxkbmap"
 on_click = "xkb-switch -n"
 interval = 1
 format = " {layout}"
+
+[[block]]
+block = "battery"
+interval = 10
+format = "{percentage}"
 
 [[block]]
 block = "time"

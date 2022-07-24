@@ -13,6 +13,11 @@
     url = "https://github.com/zsh-users/zsh-autosuggestions.git"
     refreshPeriod = "168h"
 
+# Fonts
+[".fonts/Noto/Noto_Mono_Nerd_Font_Complete.ttf"]
+    type = "file"
+    url = "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Noto/Mono/complete/Noto%20Mono%20Nerd%20Font%20Complete.ttf"
+
 # i3wm themes
 [".config/rofi/themes/Dracula1.rasi"]
     type = "file"

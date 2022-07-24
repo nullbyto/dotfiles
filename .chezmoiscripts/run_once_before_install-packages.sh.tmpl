@@ -48,7 +48,7 @@ esac
     sudo dnf copr enable atim/i3status-rust -y
     PACKAGES+=(i3status-rust)
 
-    sudo dnf install ${PACKAGES[@]}
+    sudo dnf install ${PACKAGES[@]} --skip-broken
 
 {{ else if eq .osid "linux-arch" }}
     delete=NetworkManager-tui

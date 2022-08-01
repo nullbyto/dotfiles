@@ -17,6 +17,19 @@
 [".local/share/fonts/noto/Noto_Mono_Nerd_Font_Complete.ttf"]
     type = "file"
     url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Noto/Mono/complete/Noto%20Mono%20Nerd%20Font%20Complete.ttf"
+[".local/share/fonts/jetbrains/JetBrains_Mono_NL_Regular_Nerd_Font_Complete.ttf"]
+    type = "file"
+    url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/NoLigatures/Regular/complete/JetBrains%20Mono%20NL%20Regular%20Nerd%20Font%20Complete.ttf"
+# Font Awesome
+[".local/share/fonts/awesome/Font_Awesome_6_Free_Regular.otf"]
+    type= "file"
+    url = "https://github.com/FortAwesome/Font-Awesome/raw/6.x/otfs/Font%20Awesome%206%20Free-Regular-400.otf"
+[".local/share/fonts/awesome/Font_Awesome_6_Brands_Regular.otf"]
+    type= "file"
+    url = "https://github.com/FortAwesome/Font-Awesome/raw/6.x/otfs/Font%20Awesome%206%20Brands-Regular-400.otf"
+[".local/share/fonts/awesome/Font_Awesome_6_Free_Solid.otf"]
+    type= "file"
+    url = "https://github.com/FortAwesome/Font-Awesome/raw/6.x/otfs/Font%20Awesome%206%20Free-Solid-900.otf"
 
 # i3wm themes
 [".config/rofi/themes/Dracula1.rasi"]

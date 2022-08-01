@@ -185,6 +185,8 @@ for_window [instance="nmtui"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Thunar"] floating enable
 for_window [class="ark"] floating enable
+for_window [class="Blueman-manager"] floating enable
+for_window [class="Nm-connection-editor"] floating enable
 
 # -------------------------------------------------------------------------------------
 # resize window (you can also use the mouse for that)
@@ -228,6 +230,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
 
 # Remapper app
 exec --no-startup-id bash -c "input-remapper-control --command stop-all && input-remapper-control --command autoload"
@@ -271,7 +274,7 @@ font pango: NotoMono Nerd Font 10
 bar {
     font pango: NotoMono Nerd Font 11
     strip_workspace_numbers yes
-    tray_output none
+    #tray_output none
     position top
     height 30
 

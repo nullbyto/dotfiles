@@ -22,17 +22,13 @@ format_swap = "{swap_used_percents}"
 [[block]]
 block = "cpu"
 
-[[block]]
-block = "load"
-interval = 5
-
-[[block]]
-block = "networkmanager"
-on_click = "alacritty -e nmtui"
-interface_name_exclude = []
-interface_name_include = []
-#ap_format = "{ssid^10}"
-device_format = "{icon}"
+#[[block]]
+#block = "networkmanager"
+#on_click = "alacritty --class nmtui -e nmtui"
+#interface_name_exclude = []
+#interface_name_include = []
+##ap_format = "{ssid^10}"
+#device_format = "{icon}"
 
 [[block]]
 block = "music"
@@ -68,7 +64,7 @@ format = "%a %d/%m %R"
 
 [[block]]
 block = "custom"
-command = "echo \uf011"
+command = "echo '\uf011 |'"
 #on_click = "systemctl `echo -e 'suspend\npoweroff\nreboot' | rofi -dmenu`"
 on_click = "rofi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu"
 interval = "once"

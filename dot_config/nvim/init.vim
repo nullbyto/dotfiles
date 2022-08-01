@@ -20,11 +20,12 @@ Plug 'kyazdani42/nvim-tree.lua'
 
 " Appearance
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'sheerun/vim-polyglot'
 Plug 'tomasiser/vim-code-dark'
 Plug 'Yggdroot/indentLine'
-"Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -137,7 +138,7 @@ set splitright
 
 "theme
 set signcolumn=yes
-set colorcolumn=90
+set colorcolumn=100
 set background=dark
 syntax on
 set t_Co=256

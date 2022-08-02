@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 #######################################
 # Colors
 #######################################
@@ -19,6 +20,30 @@ RED='\033[0;31m'
 echo -e "${BLUE}Installing packages...${NC}"
 
 #######################################
+# Functions
+#######################################
+
+wm_menu() {
+    echo -ne "
+1) Qtile (Arch only)
+2) i3wm
+*) None
+Choose your ${LBLUE}WM${NC}: "
+    read -r wm
+
+    case $wm in
+        1) 
+            PACKAGES+=(qtile)
+            ;;
+        2)
+            PACKAGES+=(i3-gaps)
+            ;;
+        *)
+            echo -e "${RED}No wm selected${NC}"
+    esac
+}
+
+#######################################
 # install distro-specific packages
 #######################################
 
@@ -32,12 +57,15 @@ PACKAGES=(
     npm
 )
 
-# i3wm setup
-read -p "$(echo -e "Do you wish to install packages to setup ${LGREEN}i3wm${NC} [y/N]: ")" yn
+# Window manager setup
+read -p "$(echo -e "Do you wish to setup a ${LBLUE}Custom Desktop${NC} with extra packages [y/N]: ")" yn
+
 
 case $yn in
-    [Yy]* ) PACKAGES+=(i3-gaps dunst feh rofi picom polybar brightnessctl NetworkManager-tui
-    blueman pulseaudio pavucontrol playerctl thunar ranger redshift ark);;
+    [Yy]* ) 
+        wm_menu
+        PACKAGES+=(dunst feh rofi picom polybar brightnessctl NetworkManager-tui
+        blueman pulseaudio pavucontrol playerctl thunar ranger redshift xarchiver);;
     * ) ;;
 esac
 

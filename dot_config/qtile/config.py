@@ -18,7 +18,7 @@ from typing import List
 
 mod = "mod4"                                        # Sets mod key to SUPER/WINDOWS
 myTerm = guess_terminal(preference="alacritty")     # Guess term with alacritty as main 
-myBrowser = "firefox"                               # My browser of choice
+myBrowser = "firefox"                               # My browser
 home = os.path.expanduser("~")                      # Allow using "home +" to expand ~
 
 colors = [["#282c34", "#282c34"],
@@ -350,7 +350,7 @@ groups = [Group("", layout='monadtall'),
           Group("", layout='floating'),
           Group("", layout="floating"), ]
 
-# Allow MODKEY+[0 through 9] to bind to groups, see https://docs.qtile.org/en/stable/manual/config/groups.html
+# Allow MODKEY+[0 through 9] to bind to groups
 # MOD4 + index Number : Switch to Group[index]
 # MOD4 + shift + index Number : Send active window to another Group
 dgroups_key_binder = simple_key_binder(mod)
@@ -387,7 +387,7 @@ floating_layout = layout.Floating(float_rules=[
         Match(wm_class="Pavucontrol"),
         Match(wm_class="Blueman-manager"),
         Match(wm_class="Nm-connection-editor"),
-        Match(wm_class="ark"),
+        Match(wm_class="Xarchiver"),
         Match(wm_instance_class="htop"),
         Match(wm_instance_class="nmtui"),
     ],
@@ -428,7 +428,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
         ),
         widget.Sep(
             linewidth=0,
-            padding=6,
+            padding=5,
             background=theme[c1],
         ),
         widget.TextBox(
@@ -613,23 +613,23 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
 # Widget funcs
 def redshift():
     return subprocess.check_output(
-        "source " + home + "/.scripts/qtile/env.sh && " +
-        home + "/.scripts/qtile/redshift.sh temperature", shell=True, text=True)
+        "source " + home + "/.scripts/redshift-env.sh && " +
+        home + "/.scripts/redshift.sh temperature", shell=True, text=True)
 
 def redshiftTog():
     return subprocess.check_output(
-        "source " + home + "/.scripts/qtile/env.sh && " +
-        home + "/.scripts/qtile/redshift.sh toggle", shell=True, text=True)
+        "source " + home + "/.scripts/redshift-env.sh && " +
+        home + "/.scripts/redshift.sh toggle", shell=True, text=True)
 
 def redshiftInc():
     return subprocess.check_output(
-        "source " + home + "/.scripts/qtile/env.sh && " +
-        home + "/.scripts/qtile/redshift.sh increase", shell=True, text=True)
+        "source " + home + "/.scripts/redshift-env.sh && " +
+        home + "/.scripts/redshift.sh increase", shell=True, text=True)
 
 def redshiftDec():
     return subprocess.check_output(
-        "source " + home + "/.scripts/qtile/env.sh && " +
-        home + "/.scripts/qtile/redshift.sh decrease", shell=True, text=True)
+        "source " + home + "/.scripts/redshift-env.sh && " +
+        home + "/.scripts/redshift.sh decrease", shell=True, text=True)
 
 
 ##### DEFAULT WIDGET SETTINGS #####
@@ -645,21 +645,21 @@ extension_defaults = widget_defaults.copy()
 def init_widgets_list():
     widgets_list = [
         widget.CurrentLayoutIcon(
-            #custom_icon_paths=[home + "/.config/qtile/icons"],
-            foreground=theme["fg"],
+            custom_icon_paths=[home + "/.config/qtile/icons"],
+            foreground=theme["bg"],
             #background="#2C3E50",
-            background=theme["surface"],
-            padding=4,
+            background=theme["purple"],
+            padding=5,
             scale=0.8
         ),
         widget.TextBox(
             #text="",
             text="",
-            #font="Font Awesome 6 Free",
-            fmt='{}',
+            font="Font Awesome 6 Free",
+            fmt="{:2}",
             fontshadow=None,
             fontsize=47,
-            foreground=theme["surface"],
+            foreground=theme["purple"],
             #foreground="#2C3E50",
             max_chars=0,
             padding=-7,
@@ -667,7 +667,7 @@ def init_widgets_list():
         widget.Sep(
             linewidth=0,
             padding=5,
-            foreground=colors[2],
+            foreground=theme["bg"],
         ),
 
         # ---------------------------------

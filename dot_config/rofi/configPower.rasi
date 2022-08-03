@@ -1,6 +1,5 @@
 configuration{
     modi: "run,drun,window";
-    icon-theme: "Oranchelo";
     show-icons: true;
     terminal: "alacritty";
     drun-display-format: "{icon} {name}";
@@ -15,4 +14,12 @@ configuration{
 }
 
 @theme "catppuccin-mocha"
+
+window {
+    width: 350;
+}
+
+listview {
+    columns: 1;
+}
 

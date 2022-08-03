@@ -92,7 +92,7 @@ keys = [
         desc='Firefox'
         ),
     Key([mod], "Delete",
-        lazy.spawn("rofi -show power-menu -modi power-menu:" + home + "/.scripts/rofi-power-menu"),
+        lazy.spawn("rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:" + home + "/.scripts/rofi-power-menu"),
         desc='Launch the powermenu'
         ),
     Key([mod], "p",
@@ -321,7 +321,7 @@ def show_keys(keys):
         else:
             key = k.key
 
-        key_line = "{:<30} {}".format(mods + key, desc + "\n")
+        key_line = "{:<25} {}".format(mods + key, desc + "\n")
         key_help += key_line
 
         # debug_print(key_line)  # debug only
@@ -332,7 +332,7 @@ def show_keys(keys):
 # this must be done AFTER all the keys have been defined
 keys.extend(
     [Key([mod], "F1", lazy.spawn("sh -c 'echo \"" + show_keys(keys) +
-         "\" | rofi -dmenu -i -mesg \"Keyboard shortcuts\"'"), desc="Print keyboard bindings")]
+         "\" | rofi -theme ~/.config/rofi/configTall.rasi -dmenu -i -mesg \"Keyboard shortcuts\"'"), desc="Print keyboard bindings")]
 )
 
 ########################################################################################
@@ -528,6 +528,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             background=theme[c3],
             fontsize=18,
             padding=5,
+            update_interval=1,
         ),
         widget.Battery(
             battery=1,
@@ -536,6 +537,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             foreground=theme["bg"],
             background=theme[c3],
             padding=5,
+            update_interval=10,
         ),
         widget.Battery(
             battery=0,
@@ -550,6 +552,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             background=theme[c3],
             fontsize=18,
             padding=5,
+            update_interval=1,
         ),
         widget.Battery(
             battery=0,
@@ -558,6 +561,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             foreground=theme["bg"],
             background=theme[c3],
             padding=5,
+            update_interval=10,
         ),
 
         # ---------------------------------
@@ -634,7 +638,7 @@ def redshiftDec():
 
 ##### DEFAULT WIDGET SETTINGS #####
 widget_defaults = dict(
-    font="NotoMono Nerd Font",
+    font="JetBrainsMono NL Nerd Font",
     fontsize=14,
     padding=2,
     background=theme["bg"]
@@ -672,7 +676,6 @@ def init_widgets_list():
 
         # ---------------------------------
         widget.GroupBox(
-            font="NotoMono Nerd Font",
             fontsize=16,
             margin_y=4,
             margin_x=0,
@@ -695,7 +698,6 @@ def init_widgets_list():
         ),
         widget.TextBox(
             text='|',
-            font="NotoMono Nerd Font",
             foreground=theme["bg5"],
             padding=2,
             fontsize=14
@@ -704,6 +706,7 @@ def init_widgets_list():
             prompt = "run: ",
         ),
         widget.WindowName(
+            font="JetBrainsMono NL Nerd Font",
             foreground=theme["fg"],
             padding=5
         ),
@@ -755,7 +758,7 @@ def init_widgets_list():
             background=theme["bg"],
             #background="#2C3E50",
             mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(
-                "rofi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu")
+                "rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu")
             },
         ),
     ]
@@ -839,7 +842,7 @@ reconfigure_screens = True
 auto_minimize = True
 
 # Default LG3D
-wmname = "Qtile"
+wmname = "qtile"
 
 ########################################################################################
 # Hooks

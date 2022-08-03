@@ -17,9 +17,10 @@ from typing import List
 ########################################################################################
 
 mod = "mod4"                                        # Sets mod key to SUPER/WINDOWS
+home = os.path.expanduser("~")                      # Allow using "home +" to expand ~
 myTerm = guess_terminal(preference="alacritty")     # Guess term with alacritty as main 
 myBrowser = "firefox"                               # My browser
-home = os.path.expanduser("~")                      # Allow using "home +" to expand ~
+myFM = "thunar"                                     # My file manager
 
 colors = [["#282c34", "#282c34"],
           ["#1c1f24", "#1c1f24"],
@@ -83,13 +84,17 @@ keys = [
         lazy.spawn(myTerm),
         desc='Launches My Terminal'
         ),
+    Key([mod], "b",
+        lazy.spawn(myBrowser),
+        desc='Launches my browser'
+        ),
+    Key([mod], "e",
+        lazy.spawn(myFM),
+        desc='Launches my file manager'
+        ),
     Key([mod], "d",
         lazy.spawn("rofi -modi drun,run -show drun"),
         desc='Run Launcher'
-        ),
-    Key([mod], "b",
-        lazy.spawn(myBrowser),
-        desc='Firefox'
         ),
     Key([mod], "Delete",
         lazy.spawn("rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:" + home + "/.scripts/rofi-power-menu"),
@@ -99,9 +104,21 @@ keys = [
         lazy.spawncmd(),
         desc='Spawn a comman using a prompt widget'
         ),
+    Key([], "Print",
+        lazy.spawn("flameshot screen"),
+        desc='Print entire screen'
+        ),
+    Key([mod, "shift"], "s",
+        lazy.spawn("flameshot gui"),
+        desc='Select print screen'
+        ),
     Key([mod], "space",
         lazy.next_layout(),
-        desc='Toggle through layouts'
+        desc='Toggle next layout'
+        ),
+    Key([mod, "shift"], "space",
+        lazy.prev_layout(),
+        desc='Toggle last layout'
         ),
     Key([mod], "c",
         lazy.window.kill(),
@@ -120,15 +137,15 @@ keys = [
         desc='Shutdown Qtile'
         ),
 
-    # Switch focus to specific monitor (out of three)
-    Key([mod], "w",
-        lazy.to_screen(0),
-        desc='Keyboard focus to monitor 1'
-        ),
-    Key([mod], "e",
-        lazy.to_screen(1),
-        desc='Keyboard focus to monitor 2'
-        ),
+    # Switch focus to specific monitor
+    #Key([mod], "w",
+    #    lazy.to_screen(0),
+    #    desc='Keyboard focus to monitor 1'
+    #    ),
+    #Key([mod], "e",
+    #    lazy.to_screen(1),
+    #    desc='Keyboard focus to monitor 2'
+    #    ),
 
     # Switch focus of monitors
     Key([mod], "period",
@@ -138,6 +155,28 @@ keys = [
     Key([mod], "comma",
         lazy.prev_screen(),
         desc='Move focus to prev monitor'
+        ),
+
+    # Switch Groups
+    Key([mod], "End",
+        lazy.screen.next_group(),
+        desc='Move focus to next group'
+        ),
+    Key([mod], "Home",
+        lazy.screen.prev_group(),
+        desc='Move focus to prev group'
+        ),
+
+    # Floating controls
+    Key([mod], "bracketleft",
+        lazy.group.prev_window(),
+        lazy.window.bring_to_front(),
+        desc='Move focus to prev floating window'
+        ),
+    Key([mod], "bracketright",
+        lazy.group.next_window(),
+        lazy.window.bring_to_front(),
+        desc='Move focus to next floating window'
         ),
 
     # Window controls
@@ -221,16 +260,16 @@ keys = [
         ),
 
     # Stack controls
+    Key([mod], "Tab",
+        lazy.layout.next(),
+        desc='Switch window focus to other pane(s) of stack'
+        ),
     Key([mod, "shift"], "Tab",
         lazy.layout.rotate(),
         lazy.layout.flip(),
         desc='Switch which side main pane occupies (XmonadTall)'
         ),
-    Key([mod], "Tab",
-        lazy.layout.next(),
-        desc='Switch window focus to other pane(s) of stack'
-        ),
-    Key([mod, "shift"], "space",
+    Key([mod, "control"], "Tab",
         lazy.layout.toggle_split(),
         desc='Toggle between split and unsplit sides of stack'
         ),
@@ -390,6 +429,7 @@ floating_layout = layout.Floating(float_rules=[
         Match(wm_class="Xarchiver"),
         Match(wm_instance_class="htop"),
         Match(wm_instance_class="nmtui"),
+        Match(wm_instance_class="ikhal"),
     ],
     border_focus=theme["teal"],
     border_normal=theme["bg"],
@@ -524,6 +564,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             unknown_char="",
             empty_char="",
             show_short_text=False,
+            low_foreground="FF0000",
             foreground=theme["bg"],
             background=theme[c3],
             fontsize=18,
@@ -573,7 +614,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             padding=-10,
             fontsize=45
         ),
-        widget.PulseVolume(
+        widget.Volume(
             foreground=theme["bg"],
             background=theme[c4],
             mouse_callbacks={
@@ -608,7 +649,10 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
         widget.Clock(
             foreground=theme["bg"],
             background=theme[c6],
-            format=" %a, %d/%m  %H:%M"
+            format=" %a, %d/%m  %H:%M",
+            mouse_callbacks={
+                'Button1': lambda: qtile.cmd_spawn(myTerm + ' --class ikhal -e ikhal'),
+            },
         ),
 
     )
@@ -666,7 +710,7 @@ def init_widgets_list():
             foreground=theme["purple"],
             #foreground="#2C3E50",
             max_chars=0,
-            padding=-7,
+            padding=-10,
         ),
         widget.Sep(
             linewidth=0,

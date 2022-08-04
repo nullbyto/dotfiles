@@ -88,6 +88,12 @@ esac
 
     sudo pacman -S ${PACKAGES[@]} --needed
 
+    # install yay
+    sudo pacman -S --needed git base-devel && \
+        git clone https://aur.archlinux.org/yay.git ~/Downloads/yay && \
+        cd ~/Download/yay && \
+        makepkg -si
+
 {{ end }}
 
 #######################################

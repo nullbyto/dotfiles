@@ -90,6 +90,7 @@ esac
 
     # install yay
     sudo pacman -S --needed git base-devel && \
+        rm -rf ~/Downloads/yay && \
         git clone https://aur.archlinux.org/yay.git ~/Downloads/yay && \
         cd ~/Download/yay && \
         makepkg -si
@@ -117,6 +118,7 @@ done
 # oh-my-zsh
 pkg=oh-my-zsh
 if ! find ~/.oh-my-zsh/oh-my-zsh.sh > /dev/null ; then
+    rm -rf ~/.oh-my-zsh
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
     echo -e "${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed."

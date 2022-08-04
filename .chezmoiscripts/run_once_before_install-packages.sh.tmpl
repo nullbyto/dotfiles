@@ -67,7 +67,7 @@ case $yn in
         wm_menu
         PACKAGES+=(dunst feh rofi picom polybar brightnessctl NetworkManager-tui
         blueman pipewire pavucontrol playerctl thunar ranger redshift xarchiver
-        khal flameshot xclip xset xviewer xrandr arandr);;
+        khal flameshot xclip xreader arandr);;
     * ) ;;
 esac
 
@@ -90,11 +90,13 @@ esac
     sudo pacman -S ${PACKAGES[@]} --needed
 
     # install yay
-    sudo pacman -S --needed git base-devel && \
-        rm -rf ~/Downloads/yay && \
-        git clone https://aur.archlinux.org/yay.git ~/Downloads/yay && \
-        cd ~/Downloads/yay && \
-        makepkg -si
+    if ! command -v yay > /dev/null ; then
+        sudo pacman -S --needed git base-devel && \
+            rm -rf ~/Downloads/yay && \
+            git clone https://aur.archlinux.org/yay.git ~/Downloads/yay && \
+            cd ~/Downloads/yay && \
+            makepkg -si
+    fi
 
 {{ end }}
 

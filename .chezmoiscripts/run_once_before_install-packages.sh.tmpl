@@ -106,6 +106,13 @@ PYPKGS=(
     pynvim
 )
 
+if [ $wm -eq "1" ]; then
+    PYPKGS+=(
+        psutil dbus-next iwlib
+    )
+fi
+
+
 # python 3 for nvim
 for pkg in ${PYPKGS[@]}
 do

@@ -105,11 +105,11 @@ keys = [
         desc='Spawn a comman using a prompt widget'
         ),
     Key([], "Print",
-        lazy.spawn("flameshot screen"),
+        lazy.spawn("flameshot screen --path " + home + "/Pictures/Screenshots"),
         desc='Print entire screen'
         ),
     Key([mod, "shift"], "s",
-        lazy.spawn("flameshot gui"),
+        lazy.spawn("flameshot gui --path " + home + "/Pictures/Screenshots"),
         desc='Select print screen'
         ),
     Key([mod], "space",
@@ -135,6 +135,10 @@ keys = [
     Key([mod, "shift"], "q",
         lazy.shutdown(),
         desc='Shutdown Qtile'
+        ),
+    Key(["mod1"], "Shift_L",
+        lazy.widget["keyboardlayout"].next_keyboard(),
+        desc="Next keyboard layout."
         ),
 
     # Switch focus to specific monitor
@@ -636,6 +640,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             foreground=theme["bg"],
             background=theme[c5],
             fmt=' {}',
+            configured_keyboards=["eu"],
             padding=5
         ),
         widget.TextBox(
@@ -902,3 +907,8 @@ def center_floating_win():
     if window.floating and not window.fullscreen:
         window.cmd_set_size_floating(800, 600)
         window.cmd_center()
+
+@hook.subscribe.layout_change
+def tile_floating_on_layout_change(layout, group):
+    for window in group.windows:
+        window.floating = False

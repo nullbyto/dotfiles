@@ -107,7 +107,7 @@ PYPKGS=(
 # python 3 for nvim
 for pkg in ${PYPKGS[@]}
 do
-    if ! pip list | grep $pkg > /dev/null; then
+    if ! pip list | grep $pkg > /dev/null ; then
         python3 -m pip install $pkg
     else
         echo -e "${BLUE}INFO: ${LGREEN}[PY] ${pkg}${NC} already installed."
@@ -116,7 +116,7 @@ done
 
 # oh-my-zsh
 pkg=oh-my-zsh
-if [ -z $ZSH ] ; then
+if ! find ~/.oh-my-zsh/oh-my-zsh.sh > /dev/null ; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
     echo -e "${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed."
@@ -133,7 +133,7 @@ fi
 export PATH
 
 # change default shell to zsh
-if ! command -v zsh > /dev/null ; then
+if ! echo $SHELL | grep zsh > /dev/null ; then
     chsh -s $(which zsh)
 else
     echo -e "${BLUE}INFO: ${GREEN}chsh${NC} already done."

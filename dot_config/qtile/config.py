@@ -70,6 +70,7 @@ catppuccin_colors = {
     "fg": ["#D9E0EE", "#D9E0EE"],  # 18 white
     "lavender": ["#C9CBFF", "#C9CBFF"],  # 19 lavender
     "rosewater": ["#F5E0DC", "#F5E0DC"],  # 20 rosewater
+    "dblue": ["#89B4FA", "#89B4FA"], # dark blue
 }
 
 theme = catppuccin_colors
@@ -99,6 +100,10 @@ keys = [
     Key([mod], "Delete",
         lazy.spawn("rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:" + home + "/.scripts/rofi-power-menu"),
         desc='Launch the powermenu'
+        ),
+    Key([mod, "shift"], "x",
+        lazy.spawn("betterlockscreen -l dimblur"),
+        desc='Lock screen'
         ),
     Key([mod], "p",
         lazy.spawncmd(),
@@ -825,9 +830,10 @@ def init_widgets_screen2():
 
 
 def init_screens():
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=24)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen2(), opacity=1.0, size=24)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=24))]
+    return [
+        Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=24)),
+        Screen(top=bar.Bar(widgets=init_widgets_screen2(), opacity=1.0, size=24)),
+    ]
 
 
 if __name__ in ["config", "__main__"]:

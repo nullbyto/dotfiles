@@ -13,19 +13,20 @@ Plug 'tpope/vim-surround' " cs{which surrounding to be replaced}{new}
 "Plug 'SirVer/ultisnips'
 "Plug 'ervandew/supertab'
 "Plug 'honza/vim-snippets'
-" file explorer
 Plug 'kyazdani42/nvim-web-devicons' " optional, for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 "Plug 'akinsho/toggleterm.nvim'
+"Plug 'vim-airline/vim-airline'
+Plug 'itchyny/lightline.vim'
 
 " Appearance
-Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'sheerun/vim-polyglot'
 Plug 'tomasiser/vim-code-dark'
 Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
+Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 
 call plug#end()
 
@@ -126,9 +127,19 @@ nnoremap <silent> <leader>c :CocRestart<CR>
 "let g:UltiSnipsJumpForwardTrigger = "<tab>"
 "let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
+
+" ------------------------------------------------------------------
+" Appearance
+
+let g:catppuccin_flavour = "mocha"
+let g:lightline = {
+    \ "colorscheme": "catppuccin",
+    \ }
+
+
 " ##################################################################
 
-"split navigations
+" split navigations
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -136,7 +147,7 @@ nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
-"theme
+" appearance
 set signcolumn=yes
 set colorcolumn=100
 set background=dark
@@ -144,7 +155,9 @@ syntax on
 set t_Co=256
 set encoding=UTF-8
 set termguicolors
-colorscheme purify
+"set noshowmode
+colorscheme catppuccin
+"colorscheme purify
 "colorscheme jellybeans
 
 " Main
@@ -157,6 +170,6 @@ set shiftwidth=4
 set mouse=a
 set autoread
 set nu
-"uncomment only one
+" uncomment only one
 set rnu
 "set nornu

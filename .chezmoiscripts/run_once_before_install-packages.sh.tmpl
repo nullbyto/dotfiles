@@ -67,7 +67,7 @@ case $yn in
         wm_menu
         PACKAGES+=(dunst feh rofi picom polybar brightnessctl NetworkManager-tui
         blueman pipewire pavucontrol playerctl thunar ranger redshift xarchiver
-        khal flameshot xclip xreader arandr);;
+        khal flameshot xclip xreader arandr alsa-utils polkit);;
     * ) ;;
 esac
 
@@ -85,7 +85,9 @@ esac
     delete=NetworkManager-tui
     PACKAGES=(${PACKAGES[@]/$delete})
 
-    PACKAGES+=(i3status-rust)
+    PACKAGES+=(
+        i3status-rust man-db
+    )
 
     sudo pacman -S ${PACKAGES[@]} --needed
 

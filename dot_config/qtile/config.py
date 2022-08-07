@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-from libqtile.dgroups import simple_key_binder
 import os
 import re
 import socket
 import subprocess
 from libqtile import qtile
 from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen
-#from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from libqtile.dgroups import simple_key_binder
 from typing import List
 
 ########################################################################################
@@ -395,7 +393,7 @@ groups = [Group("", layout='monadtall'),
           Group("", layout='monadtall'),
           Group("", layout='monadtall'),
           Group("", layout='monadtall'),
-          Group("", layout='floating'),
+          Group("", layout='floating', matches=[Match(wm_class=["Spotify"])]),
           Group("", layout="floating"), ]
 
 # Allow MODKEY+[0 through 9] to bind to groups
@@ -567,7 +565,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
         widget.Battery(
             battery=1,
             format="{char}",
-            charge_char="",
+            charge_char="",
             discharge_char="",
             full_char="",
             unknown_char="",
@@ -578,7 +576,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             background=theme[c3],
             fontsize=18,
             padding=5,
-            update_interval=1,
+            update_interval=2,
         ),
         widget.Battery(
             battery=1,
@@ -587,12 +585,12 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             foreground=theme["bg"],
             background=theme[c3],
             padding=5,
-            update_interval=10,
+            update_interval=2,
         ),
         widget.Battery(
             battery=0,
             format="{char}",
-            charge_char="",
+            charge_char="",
             discharge_char="",
             full_char="",
             unknown_char="",
@@ -602,7 +600,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             background=theme[c3],
             fontsize=18,
             padding=5,
-            update_interval=1,
+            update_interval=2,
         ),
         widget.Battery(
             battery=0,
@@ -611,7 +609,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             foreground=theme["bg"],
             background=theme[c3],
             padding=5,
-            update_interval=10,
+            update_interval=2,
         ),
 
         # ---------------------------------
@@ -778,7 +776,7 @@ def init_widgets_list():
             padding=5,
         ),
 
-        *powerline_widgets("surface","overlay","purple","pink","blue","green"),
+        *powerline_widgets("surface1","lavender","pink","purple","dblue","teal"),
 
         # ---------------------------------
         #widget.TextBox(
@@ -798,7 +796,7 @@ def init_widgets_list():
         widget.TextBox(
             text=' ',
             font="Font Awesome 6 Free",
-            background=theme["green"],
+            background=theme["teal"],
             foreground=theme["bg"],
             padding=-10,
             fontsize=45,

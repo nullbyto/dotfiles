@@ -2,13 +2,14 @@ import os
 import re
 import socket
 import subprocess
+from typing import List
 from libqtile import qtile
 from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen
 from libqtile import layout, bar, widget, hook
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile.dgroups import simple_key_binder
-from typing import List
+from libqtile.log_utils import logger
 
 ########################################################################################
 # Variables
@@ -314,7 +315,7 @@ keys = [
         lazy.spawn("playerctl next"),
         desc="Next track"
         ),
-    Key([], "XF86AudioPlay",
+    Key([], "XF86AudioPrev",
         lazy.spawn("playerctl previous"),
         desc="Previous track"
         ),
@@ -385,16 +386,16 @@ keys.extend(
 # Workspaces and layouts
 ########################################################################################
 
-groups = [Group("", layout='monadtall'),
-          Group("", layout='monadtall', matches=[Match(wm_class=['firefox'])]),
-          Group("", layout='monadtall'),
-          Group("", layout='monadtall'),
-          Group("", layout='monadtall'),
-          Group("", layout='monadtall'),
-          Group("", layout='monadtall'),
-          Group("", layout='monadtall'),
-          Group("", layout='floating', matches=[Match(wm_class=["Spotify"])]),
-          Group("", layout="floating"), ]
+groups = [Group("1", label="", layout='monadtall'),
+          Group("2", label="", layout='monadtall', matches=[Match(wm_class=['firefox'])]),
+          Group("3", label="", layout='monadtall'),
+          Group("4", label="", layout='monadtall'),
+          Group("5", label="", layout='monadtall'),
+          Group("6", label="", layout='monadtall'),
+          Group("7", label="", layout='monadtall'),
+          Group("8", label="", layout='monadtall'),
+          Group("9", label="", layout='floating'),
+          Group("10", label="", layout="floating"),]
 
 # Allow MODKEY+[0 through 9] to bind to groups
 # MOD4 + index Number : Switch to Group[index]
@@ -463,6 +464,8 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             font="Font Awesome 6 Free",
             foreground=theme["bg"],
             background=theme[c1],
+            mouse_callbacks={
+                'Button1': lambda: qtile.cmd_spawn(myTerm + ' --class htop -e htop')},
             padding=2,
         ),
         widget.CPU(
@@ -470,6 +473,8 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             background=theme[c1],
             fmt="{}",
             format="{load_percent:>4}%",
+            mouse_callbacks={
+                'Button1': lambda: qtile.cmd_spawn(myTerm + ' --class htop -e htop')},
             padding=5,
             update_interval=2,
         ),
@@ -483,6 +488,8 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
             font="Font Awesome 6 Free",
             foreground=theme["bg"],
             background=theme[c1],
+            mouse_callbacks={
+                'Button1': lambda: qtile.cmd_spawn(myTerm + ' --class htop -e htop')},
             padding=2,
         ),
         widget.Memory(
@@ -580,6 +587,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
         ),
         widget.Battery(
             battery=1,
+            notify_below=10,
             format="{percent:2.0%}",
             show_short_text=False,
             foreground=theme["bg"],
@@ -604,6 +612,7 @@ def powerline_widgets(c1,c2,c3,c4,c5,c6):
         ),
         widget.Battery(
             battery=0,
+            notify_below=10,
             format="{percent:2.0%}",
             show_short_text=False,
             foreground=theme["bg"],
@@ -909,10 +918,17 @@ def start_once():
 def center_floating_win():
     window = qtile.current_window
     if window.floating and not window.fullscreen:
-        window.cmd_set_size_floating(800, 600)
+        window.cmd_set_size_floating(900, 600)
         window.cmd_center()
 
 @hook.subscribe.layout_change
 def tile_floating_on_layout_change(layout, group):
     for window in group.windows:
         window.floating = False
+
+
+@hook.subscribe.client_new
+async def move_apps_to_group(window):
+    wm_class = window.window.get_wm_class()
+    if wm_class[1] == "Spotify":
+        window.togroup("9")

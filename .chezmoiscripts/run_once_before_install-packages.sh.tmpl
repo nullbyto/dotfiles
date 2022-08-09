@@ -17,6 +17,17 @@ RED='\033[0;31m'
 # Init
 #######################################
 
+# Confirm running the script
+read -p "$(echo -e "Do you wish to run the ${LBLUE}bootstrap script${NC} [y/N]: ")" yn
+
+case $yn in
+    [Yy]* ) 
+        ;;
+    * ) 
+        exit
+        ;;
+esac
+
 echo -e "${BLUE}Installing packages...${NC}"
 
 #######################################

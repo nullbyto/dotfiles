@@ -36,17 +36,21 @@ echo -e "${BLUE}Installing packages...${NC}"
 
 wm_menu() {
     echo -ne "
-1) Qtile (Arch only)
-2) i3wm
+1) Awesome
+2) Qtile (Arch only)
+3) i3wm
 *) None
 Choose your ${LBLUE}WM${NC}: "
     read -r wm
 
     case $wm in
-        1) 
+        1)
+            PACKAGES+=(awesome)
+            ;;
+        2) 
             PACKAGES+=(qtile)
             ;;
-        2)
+        3)
             PACKAGES+=(i3-gaps)
             ;;
         *)
@@ -77,8 +81,8 @@ case $yn in
     [Yy]* ) 
         wm_menu
         PACKAGES+=(dunst feh rofi picom polybar brightnessctl NetworkManager-tui
-        blueman pipewire pavucontrol playerctl thunar ranger redshift xarchiver
-        khal flameshot xclip xreader arandr alsa-utils polkit);;
+        blueman pipewire pavucontrol playerctl thunar thunar-volman gvfs ranger redshift xarchiver
+        khal flameshot xclip xreader arandr alsa-utils polkit nitrogen qalculate-gtk);;
     * ) ;;
 esac
 
@@ -121,7 +125,7 @@ PYPKGS=(
     pynvim
 )
 
-if [ $wm -eq "1" ]; then
+if [ $wm -eq "2" ]; then
     PYPKGS+=(
         psutil dbus-next
     )

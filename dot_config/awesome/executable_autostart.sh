@@ -7,8 +7,7 @@ run() {
   fi
 }
 
-#bash -c "input-remapper-control --command stop-all && input-remapper-control --command autoload" &
-bash -c "input-remapper-control --command autoload" &
+systemctl --user start xremap &
 #feh --bg-fil ~/Pictures/Wallpapers/.wallpaper.jpg &
 nitrogen --restore &
 

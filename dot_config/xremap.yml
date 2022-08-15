@@ -1,0 +1,24 @@
+virtual_modifiers:
+  - CapsLock
+
+modmap:
+  - name: Global
+    remap:
+      CapsLock:
+        held: CapsLock
+        alone: Esc
+
+keymap:
+  - name: Global
+    remap:
+      CapsLock-i: Up
+      CapsLock-j: Left
+      CapsLock-k: Down
+      CapsLock-l: Right
+
+      CapsLock-o: End
+      CapsLock-u: Home
+      CapsLock-p: PageUp
+      CapsLock-SemiColon: PageDown
+      
+      CapsLock-BackSpace: Delete

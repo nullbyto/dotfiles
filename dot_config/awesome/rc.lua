@@ -3,58 +3,26 @@
 pcall(require, "luarocks.loader")
 
 -- Standard awesome library
-local gears = require("gears")
 local awful = require("awful")
+local gears = require("gears")
+local wibox = require("wibox")
 require("awful.autofocus")
--- Widget and layout library
---local wibox = require("wibox")
--- Theme handling library
 local beautiful = require("beautiful")
--- Notification library
 package.loaded["naughty.dbus"] = {} -- Unload naughty to use dunst
 local naughty = require("naughty")
---local menubar = require("menubar")
---local hotkeys_popup = require("awful.hotkeys_popup")
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
---require("awful.hotkeys_popup.keys")
 
 -- ###############################################################################################
 
 -- {{{ Error handling
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
-if awesome.startup_errors then
-    naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
-end
-
--- Handle runtime errors after startup
-do
-    local in_error = false
-    awesome.connect_signal("debug::error", function (err)
-        -- Make sure we don't go into an endless error loop
-        if in_error then return end
-        in_error = true
-
-        naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = tostring(err) })
-        in_error = false
-    end)
-end
+require("config.errors")
 -- }}}
 
 -- ###############################################################################################
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
--- beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
-beautiful.init(gears.filesystem.get_themes_dir() .. "gtk/theme.lua")
-beautiful.useless_gap = 5
-beautiful.tasklist_disable_icon = true
-beautiful.border_width = 2
+beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
+--beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- Variables
 terminal        = "alacritty"
@@ -94,25 +62,29 @@ awful.layout.layouts = {
 -- ###############################################################################################
 
 -- {{{ Menu
-require("menu")
+require("ui.menu")
 -- }}}
 
 -- {{{ Wibar
-require("bar")
+require("ui.bar")
+-- }}}
+
+-- {{{ titlebar
+require("ui.titlebar")
 -- }}}
 
 -- {{{ Key and mouse bindings
-require("bindings")
+require("config.bindings")
 -- Set keys
 root.keys(globalkeys)
 -- }}}
 
 -- {{{ Rules
-require("rules")
+require("config.rules")
 -- }}}
 
 -- {{{ Signals
-require("signals")
+require("config.signals")
 -- }}}
 
 -- Autostart programs

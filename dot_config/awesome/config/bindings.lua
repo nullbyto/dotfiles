@@ -75,15 +75,15 @@ globalkeys = gears.table.join(
               {description = "lock screen", group = "launcher"}),
 
     -- Extra keys
-    awful.key({                   }, "XF86MonBrightnessUp", function () awful.spawn("brightnessctl set +5%") end),
-    awful.key({                   }, "XF86MonBrightnessDown", function () awful.spawn("brightnessctl set 5%-") end),
-    awful.key({                   }, "XF86AudioRaiseVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%") end),
-    awful.key({                   }, "XF86AudioLowerVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%") end),
-    awful.key({                   }, "XF86AudioMute", function () awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle") end),
-    awful.key({                   }, "XF86AudioMicMute", function () awful.spawn("pactl set-source-mute @DEFAULT_SINK@ toggle") end),
-    awful.key({                   }, "XF86AudioPlay", function () awful.spawn("playerctl play-pause") end),
-    awful.key({                   }, "XF86AudioNext", function () awful.spawn("playerctl next") end),
-    awful.key({                   }, "XF86AudioPrev", function () awful.spawn("playerctl previous") end),
+    awful.key({                   }, "XF86MonBrightnessUp", function () awful.spawn.with_shell("brightnessctl set +5%") end),
+    awful.key({                   }, "XF86MonBrightnessDown", function () awful.spawn.with_shell("brightnessctl set 5%-") end),
+    awful.key({                   }, "XF86AudioRaiseVolume", function () awful.spawn.with_shell("pactl set-sink-volume @DEFAULT_SINK@ +5%") end),
+    awful.key({                   }, "XF86AudioLowerVolume", function () awful.spawn.with_shell("pactl set-sink-volume @DEFAULT_SINK@ -5%") end),
+    awful.key({                   }, "XF86AudioMute", function () awful.spawn.with_shell("pactl set-sink-mute @DEFAULT_SINK@ toggle") end),
+    awful.key({                   }, "XF86AudioMicMute", function () awful.spawn.with_shell("pactl set-source-mute @DEFAULT_SOURCE@ toggle") end),
+    awful.key({                   }, "XF86AudioPlay", function () awful.spawn.with_shell("playerctl play-pause") end),
+    awful.key({                   }, "XF86AudioNext", function () awful.spawn.with_shell("playerctl next") end),
+    awful.key({                   }, "XF86AudioPrev", function () awful.spawn.with_shell("playerctl previous") end),
 
     -- Awesome
     awful.key({ modkey, "Control" }, "r", awesome.restart,

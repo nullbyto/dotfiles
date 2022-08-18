@@ -17,6 +17,7 @@ local battery_popup = awful.tooltip({
     objects = {battery_icon, percentage},
     mode = 'outside',
     align = 'left',
+    bg = beautiful.bg_normal,
     preferred_positions = {'right', 'left', 'top', 'bottom'}
 })
 
@@ -88,7 +89,7 @@ watch('acpi -i', 10, function(_, stdout)
             battery_icon.text = ''
         elseif math.floor(charge) <= 60 then
             battery_icon.text = ''
-        elseif math.floor(charge) <= 60 then
+        elseif math.floor(charge) <= 70 then
             battery_icon.text = ''
         elseif math.floor(charge) <= 80 then
             battery_icon.text = ''

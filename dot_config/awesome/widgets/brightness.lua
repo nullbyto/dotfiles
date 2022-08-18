@@ -7,7 +7,7 @@ local awful = require("awful")
 local brightness = wibox.widget.textbox()
 local font = "Font Awesome 6 Free"
 
-watch([[bash -c "brightnessctl | grep -oP '[^()]+%'"]], 0.2, function(_, stdout)
+watch([[bash -c "brightnessctl | grep -oP '[^()]+%'"]], 2, function(_, stdout)
     brightness.text = stdout
     collectgarbage('collect')
 end)

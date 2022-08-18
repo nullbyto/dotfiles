@@ -78,6 +78,13 @@ mytextclock = wibox.widget{
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
+mykb_icon = wibox.widget{
+    text = " ",
+    widget = wibox.widget.textbox,
+    font = "Font Awesome 6 Free",
+}
+
+
 --------------------------------------------------------------------------------------------------
 -- Lain widgets
 local mycpu = lain.widget.cpu {
@@ -138,7 +145,7 @@ local volume = lain.widget.alsa({
         widget:set_markup(header .. string.format("%2s", vlevel))
     end,
 
-    timeout = 0.2
+    timeout = 1
 })
 
 volume.widget:buttons(awful.util.table.join(
@@ -165,8 +172,66 @@ volume.widget:buttons(awful.util.table.join(
 --------------------------------------------------------------------------------------------------
 -- Custom widgets
 
-local battery = require("widgets.battery")
+--local battery = require("widgets.battery")
 local brightness = require("widgets.brightness")
+local layout_textbox = require("widgets.textlayout")
+
+local batt = require("widgets.battery-widget")
+local bat0 = batt{
+    adapter = "BAT0",
+    ac = "AC",
+    widget_text = "${AC_BAT}${percent}%",
+    ac_prefix = {
+        { 10, " " },
+        { 20, " " },
+        { 30, " " },
+        { 40, " " },
+        { 60, " " },
+        { 80, " " },
+        { 90, " " },
+        { 100, " " },
+    },
+    battery_prefix = {
+        { 10, " " },
+        { 20, " " },
+        { 30, " " },
+        { 40, " " },
+        { 50, " " },
+        { 60, " " },
+        { 70, " " },
+        { 80, " " },
+        { 90, " "  },
+        { 100, " " },
+    },
+}
+
+local bat1 = batt{
+    adapter = "BAT1",
+    ac = "AC",
+    widget_text = "${AC_BAT}${percent}%",
+    ac_prefix = {
+        { 10, " " },
+        { 20, " " },
+        { 30, " " },
+        { 40, " " },
+        { 60, " " },
+        { 80, " " },
+        { 90, " " },
+        { 100, " " },
+    },
+    battery_prefix = {
+        { 10, " " },
+        { 20, " " },
+        { 30, " " },
+        { 40, " " },
+        { 50, " " },
+        { 60, " " },
+        { 70, " " },
+        { 80, " " },
+        { 90, " "  },
+        { 100, " " },
+    },
+}
 
 local redshift_tog = function()
     awful.spawn('sh -c "source ~/.scripts/redshift-env.sh && ~/.scripts/redshift.sh toggle"', false)
@@ -226,12 +291,15 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
-        buttons = taglist_buttons
+        buttons = taglist_buttons,
     }
+
+    s.mytaglistmod = require("widgets.taglist-mod")
 
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist {
         screen  = s,
+        margins = 20,
         filter  = awful.widget.tasklist.filter.focused,
         buttons = tasklist_buttons
     }
@@ -257,16 +325,20 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             -- mylauncher,
-            space,
-            s.mylayoutbox,
-            sep,
+            --space,
+            --sep,
             s.mytaglist,
+            --s.mytaglistmod(s),
+            sep,
+            --s.mylayoutbox,
+            layout_textbox,
             sep,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            space,
             wibox.widget.systray(),
             sep,
             mycpu_icon,
@@ -279,10 +351,14 @@ awful.screen.connect_for_each_screen(function(s)
             space,
             brightness,
             sep,
-            battery,
+            --battery,
+            bat1,
+            space,
+            bat0,
             sep,
             volume,
             sep,
+            mykb_icon,
             mykeyboardlayout,
             sep,
             mytextclock,

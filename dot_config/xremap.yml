@@ -7,6 +7,7 @@ modmap:
       CapsLock:
         held: CapsLock
         alone: Esc
+        alone_timeout_millis: 200
 
 keymap:
   - name: Global

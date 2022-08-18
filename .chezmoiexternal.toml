@@ -1,3 +1,7 @@
+# ----------------------------------------------------------------------
+# Nvim
+# ----------------------------------------------------------------------
+
 [".local/share/nvim/site/autoload/plug.vim"]
     type = "file"
     url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -13,7 +17,10 @@
     url = "https://github.com/zsh-users/zsh-autosuggestions.git"
     refreshPeriod = "168h"
 
+# ----------------------------------------------------------------------
 # Fonts
+# ----------------------------------------------------------------------
+
 [".local/share/fonts/noto/Noto_Mono_Nerd_Font_Complete.ttf"]
     type = "file"
     url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Noto/Mono/complete/Noto%20Mono%20Nerd%20Font%20Complete.ttf"
@@ -31,3 +38,13 @@
     type= "file"
     url = "https://github.com/FortAwesome/Font-Awesome/raw/6.x/otfs/Font%20Awesome%206%20Free-Solid-900.otf"
 
+# ----------------------------------------------------------------------
+# Programs
+# ----------------------------------------------------------------------
+
+# Xremap
+["bin/"]
+    type = "archive"
+    url = "https://github.com/k0kubun/xremap/releases/latest/download/xremap-linux-x86_64-x11.zip"
+    stripComponents = 0
+    refreshPeriod = "168h"

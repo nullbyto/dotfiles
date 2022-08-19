@@ -294,7 +294,7 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = taglist_buttons,
     }
 
-    s.mytaglistmod = require("widgets.taglist-mod")
+    --s.mytaglistmod = require("widgets.taglist-mod")
 
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist {

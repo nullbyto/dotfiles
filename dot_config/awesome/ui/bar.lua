@@ -175,6 +175,7 @@ volume.widget:buttons(awful.util.table.join(
 --local battery = require("widgets.battery")
 local brightness = require("widgets.brightness")
 local layout_textbox = require("widgets.textlayout")
+local redshift = require("widgets.redshift")
 
 local batt = require("widgets.battery-widget")
 local bat0 = batt{
@@ -232,28 +233,6 @@ local bat1 = batt{
         { 100, " " },
     },
 }
-
-local redshift_tog = function()
-    awful.spawn('sh -c "source ~/.scripts/redshift-env.sh && ~/.scripts/redshift.sh toggle"', false)
-end
-local redshift_inc = function()
-    awful.spawn('sh -c "source ~/.scripts/redshift-env.sh && ~/.scripts/redshift.sh increase"', false)
-end
-local redshift_dec = function()
-    awful.spawn('sh -c "source ~/.scripts/redshift-env.sh && ~/.scripts/redshift.sh decrease"', false)
-end
-local redshift = awful.widget.watch(
-        'sh -c "source ~/.scripts/redshift-env.sh && ~/.scripts/redshift.sh temperature"', 1,
-        function(widget, out)
-            widget:buttons(awful.util.table.join(
-                awful.button({}, 1, redshift_tog), -- left click 
-                awful.button({}, 4, redshift_inc), -- scroll up
-                awful.button({}, 5, redshift_dec) -- scroll down
-            ))
-            widget:set_text(" " .. out)
-            return
-        end
-    )
 
 local mypower = wibox.widget{
     widget = wibox.widget.textbox,
@@ -348,7 +327,7 @@ awful.screen.connect_for_each_screen(function(s)
             mymem,
             sep,
             redshift,
-            space,
+            sep,
             brightness,
             sep,
             --battery,

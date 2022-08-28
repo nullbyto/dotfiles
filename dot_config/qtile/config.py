@@ -97,7 +97,7 @@ keys = [
         desc='Run Launcher'
         ),
     Key([mod], "Delete",
-        lazy.spawn("rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:" + home + "/.scripts/rofi-power-menu"),
+        lazy.spawn("rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu"),
         desc='Launch the powermenu'
         ),
     Key([mod, "shift"], "x",
@@ -763,6 +763,15 @@ def init_widgets_list():
             padding=2,
             fontsize=14
         ),
+        #widget.WindowCount(
+        #    padding=2,
+        #),
+        #widget.TextBox(
+        #    text='|',
+        #    foreground=theme["bg5"],
+        #    padding=2,
+        #    fontsize=14
+        #),
         widget.Prompt(
             prompt = "run: ",
         ),
@@ -925,7 +934,6 @@ def center_floating_win():
 def tile_floating_on_layout_change(layout, group):
     for window in group.windows:
         window.floating = False
-
 
 @hook.subscribe.client_new
 async def move_apps_to_group(window):

@@ -63,7 +63,10 @@ awful.rules.rules = {
       }, properties = { titlebars_enabled = false }
     },
 
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    { rule = { class = "Firefox" },
-      properties = { screen = 1, tag = "2" } },
+    -- Set Firefox to always map on the second tag on screen 1.
+    { rule = { class = "firefox" },
+      properties = { screen = 1, tag = awful.screen.focused().tags[2] } },
+
+    { rule = { class = "obsidian" },
+      properties = { screen = 1, tag = awful.screen.focused().tags[8] } },
 }

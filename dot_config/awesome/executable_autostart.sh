@@ -16,3 +16,4 @@ run picom --experimental-backends
 run nm-applet
 run blueman-applet
 run dunst
+run insync start

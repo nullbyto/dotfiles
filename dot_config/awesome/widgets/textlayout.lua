@@ -9,7 +9,7 @@ local layout_textbox = wibox.widget{
 local CUSTOM_LAYOUT_NAMES = {
     tile = "[]=",
     fairv = "==",
-    max = "[X]",
+    max = "[M]",
     floating = "><>",
     dwindle = "[\\\\]",
     spiral = "[@]",

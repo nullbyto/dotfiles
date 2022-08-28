@@ -11,6 +11,8 @@ theme.border_width = 2
 --theme.fg_focus = "#ffffff"
 --theme.font = "TerminessTTF Nerd Font 13"
 theme.taglist_font = "JetBrainsMono NL Nerd Font"
+--theme.taglist_font = "Font Awesome 6 Free"
+--theme.taglist_fg_occupied = theme.border_focus
 --theme.tasklist_font_focus = "TerminessTTF Nerd Font 13"
 --theme.wibar_fg = "#bbbbbb"
 

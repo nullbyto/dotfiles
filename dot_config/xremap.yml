@@ -16,6 +16,10 @@ keymap:
       CapsLock-j: Left
       CapsLock-k: Down
       CapsLock-l: Right
+      CapsLock-w: Up
+      CapsLock-a: Left
+      CapsLock-s: Down
+      CapsLock-d: Right
 
       CapsLock-o: End
       CapsLock-u: Home
@@ -23,3 +27,8 @@ keymap:
       CapsLock-SemiColon: PageDown
       
       CapsLock-BackSpace: Delete
+
+      # Multimedia
+      CapsLock-Slash: PlayPause
+      CapsLock-Dot: NextSong
+      CapsLock-Comma: PreviousSong

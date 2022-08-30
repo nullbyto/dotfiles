@@ -76,7 +76,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # rofi
 bindsym $mod+d exec "rofi -modi drun,run -show drun"
 bindsym $mod+Tab exec "rofi -modi window -show window"
-bindsym $mod+Delete exec "rofi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu"
+bindsym $mod+Delete exec "rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu"
 
 # Combi mode
 #bindsym $mod+d exec "rofi -show combi -combi-modes drun,windows,run -modes combi"

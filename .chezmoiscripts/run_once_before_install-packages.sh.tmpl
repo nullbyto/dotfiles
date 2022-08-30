@@ -82,7 +82,8 @@ case $yn in
         wm_menu
         PACKAGES+=(dunst feh rofi picom polybar brightnessctl NetworkManager-tui
         blueman pipewire pavucontrol playerctl thunar thunar-volman gvfs ranger redshift xarchiver
-        khal flameshot xclip xreader arandr alsa-utils polkit nitrogen qalculate-gtk);;
+        khal flameshot xclip xreader arandr alsa-utils polkit nitrogen qalculate-gtk
+        lxappearance lightdm lightdm-gtk-greeter);;
     * ) ;;
 esac
 
@@ -114,6 +115,12 @@ esac
             cd ~/Downloads/yay && \
             makepkg -si
     fi
+
+    AUR+=(
+        betterlockscreen
+    )
+
+    sudo betterlockscreen -S ${AUR[@]} --noconfirm
 
 {{ end }}
 

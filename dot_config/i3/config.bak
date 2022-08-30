@@ -27,8 +27,8 @@ set $right l
 # -------------------------------------------------------------------------------------
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
@@ -48,20 +48,11 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
 
-# start browser
-bindsym $mod+b exec --no-startup-id firefox
-
-# start file manager
-bindsym $mod+e exec --no-start#up-id thunar
-
-# lock screen
-bindsym $mod+Shift+x exec i3lock -c 000000
-
 # kill focused window
-bindsym $mod+c kill
+bindsym $mod+Shift+q kill
 
 # reload the configuration file
-bindsym $mod+Ctrl+r reload
+bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
@@ -125,7 +116,7 @@ bindsym $mod+f fullscreen toggle
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
-bindsym $mod+t layout toggle split
+bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -146,16 +137,16 @@ workspace_auto_back_and_forth yes
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:1"
-set $ws2 "2:2"
-set $ws3 "3:3"
-set $ws4 "4:4"
-set $ws5 "5:5"
-set $ws6 "6:6"
-set $ws7 "7:7"
-set $ws8 "8:8"
-set $ws9 "9:9"
-set $ws10 "10:10"
+set $ws1 "1:  "
+set $ws2 "2:  "
+set $ws3 "3:  "
+set $ws4 "4: 4 "
+set $ws5 "5: 5 "
+set $ws6 "6: 6 "
+set $ws7 "7: 7 "
+set $ws8 "8: 8 "
+set $ws9 "9:  "
+set $ws10 "10:  "
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -242,8 +233,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 
 # Remapper app
-exec --no-startup-id systemctl --user start xremap
-#exec --no-startup-id bash -c "input-remapper-control --command stop-all && input-remapper-control --command autoload"
+exec --no-startup-id bash -c "input-remapper-control --command stop-all && input-remapper-control --command autoload"
 
 exec_always --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/.wallpaper.jpg
 exec_always --no-startup-id dunst
@@ -259,13 +249,15 @@ exec --no-startup-id picom --experimental-backends
 # Colors
 # -------------------------------------------------------------------------------------
 # class                 border  bground text    indicator child_border
-#client.focused          #6272A4 #6272A4 #F8F8F2 #50FA7B   #6272A4
-#client.focused_inactive #44475A #44475A #F8F8F2 #1E5E2E   #44475A
-#client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-#client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-#client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-#
-#client.background       #F8F8F2
+client.focused          #6272A4 #6272A4 #F8F8F2 #50FA7B   #6272A4
+#client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #1E5E2E   #44475A
+#client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+
+client.background       #F8F8F2
 
 # -------------------------------------------------------------------------------------
 # Font for window titles. Will also be used by the bar unless a different font
@@ -274,27 +266,39 @@ exec --no-startup-id picom --experimental-backends
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango: NotoMono Nerd Font 8
+font pango: NotoMono Nerd Font 10
 
 # -------------------------------------------------------------------------------------
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+    font pango: NotoMono Nerd Font 11
     strip_workspace_numbers yes
     #tray_output none
     position top
-    #height 20
+    height 30
 
-    status_command i3status
-    #status_command i3status-rs ~/.config/i3status-rust/config.toml
+    #status_command i3status
+    status_command i3status-rs ~/.config/i3status-rust/config.toml
 
     # Colors
+    colors {
+        background #282A36
+        statusline #F8F8F2
+        separator  #44475A
+
+        focused_workspace  #44475A #44475A #F8F8F2
+        active_workspace   #282A36 #44475A #F8F8F2
+        inactive_workspace #282A36 #282A36 #BFBFBF
+        urgent_workspace   #FF5555 #FF5555 #F8F8F2
+        binding_mode       #FF5555 #FF5555 #F8F8F2
+    }
 }
 
 # You can also use any non-zero value if you'd like to have a border
 #for_window [class=".*"] border pixel 0
-default_border pixel 2
-default_floating_border pixel 2
+default_border pixel 3
+default_floating_border pixel 3
 
 ########################################################################################
 # i3-gaps
@@ -302,8 +306,8 @@ default_floating_border pixel 2
 
 # Only enable gaps on a workspace when there is at least one container
 #smart_gaps on
-gaps inner 0
-gaps outer 0
+gaps inner 10
+gaps outer 15
 
 # Press $mod+Shift+g to enter the gap mode. 
 # Choose o or i for modifying outer/inner gaps.

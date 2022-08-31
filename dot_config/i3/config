@@ -52,10 +52,10 @@ bindsym $mod+Return exec --no-startup-id alacritty
 bindsym $mod+b exec --no-startup-id firefox
 
 # start file manager
-bindsym $mod+e exec --no-start#up-id thunar
+bindsym $mod+e exec --no-startup-id thunar
 
 # lock screen
-bindsym $mod+Shift+x exec i3lock -c 000000
+bindsym $mod+Shift+x exec --no-startup-id i3lock -c 000000
 
 # kill focused window
 bindsym $mod+c kill

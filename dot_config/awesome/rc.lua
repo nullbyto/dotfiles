@@ -26,6 +26,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- Variables
 terminal        = "alacritty"
+home            = os.getenv("HOME")
 editor          = os.getenv("EDITOR") or "nvim"
 editor_cmd      = terminal .. " -e " .. editor
 filemanager     = "thunar"

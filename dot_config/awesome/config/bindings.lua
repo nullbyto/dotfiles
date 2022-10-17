@@ -73,6 +73,10 @@ globalkeys = gears.table.join(
               {description = "open browser", group = "launcher"}),
     awful.key({ modkey, "Shift"   }, "x", function () awful.spawn("betterlockscreen -l dimblur || i3lock || xlock") end,
               {description = "lock screen", group = "launcher"}),
+    awful.key({                   }, "Print", function () awful.spawn("flameshot screen --path " .. home .. "/Pictures/Screenshots") end,
+              {description = "Print entire screen", group = "launcher"}),
+    awful.key({ modkey, "Shift"   }, "s", function () awful.spawn("flameshot gui --path " .. home .. "/Pictures/Screenshots") end,
+              {description = "Select printscreen", group = "launcher"}),
 
     -- Extra keys
     awful.key({                   }, "XF86MonBrightnessUp", function () awful.spawn.with_shell("brightnessctl set +5%") end),

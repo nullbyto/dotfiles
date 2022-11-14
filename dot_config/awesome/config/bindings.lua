@@ -75,7 +75,7 @@ globalkeys = gears.table.join(
               {description = "lock screen", group = "launcher"}),
     awful.key({                   }, "Print", function () awful.spawn("flameshot screen --path " .. home .. "/Pictures/Screenshots") end,
               {description = "Print entire screen", group = "launcher"}),
-    awful.key({ modkey, "Shift"   }, "s", function () awful.spawn("flameshot gui --path " .. home .. "/Pictures/Screenshots") end,
+    awful.key({ modkey, "Shift"   }, "s", function () awful.spawn("flameshot gui") end,
               {description = "Select printscreen", group = "launcher"}),
 
     -- Extra keys

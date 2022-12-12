@@ -30,6 +30,8 @@ esac
 
 echo -e "${BLUE}Installing packages...${NC}"
 
+PYPKGS=()
+
 #######################################
 # Functions
 #######################################
@@ -49,6 +51,9 @@ Choose your ${LBLUE}WM${NC}: "
             ;;
         2) 
             PACKAGES+=(qtile)
+            PYPKGS+=(
+                psutil dbus-next
+            )
             ;;
         3)
             PACKAGES+=(i3-gaps)
@@ -65,9 +70,8 @@ Choose your ${LBLUE}WM${NC}: "
 PACKAGES=(
     zsh 
     neovim
-    alacritty
     python3
-    python-pip 
+    python3-pip 
     nodejs
     npm
     neofetch
@@ -88,43 +92,40 @@ case $yn in
     * ) ;;
 esac
 
-{{ if eq .osid "linux-ubuntu" }}
-    sudo apt-get install ${PACKAGES[@]}
+{{ if eq .osid "linux-fedora" }}
+# enable copr repor for i3status-rust
+sudo dnf copr enable atim/i3status-rust -y
+PACKAGES+=(i3status-rust)
 
-{{ else if eq .osid "linux-debian" }}
-    sudo apt-get install ${PACKAGES[@]}
-
-{{ else if eq .osid "linux-fedora" }}
-    # enable copr repor for i3status-rust
-    sudo dnf copr enable atim/i3status-rust -y
-    PACKAGES+=(i3status-rust)
-
-    sudo dnf install ${PACKAGES[@]} --skip-broken
+sudo dnf install ${PACKAGES[@]} --skip-broken
 
 {{ else if eq .osid "linux-arch" }}
-    delete=NetworkManager-tui
-    PACKAGES=(${PACKAGES[@]/$delete})
+delete=NetworkManager-tui
+PACKAGES=(${PACKAGES[@]/$delete})
 
-    PACKAGES+=(
-        i3status-rust man-db
-    )
+PACKAGES+=(
+    i3status-rust man-db alacritty
+)
 
-    sudo pacman -S ${PACKAGES[@]} --needed
+sudo pacman -S ${PACKAGES[@]} --needed
 
-    # install yay
-    if ! command -v yay > /dev/null ; then
-        sudo pacman -S --needed git base-devel && \
-            rm -rf ~/Downloads/yay && \
-            git clone https://aur.archlinux.org/yay.git ~/Downloads/yay && \
-            cd ~/Downloads/yay && \
-            makepkg -si
-    fi
+# install yay
+if ! command -v yay > /dev/null ; then
+    sudo pacman -S --needed git base-devel && \
+        rm -rf ~/Downloads/yay && \
+        git clone https://aur.archlinux.org/yay.git ~/Downloads/yay && \
+        cd ~/Downloads/yay && \
+        makepkg -si
+fi
 
-    AUR+=(
-        betterlockscreen
-    )
+AUR+=(
+    betterlockscreen
+)
 
-    yay -S ${AUR[@]} --noconfirm
+yay -S ${AUR[@]} --noconfirm
+
+{{ else }}
+sudo apt-get install ${PACKAGES[@]}
 
 {{ end }}
 
@@ -132,16 +133,9 @@ esac
 # other
 #######################################
 
-PYPKGS=(
+PYPKGS+=(
     pynvim
 )
-
-if [ $wm -eq "2" ]; then
-    PYPKGS+=(
-        psutil dbus-next
-    )
-fi
-
 
 # python 3 for nvim
 for pkg in ${PYPKGS[@]}

@@ -91,6 +91,9 @@ esac
 {{ if eq .osid "linux-ubuntu" }}
     sudo apt-get install ${PACKAGES[@]}
 
+{{ else if eq .osid "linux-debian" }}
+    sudo apt-get install ${PACKAGES[@]}
+
 {{ else if eq .osid "linux-fedora" }}
     # enable copr repor for i3status-rust
     sudo dnf copr enable atim/i3status-rust -y

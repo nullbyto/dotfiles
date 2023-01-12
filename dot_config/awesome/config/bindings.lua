@@ -63,6 +63,8 @@ globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
+    awful.key({ modkey,           }, "\\", function () awful.spawn("emacsclient -c -a 'emacs'") end,
+              {description = "open emacs", group = "launcher"}),
     awful.key({ modkey,           }, "d", function () awful.spawn("rofi -modi drun,run -show drun") end,
               {description = "open rofi launcher", group = "launcher"}),
     awful.key({ modkey,           }, "Delete", function () awful.spawn("rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu") end,

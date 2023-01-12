@@ -4,6 +4,8 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
+# Emacs Doom
+PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH
 
 # Path to your oh-my-zsh installation.
@@ -109,3 +111,9 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias open="xdg-open"
+
+# Emacs
+alias enw="emacs -nw"
+alias ec="emacsclient -c -a 'emacs'"
+alias ecnw="emacsclient -nw -a 'emacs'"

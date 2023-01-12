@@ -10,10 +10,11 @@ run() {
 systemctl --user start xremap &
 #feh --bg-fil ~/Pictures/Wallpapers/.wallpaper.jpg &
 nitrogen --restore &
-setxkbmap -layout "eu" -option "grp:alt_shift_toggle" &
+setxkbmap -layout "eu" &
 
-run picom --experimental-backends
+run picom -b
 run nm-applet
 run blueman-applet
 run dunst
 run insync start
+run emacs --daemon

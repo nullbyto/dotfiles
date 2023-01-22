@@ -48,6 +48,9 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec --no-startup-id alacritty
 
+# start emacs
+bindsym $mod+backslash exec --no-startup-id emacsclient -c -a 'emacs'
+
 # start browser
 bindsym $mod+b exec --no-startup-id firefox
 
@@ -114,7 +117,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+Shift+backslash split h
+bindsym $mod+apostrophe split h
 
 # split in vertical orientation
 bindsym $mod+minus split v
@@ -181,7 +184,6 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-assign [class="Alacritty"] $ws1
 assign [class="firefox"] $ws2
 # assigning doesn't work for spotify
 for_window [class="^Spotify"] move --no-auto-back-and-forth to workspace $ws9
@@ -245,11 +247,13 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id systemctl --user start xremap
 #exec --no-startup-id bash -c "input-remapper-control --command stop-all && input-remapper-control --command autoload"
 
-exec_always --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/.wallpaper.jpg
 exec_always --no-startup-id dunst
 exec_always --no-startup-id setxkbmap eu
-exec --no-startup-id picom --experimental-backends
+exec --no-startup-id picom -b
+#exec_always --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/.wallpaper.jpg
+exec --no-startup-id nitrogen --restore
 #exec_always --no-startup-id polybar-msg cmd quit; polybar
+exec --no-startup-id emacs --daemon
 
 ########################################################################################
 # Appearance

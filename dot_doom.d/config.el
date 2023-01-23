@@ -183,22 +183,22 @@
 (setq select-enable-clipboard nil)
 (map! :map evil-insert-state-map
       :prefix "C-c"
-      "v" '("Paste from clipboard" . "+")
+      "c v" '("Paste from clipboard" . "+")
  )
 (map! :map evil-normal-state-map
       :prefix "C-c"
       "d" '("Delete to black hole" . "\"_dd")
-      "C-x" '("Cut to clipboard" . "\"+dd")
-      "C-v" '("Paste from clipboard" . "\"+p")
-      "C-c" '("Yank to clipboard" . "\"+yy")
+      "c x" '("Cut to clipboard" . "\"+dd")
+      "c v" '("Paste from clipboard" . "\"+p")
+      "c c" '("Yank to clipboard" . "\"+yy")
  )
 (map! :map evil-visual-state-map
       :prefix "C-c"
       "p" '("Paste into without copying" . "\"_dP")
       "d" '("Delete to black hole" . "\"_dd")
-      "C-x" '("Cut to clipboard" . "\"+dd")
-      "C-v" '("Paste from clipboard" . "\"+p")
-      "C-c" '("Yank to clipboard" . "\"+y")
+      "c x" '("Cut to clipboard" . "\"+dd")
+      "c v" '("Paste from clipboard" . "\"+p")
+      "c c" '("Yank to clipboard" . "\"+y")
  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

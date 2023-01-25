@@ -1,30 +1,49 @@
 local awful = require("awful")
 local wibox = require("wibox")
 
+local text_layout = {}
 
-local layout_textbox = wibox.widget{
-    widget = wibox.widget.textbox
-}
+function text_layout:new(args)
+    args = args or {}
 
-local CUSTOM_LAYOUT_NAMES = {
-    tile = "[]=",
-    fairv = "==",
-    max = "[M]",
-    floating = "><>",
-    dwindle = "[\\\\]",
-    spiral = "[@]",
-}
+    self.CUSTOM_LAYOUTS = {
+        tile = args.tile or "[]=",
+        fairv = args.fairv or "==",
+        max = args.max or "[M]",
+        floating = args.floating or "><>",
+        dwindle = args.dwindle or "[\\\\]",
+        spiral = args.spiral or "[@]",
+    }
 
-function set_layout_text()
+    self.layout_textbox = wibox.widget{
+        widget = wibox.widget.textbox
+    }
+
+    self.args = args
+
+    tag.connect_signal("property::layout", function()
+                        text_layout:set_layout_text()
+    end)
+    tag.connect_signal("property::selected", function ()
+                        text_layout:set_layout_text()
+    end)
+
+    return self.layout_textbox
+end
+
+
+function text_layout:set_layout_text()
     local name = awful.layout.getname(awful.layout.get(awful.screen.focused()))
-    if CUSTOM_LAYOUT_NAMES[name] ~= nil then
-        layout_textbox:set_text(CUSTOM_LAYOUT_NAMES[name])
+    if self.CUSTOM_LAYOUTS[name] ~= nil then
+        self.layout_textbox:set_text(self.CUSTOM_LAYOUTS[name])
+    elseif self.args[name] ~= nil then
+        self.layout_textbox:set_text(self.args[name])
     else
-        layout_textbox:set_text(name)
+        self.layout_textbox:set_text(name)
     end
 end
 
-tag.connect_signal("property::layout", set_layout_text)
-tag.connect_signal("property::selected", set_layout_text)
 
-return layout_textbox
+return setmetatable(text_layout, {
+    __call = text_layout.new,
+})

@@ -28,6 +28,8 @@ function text_layout:new(args)
                         text_layout:set_layout_text()
     end)
 
+    self:set_layout_text()
+
     return self.layout_textbox
 end
 

@@ -79,7 +79,7 @@ mytextclock = wibox.widget{
 mykeyboardlayout = awful.widget.keyboardlayout()
 
 mykb_icon = wibox.widget{
-    text = " ",
+    text = "",
     widget = wibox.widget.textbox,
     font = "Font Awesome 6 Free",
 }
@@ -281,16 +281,25 @@ awful.screen.connect_for_each_screen(function(s)
         screen  = s,
         margins = 20,
         filter  = awful.widget.tasklist.filter.focused,
+        --filter  = awful.widget.tasklist.filter.currenttags,
         buttons = tasklist_buttons
     }
 
     -- Create the wibox
     s.mywibox = awful.wibar({ 
-        position = "top", screen = s, height = 24 
+        position = "top", screen = s, height = 24
     })
 
     local sep = wibox.widget{
         text = " | ",
+        widget = wibox.widget.textbox
+    }
+    local sep1 = wibox.widget{
+        text = " |",
+        widget = wibox.widget.textbox
+    }
+    local sep2 = wibox.widget{
+        text = "| ",
         widget = wibox.widget.textbox
     }
 
@@ -320,7 +329,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             space,
             wibox.widget.systray(),
-            sep,
+            sep2,
             mycpu_icon,
             mycpu,
             space,
@@ -340,7 +349,7 @@ awful.screen.connect_for_each_screen(function(s)
             sep,
             mykb_icon,
             mykeyboardlayout,
-            sep,
+            sep2,
             mytextclock,
             sep,
             mypower,

@@ -38,24 +38,31 @@ PYPKGS=()
 
 wm_menu() {
     echo -ne "
-1) Awesome
-2) Qtile (Arch only)
-3) i3wm
+1) DWM
+2) Awesome
+3) Qtile (Arch only)
+4) i3wm
 *) None
 Choose your ${LBLUE}WM${NC}: "
     read -r wm
 
     case $wm in
-        1)
+	1)  git clone https://github.com/nullbyto/dwmblocks-async.git ~/.dwmblocks-async;
+            cd ~/.dwmblocks-async && sudo make install && cd;
+	    
+	    git clone https://github.com/nullbyto/dwm-flexipatch.git ~/.dwm-flexipatch;
+            cd ~/.dwm-flexipatch && sudo make install && cd;
+	    ;;
+        2)
             PACKAGES+=(awesome)
             ;;
-        2) 
+        3) 
             PACKAGES+=(qtile)
             PYPKGS+=(
                 psutil dbus-next
             )
             ;;
-        3)
+        4)
             PACKAGES+=(i3-wm)
             ;;
         *)

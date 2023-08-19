@@ -1,0 +1,49 @@
+#!/bin/sh
+
+envFile=~/.scripts/redshift-env.sh
+source $envFile
+
+changeValue=300
+
+changeMode() {
+  sed -i "s/REDSHIFT=$1/REDSHIFT=$2/g" $envFile 
+  REDSHIFT=$2
+}
+
+changeTemp() {
+  if [ "$2" -gt 1000 ] && [ "$2" -lt 25000 ]
+  then
+    sed -i "s/REDSHIFT_TEMP=$1/REDSHIFT_TEMP=$2/g" $envFile 
+    redshift -P -O $((REDSHIFT_TEMP+changeValue)) >/dev/null
+  fi
+}
+
+case $BLOCK_BUTTON in 
+  1) 
+    if [ "$REDSHIFT" = on ];
+    then
+      redshift -x >/dev/null
+      changeMode "$REDSHIFT" off
+    else
+      redshift -O "$REDSHIFT_TEMP" >/dev/null
+      changeMode "$REDSHIFT" on
+    fi
+    ;;
+  4)
+    changeTemp $((REDSHIFT_TEMP)) $((REDSHIFT_TEMP+changeValue))
+    changeMode "$REDSHIFT" on
+    ;;
+  5)
+    changeTemp $((REDSHIFT_TEMP)) $((REDSHIFT_TEMP-changeValue));
+    changeMode "$REDSHIFT" on
+    ;;
+esac
+
+case $REDSHIFT in
+	on)
+	printf " %dK" "$REDSHIFT_TEMP"
+	;;
+	off)
+	printf " off"
+	;;
+esac

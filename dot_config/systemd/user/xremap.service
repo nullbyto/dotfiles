@@ -1,0 +1,6 @@
+[Unit]
+Description=xremap
+
+[Service]
+Restart=always
+ExecStart=%h/bin/xremap %h/.config/xremap.yml --watch

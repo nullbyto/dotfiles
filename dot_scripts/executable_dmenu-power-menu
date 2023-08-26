@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function powermenu {
-	options="Cancel\nShutdown\nRestart\nSleep\nLock"
+	options="Cancel\nShutdown\nRestart\nSleep\nLogout\nLock"
 	selected=$(echo -e $options | dmenu $@)
 	if [[ $selected = "Shutdown" ]]; then
 		poweroff
@@ -9,6 +9,8 @@ function powermenu {
 		reboot
 	elif [[ $selected = "Sleep" ]]; then
 		systemctl suspend
+	elif [[ $selected = "Logout" ]]; then
+		pkill $DESKTOP_SESSION
 	elif [[ $selected = "Lock" ]]; then
 		betterlockscreen -l dimblur || i3lock || xlock
 	elif [[ $selected = "Cancel" ]]; then

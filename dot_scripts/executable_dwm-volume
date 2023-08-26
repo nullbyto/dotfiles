@@ -9,7 +9,7 @@ esac
 
 
 if [ "$(pamixer --get-mute)" = true ]; then
-    echo " " M
+    echo " M"
     exit
 fi
 

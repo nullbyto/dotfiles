@@ -50,8 +50,8 @@ Choose your ${LBLUE}WM${NC}: "
 	1)  git clone https://github.com/nullbyto/dwmblocks-async.git ~/.dwmblocks-async;
             cd ~/.dwmblocks-async && sudo make install && cd;
 	    
-	    git clone https://github.com/nullbyto/dwm-flexipatch.git ~/.dwm-flexipatch;
-            cd ~/.dwm-flexipatch && sudo make install && cd;
+	    git clone https://github.com/nullbyto/dwm.git ~/.dwm;
+            cd ~/.dwm && sudo make install && cd;
 	    ;;
         2)
             PACKAGES+=(awesome)
@@ -93,11 +93,11 @@ case $yn in
     [Yy]* ) 
         wm_menu
 
-        PACKAGES+=(dunst feh rofi picom polybar brightnessctl NetworkManager-tui
+        PACKAGES+=(dunst feh rofi dmenu picom polybar brightnessctl NetworkManager-tui
         blueman pipewire pavucontrol playerctl thunar thunar-volman gvfs ranger redshift xarchiver
         khal flameshot xclip xreader arandr alsa-utils pamixer polkit nitrogen
         lxappearance lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings bat dnsutils
-	qalculate-gtk thunderbird);;
+	qalculate-gtk thunderbird xdotool ueberzug pywal);;
 	
     * ) ;;
 esac

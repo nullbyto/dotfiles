@@ -123,10 +123,16 @@ delete=NetworkManager-tui
 PACKAGES=(${PACKAGES[@]/$delete})
 
 PACKAGES+=(
-    i3status-rust man-db alacritty
+    i3status-rust man-db alacritty sx
 )
 
-sudo pacman -S --needed $(pacman -Qq ${PACKAGES[@]})
+ARCH_PKGS=()
+for pkg in ${PACKAGES[@]};
+do 
+    ARCH_PKGS+=($(pacman -Ssq $pkg | grep "^$pkg$"))
+done
+
+sudo pacman -S --needed ${ARCH_PKGS[@]}
 
 # install yay
 if ! command -v yay > /dev/null ; then

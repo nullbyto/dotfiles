@@ -12,6 +12,7 @@ LGREEN='\033[1;32m'
 BLUE='\033[0;34m'
 LBLUE='\033[1;34m'
 RED='\033[0;31m'
+YELLOW='\033[33m'
 
 #######################################
 # Init
@@ -31,6 +32,7 @@ esac
 echo -e "${BLUE}Installing packages...${NC}"
 
 PYPKGS=()
+OUTPUT=()
 
 #######################################
 # Functions
@@ -47,11 +49,17 @@ Choose your ${LBLUE}WM${NC}: "
     read -r wm
 
     case $wm in
-	1)  git clone https://github.com/nullbyto/dwmblocks-async.git ~/.dwmblocks-async;
-            cd ~/.dwmblocks-async && sudo make install && cd;
+	1)  if ! git clone https://github.com/nullbyto/dwmblocks-async.git ~/.dwmblocks-async; then
+                OUTPUT+=("${YELLOW}WARNING: ${LGREEN}dwmblocks-async${NC} already installed!")
+            else
+                cd ~/.dwmblocks-async && sudo make install && cd;
+            fi
 	    
-	    git clone https://github.com/nullbyto/dwm.git ~/.dwm;
-            cd ~/.dwm && sudo make install && cd;
+	    if ! git clone https://github.com/nullbyto/dwm.git ~/.dwm; then
+                OUTPUT+=("${YELLOW}WARNING: ${LGREEN}dwm${NC} already installed!")
+            else
+                cd ~/.dwm && git checkout config && sudo make install && cd;
+            fi
 	    ;;
         2)
             PACKAGES+=(awesome)
@@ -66,7 +74,8 @@ Choose your ${LBLUE}WM${NC}: "
             PACKAGES+=(i3-wm)
             ;;
         *)
-            echo -e "${RED}No wm selected${NC}"
+            echo -e "${BLUE}INFO: No WM selected.${NC}"
+            OUTPUT+=("${BLUE}INFO:${NC} No WM was installed.")
     esac
 }
 
@@ -79,7 +88,7 @@ PACKAGES=(
     neovim
     emacs
     python3
-    python3-pip 
+    python-pip 
     nodejs
     npm
     neofetch
@@ -97,7 +106,7 @@ case $yn in
         blueman pipewire pavucontrol playerctl thunar thunar-volman gvfs ranger redshift xarchiver
         khal flameshot xclip xreader arandr alsa-utils pamixer polkit nitrogen
         lxappearance lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings bat dnsutils
-	qalculate-gtk thunderbird xdotool ueberzug pywal);;
+	qalculate-gtk thunderbird xdotool ueberzug python-pywal);;
 	
     * ) ;;
 esac
@@ -117,7 +126,7 @@ PACKAGES+=(
     i3status-rust man-db alacritty
 )
 
-sudo pacman -S ${PACKAGES[@]} --needed
+sudo pacman -S --needed $(pacman -Qq ${PACKAGES[@]})
 
 # install yay
 if ! command -v yay > /dev/null ; then
@@ -132,7 +141,7 @@ AUR+=(
     betterlockscreen
 )
 
-yay -S ${AUR[@]} --noconfirm
+yay -S --noconfirm --needed ${AUR[@]}
 
 {{ else }}
 sudo apt-get install ${PACKAGES[@]}
@@ -153,7 +162,7 @@ do
     if ! pip list | grep $pkg > /dev/null ; then
         python3 -m pip install $pkg
     else
-        echo -e "${BLUE}INFO: ${LGREEN}[PY] ${pkg}${NC} already installed."
+        OUTPUT+=("${BLUE}INFO: ${LGREEN}[PYTHON] ${pkg}${NC} already installed.")
     fi
 done
 
@@ -163,7 +172,7 @@ if ! find ~/.oh-my-zsh/oh-my-zsh.sh > /dev/null ; then
     rm -rf ~/.oh-my-zsh
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
-    echo -e "${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed."
+    OUTPUT+=("${BLUE}INFO: ${LGREEN}${pkg}${NC} already installed.")
 fi
 
 #######################################
@@ -180,7 +189,18 @@ export PATH
 if ! echo $SHELL | grep zsh > /dev/null ; then
     chsh -s $(which zsh)
 else
-    echo -e "${BLUE}INFO: ${GREEN}chsh${NC} already done."
+    OUTPUT+=("${BLUE}INFO: ${GREEN}chsh${NC} already done.")
 fi
+
+#######################################
+# Summary
+#######################################
+
+echo -e "-----------------------------------------------------"
+
+for msg in "${OUTPUT[@]}"
+do
+    echo -e $msg
+done
 
 echo -e "${CYAN}Script finished!${NC}"

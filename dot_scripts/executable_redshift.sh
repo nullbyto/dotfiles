@@ -10,10 +10,11 @@ changeMode() {
 }
 
 changeTemp() {
-  if [ "$2" -gt 1000 ] && [ "$2" -lt 25000 ]
+  if [ "$2" -gt 1000 ] && [ "$2" -lt 15000 ]
   then
     sed -i "s/REDSHIFT_TEMP=$1/REDSHIFT_TEMP=$2/g" $envFile 
-    redshift -P -O $((REDSHIFT_TEMP+changeValue))
+    redshift -P -O $2
+    REDSHIFT_TEMP=$2
   fi
 }
 

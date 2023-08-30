@@ -21,12 +21,21 @@
 # Fonts
 # ----------------------------------------------------------------------
 
-[".local/share/fonts/noto/Noto_Mono_Nerd_Font_Complete.ttf"]
-    type = "file"
-    url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Noto/Mono/NotoMonoNerdFontMono-Regular.ttf"
-[".local/share/fonts/jetbrains/JetBrains_Mono_NL_Regular_Nerd_Font_Complete.ttf"]
-    type = "file"
-    url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/NoLigatures/Regular/JetBrainsMonoNLNerdFontMono-Regular.ttf"
+[".local/share/fonts/noto/"]
+    type = "archive"
+    url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Noto.tar.xz"
+    include = ["*Regular.ttf", "*Regular.otf"]
+    stripComponents = 0
+[".local/share/fonts/jetbrainsmono/"]
+    type = "archive"
+    url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz"
+    include = ["*Regular.ttf", "*Regular.otf"]
+    stripComponents = 0
+[".local/share/fonts/terminus/"]
+    type = "archive"
+    url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Terminus.tar.xz"
+    include = ["*Regular.ttf", "*Regular.otf"]
+    stripComponents = 0
 # Font Awesome
 [".local/share/fonts/awesome/Font_Awesome_6_Free_Regular.otf"]
     type= "file"

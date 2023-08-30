@@ -49,16 +49,22 @@ Choose your ${LBLUE}WM${NC}: "
     read -r wm
 
     case $wm in
-	1)  if ! git clone https://github.com/nullbyto/dwmblocks-async.git ~/.dwmblocks-async; then
+	1)  if ! git clone https://github.com/nullbyto/dwm.git ~/.dwm; then
+                OUTPUT+=("${YELLOW}WARNING: ${LGREEN}dwm${NC} already installed!")
+            else
+                cd ~/.dwm && git checkout config && sudo make install && cd;
+            fi
+
+            if ! git clone https://github.com/nullbyto/dwmblocks-async.git ~/.dwmblocks-async; then
                 OUTPUT+=("${YELLOW}WARNING: ${LGREEN}dwmblocks-async${NC} already installed!")
             else
                 cd ~/.dwmblocks-async && sudo make install && cd;
             fi
-	    
-	    if ! git clone https://github.com/nullbyto/dwm.git ~/.dwm; then
-                OUTPUT+=("${YELLOW}WARNING: ${LGREEN}dwm${NC} already installed!")
+
+	    if ! git clone https://github.com/nullbyto/dmenu-flexipatch.git ~/.dmenu-flexipatch; then
+                OUTPUT+=("${YELLOW}WARNING: ${LGREEN}dmenu-flexipatch${NC} already installed!")
             else
-                cd ~/.dwm && git checkout config && sudo make install && cd;
+                cd ~/.dmenu-flexipatch && sudo make install && cd;
             fi
 	    ;;
         2)

@@ -1,0 +1,16 @@
+# Profile file. Runs on login. Environmental variables are set here.
+
+# Add `~/.local/bin` and `~/bin` to $PATH
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+
+# Default programs:
+export EDITOR="nvim"
+export TERMINAL="alacritty"
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"

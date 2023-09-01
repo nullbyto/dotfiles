@@ -13,10 +13,12 @@ case "$BLOCK_BUTTON" in
     6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
+output=""
 # Loop through all attached batteries and format the info
 for battery in /sys/class/power_supply/BAT?*; do
     # If non-first battery, print a space separator.
-    [ -n "${capacity+x}" ] && printf " "
+    #[ -n "${capacity+x}" ] && printf " "
+    [ -n "${capacity+x}" ] && output=" $output"
 
     capacity="$(cat "$battery/capacity" 2>&1)"
     if [ "$capacity" -gt 90 ]; then
@@ -46,6 +48,8 @@ for battery in /sys/class/power_supply/BAT?*; do
         *) exit 1 ;;
     esac
     # Prints the info
-    printf "$status$capacity%%" "$color"
+    #printf "$status$capacity%%" "$color"
+    output="$status$capacity%%$output"
 done
 
+printf "$output" "$color"

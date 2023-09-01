@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Put args in array
+options=("$@")
+# Quote each string in array
+options="${options[@]@Q}"
+j4-dmenu-desktop --dmenu="dmenu -i -c -l 15 -p 'Apps:' $options"

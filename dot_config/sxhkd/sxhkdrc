@@ -1,6 +1,6 @@
 # reload sxhkd config
 super + semicolon; r
-	pkill -SIGUSR1 sxhkd
+	pkill -SIGUSR1 sxhkd && dunstify "sxhkdrc reloaded!"
 
 ###################################
 # Programs
@@ -11,8 +11,8 @@ super + e
 	thunar
 super + r
 	alacritty --class ranger -e ranger
-super + d
-	rofi -modi drun,run -show drun
+#super + d
+#	rofi -modi drun,run -show drun
 #super + delete
 #	rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu
 
@@ -35,11 +35,11 @@ XF86MonBrightnessUp
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle; kill -38 $(pidof dwmblocks)
 XF86AudioMicMute
-	pactl set-source-mute @DEFAULT_SINK@ toggle
+	pactl set-source-mute @DEFAULT_SOURCE@ toggle
 XF86AudioLowerVolume
-	pactl set-sink-volume @DEFAULT_SING@ -5%; kill -38 $(pidof dwmblocks)
+	pactl set-sink-volume @DEFAULT_SINK@ -5%; kill -38 $(pidof dwmblocks)
 XF86AudioRaiseVolume
-	pactl set-sink-volume @DEFAULT_SING@ -5%; kill -38 $(pidof dwmblocks)
+	pactl set-sink-volume @DEFAULT_SINK@ +5%; kill -38 $(pidof dwmblocks)
 XF86AudioPlay
 	playerctl play-pause
 XF86AudioNext

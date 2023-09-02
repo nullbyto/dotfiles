@@ -24,3 +24,4 @@ run dunst
 run insync start
 run emacs --daemon
 run dwmblocks
+run sxhkd

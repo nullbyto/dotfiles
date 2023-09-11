@@ -20,7 +20,7 @@ esac
 
 case $BLOCK_BUTTON in
 	1) alacritty --class ikhal -e ikhal --color ;;
-	2) notify-send "This Month" "$(cal | sed "s/\<$(date +'%e')\>/<b><span color='red'>&<\/span><\/b>/")" ;;
+	2) dunstify "This Month" "$(cal | sed "s/\<$(date +'%e')\>/<b><span color='red'>&<\/span><\/b>/")" ;;
 esac
 
 #date "+%Y %b %d (%a) $icon%I:%M%p"

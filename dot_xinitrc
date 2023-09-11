@@ -1,0 +1,3 @@
+# run dwm with stdout + stderr logging for debug
+#exec dwm > dwm.log 2> dwm-err.log
+exec dwm

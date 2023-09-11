@@ -2,26 +2,42 @@
 super + semicolon; r
 	pkill -SIGUSR1 sxhkd && dunstify "sxhkdrc reloaded!"
 
+# show keybinding list
+super + semicolon; question
+	alacritty --class htop -e ~/.scripts/list-keybindings
+
 ###################################
 # Programs
 ###################################
 #super + shift + enter
 #	alacritty
+
+# launch thunar file explorer
 super + e
 	thunar
+
+# launch ranger file explorer
 super + r
 	alacritty --class ranger -e ranger
+
 #super + d
 #	rofi -modi drun,run -show drun
 #super + delete
 #	rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu
 
+# launch ranger in wallpapers folder to choose
 super + control + w
 	alacritty --class ranger -e ranger ~/Pictures/Wallpapers/
+
+# lock screen
 super + shift + x
 	betterlockscreen -l dimblur || i3lock || xlock
+
+# screenshot snip tool
 super + shift s
 	flameshot gui
+
+# screenshot to ~/Pictures/Screenshots/
 Print
 	flameshot screen --path ~/Pictures/Screenshots/
 

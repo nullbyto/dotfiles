@@ -120,4 +120,6 @@ alias enw="emacs -nw"
 alias ec="emacsclient -c -a 'emacs'"
 alias ecnw="emacsclient -nw -a 'emacs'"
 
+#export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
 eval "$(starship init zsh)"

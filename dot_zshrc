@@ -112,8 +112,12 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias open="xdg-open"
+alias cp="cp -v"
+alias mv="mv -v"
 
 # Emacs
 alias enw="emacs -nw"
 alias ec="emacsclient -c -a 'emacs'"
 alias ecnw="emacsclient -nw -a 'emacs'"
+
+eval "$(starship init zsh)"

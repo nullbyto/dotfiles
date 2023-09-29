@@ -1,6 +1,6 @@
 # reload sxhkd config
 super + semicolon; r
-	pkill -SIGUSR1 sxhkd && dunstify "sxhkdrc reloaded!"
+	pkill -SIGUSR1 sxhkd && dunstify "sxhkd" "sxhkdrc reloaded!"
 
 # show keybinding list
 super + semicolon; question
@@ -19,6 +19,10 @@ super + e
 # launch ranger file explorer
 super + r
 	alacritty --class ranger -e ranger
+
+# launch broswer
+super + a
+    vivaldi
 
 #super + d
 #	rofi -modi drun,run -show drun
@@ -45,9 +49,9 @@ Print
 # Media keys
 ###################################
 XF86MonBrightnessDown
-	brightnessctl set 5%-
+	brightnessctl set 5%-; dunstify -a "Brightnessctl" -r 909090 "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%"
 XF86MonBrightnessUp
-	brightnessctl set +5%
+	brightnessctl set +5%; dunstify -a "Brightnessctl" -r 909090 "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%"
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle; kill -38 $(pidof dwmblocks)
 XF86AudioMicMute

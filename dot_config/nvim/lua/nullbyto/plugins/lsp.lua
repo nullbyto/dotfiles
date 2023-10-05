@@ -31,6 +31,7 @@ return {
       -- And you can configure cmp even more, if you want to.
       local cmp = require('cmp')
       local cmp_action = lsp_zero.cmp_action()
+      local cmp_select = {behavior = cmp.SelectBehavior.Select}
 
       cmp.setup({
         formatting = lsp_zero.cmp_format(),
@@ -40,6 +41,10 @@ return {
           ['<C-d>'] = cmp.mapping.scroll_docs(4),
           ['<C-f>'] = cmp_action.luasnip_jump_forward(),
           ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+          ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+          ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+          ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+          -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
         })
       })
     end
@@ -63,6 +68,18 @@ return {
         -- see :help lsp-zero-keybindings
         -- to learn the available actions
         lsp_zero.default_keymaps({buffer = bufnr})
+        local opts = {buffer = bufnr, remap = false}
+
+        vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, { unpack(opts), desc = "Go to definition" })
+        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, { unpack(opts), desc = "Hover over variable" })
+        vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, { unpack(opts), desc = "Workspace symbol" })
+        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, { unpack(opts), desc = "Open diagnostics" })
+        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, { unpack(opts), desc = "Prev definition" })
+        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, { unpack(opts), desc = "Next definition" })
+        vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, { unpack(opts), desc = "Code action" })
+        vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, { unpack(opts), desc = "Variable References" })
+        vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, { unpack(opts), desc = "Rename variable" })
+        vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
       end)
 
       require('mason-lspconfig').setup({

@@ -22,7 +22,11 @@ super + r
 
 # launch broswer
 super + a
-    vivaldi
+    vivaldi || vivaldi-stable
+
+# launch emacs
+super + backslash
+    emacsclient -c -a 'emacs'
 
 #super + d
 #	rofi -modi drun,run -show drun

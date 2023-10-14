@@ -37,7 +37,7 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 
 -- open
 vim.keymap.set("n", "<leader>o-", vim.cmd.Ex, { desc = "Neovim (Ex)plorer" })
-vim.keymap.set("n", "<leader>od", ":Alpha <cr>", { desc = "Editor toolings manager" })
+vim.keymap.set("n", "<leader>od", ":Alpha <cr>", { desc = "Dashboard" })
 vim.keymap.set("n", "<leader>ol", ":Lazy <cr>", { desc = "Plugin manager" })
 vim.keymap.set("n", "<leader>om", ":Mason <cr>", { desc = "Editor toolings manager" })
 

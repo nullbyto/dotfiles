@@ -16,7 +16,7 @@ return {
             end
         end
 
-        vim.keymap.set("n", "<leader>/", builtin.live_grep, { desc = "Grep (root dir)" })
+        -- vim.keymap.set("n", "<leader>/", builtin.live_grep, { desc = "Grep (root dir)" })
         vim.keymap.set("n", "<leader>:", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
 		vim.keymap.set('n', '<leader>.', function() find_files({}) end, { desc = "Find file" })
 		vim.keymap.set('n', '<leader> ', function() find_files({ cwd = utils.buffer_dir() }) end, { desc = "Find file in project" })

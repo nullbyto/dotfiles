@@ -2,6 +2,7 @@
 #[ ](fg:#33658A)
 
 format = """
+$character\
 [](bg:#3B4252 fg:#3B4252)\
 $username$hostname\
 [](bg:#434C5E fg:#3B4252)\
@@ -47,7 +48,7 @@ disabled = false
 ssh_only = false
 #format = '[$ssh_symbol](bold blue) on [$hostname](bold red) '
 style = "bg:#3B4252"
-format = '[$ssh_symbol](bold blue)[$hostname ]($style)'
+format = '[$hostname $ssh_symbol]($style)'
 #trim_at = '.companyname.com'
 
 [directory]
@@ -74,6 +75,11 @@ min_time = 1000
 #format = '\[[⏱ $duration]($style)\]'
 #format = '[](fg:#434C5E)[](bg:#434C5E fg:#3B4252)[⏱ $duration]($style bg:#3B4252)[](bg:#3B4252 fg:#3B4252)'
 format = '[](fg:#3B4252)[ ⏱ $duration]($style bg:#3B4252)[](bg:#3B4252 fg:#3B4252)'
+
+[character]
+format = "$symbol"
+success_symbol = ""
+error_symbol = "[ ✘](bg:#3B4252 fg:#f7768e)"
 
 [c]
 symbol = " "

@@ -1,9 +1,16 @@
 vim.g.mapleader = " "
 
-vim.keymap.set("x", "<leader>p", [["_dP]], {})
-vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
-vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+-- Center cursor when <C-d/u>
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+-- Clipboard
+vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste replace (\"_dp)" })
+vim.keymap.set("n", "<leader>p", [["+p]], { desc = "Paste after from system (\"+p)" })
+vim.keymap.set("n", "<leader>P", [["+P]], { desc = "Paste before from system (\"+P)" })
+vim.keymap.set({"n", "v"}, "<leader>y", [["+y]], { desc = "Yank to system (\"+y)" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank to EOL to system (\"+Y)" })
+vim.keymap.set({"n", "v"}, "<leader>d", [["_d]], { desc = "Delete to black hole (\"_d)" })
 
 vim.keymap.set("n", "Q", "<nop>")
 

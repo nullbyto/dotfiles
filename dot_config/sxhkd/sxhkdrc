@@ -28,8 +28,10 @@ super + a
 super + backslash
     emacsclient -c -a 'emacs'
 
-#super + d
-#	rofi -modi drun,run -show drun
+# launch rofi
+super + shift + p
+	rofi -modi drun,run -show drun
+
 #super + delete
 #	rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu
 

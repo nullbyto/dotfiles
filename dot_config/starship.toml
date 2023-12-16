@@ -21,6 +21,7 @@ $julia\
 $nodejs\
 $nim\
 $rust\
+$python\
 [](fg:#86BBD8 bg:#06969A)\
 $docker_context\
 [](fg:#06969A bg:#33658A)\
@@ -144,6 +145,11 @@ format = '[ $symbol ($version) ]($style)'
 symbol = ""
 style = "bg:#86BBD8"
 format = '[ $symbol ($version) ]($style)'
+
+[python]
+#symbol = ""
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ($virtualenv) ]($style)'
 
 [time]
 disabled = true

@@ -4,6 +4,7 @@ local config = {
     audible_bell = "Disabled",
     check_for_updates = false,
     -- color_scheme = "Builtin Solarized Dark",
+    -- color_scheme = "tokyonight_night",
     inactive_pane_hsb = {
         hue = 1.0,
         saturation = 1.0,
@@ -12,8 +13,10 @@ local config = {
     default_prog = { '/bin/bash', '-l' },
     font_size = 16.0,
     launch_menu = {},
+    enable_scroll_bar = true,
     leader = { key="a", mods="CTRL" },
     disable_default_key_bindings = true,
+    window_background_opacity = 1,
     keys = {
         -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
         { key = "a", mods = "LEADER|CTRL",  action=wezterm.action{SendString="\x01"}},
@@ -22,6 +25,7 @@ local config = {
         { key = "-", mods = "LEADER",       action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
         { key = "|", mods = "LEADER|SHIFT", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
         { key = "z", mods = "LEADER",       action="TogglePaneZoomState" },
+        { key = "/", mods = "LEADER",       action="ActivateCopyMode" },
         { key = "c", mods = "LEADER",       action=wezterm.action{SpawnTab="CurrentPaneDomain"}},
         { key = "h", mods = "LEADER",       action=wezterm.action{ActivatePaneDirection="Left"}},
         { key = "j", mods = "LEADER",       action=wezterm.action{ActivatePaneDirection="Down"}},

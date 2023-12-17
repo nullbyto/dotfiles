@@ -60,6 +60,7 @@ vim.keymap.set("n", "[b", "<cmd>bprev<cr>", { desc = "Prev buffer" })
 vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>bk", ":bd <cr>", { desc = "Delete buffer" })
 vim.keymap.set("n", "<leader>bd", ":bd <cr>", { desc = "Delete buffer" })
+vim.keymap.set("n", "<leader>bq", ":bd! <cr>", { desc = "Delete buffer without saving" })
 
 -- windows
 -- map <leader>w to <c-w> prefix and show whichkey help

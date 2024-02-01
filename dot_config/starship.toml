@@ -23,6 +23,7 @@ $nim\
 $rust\
 $python\
 [](fg:#86BBD8 bg:#06969A)\
+$nix_shell\
 $docker_context\
 [](fg:#06969A bg:#33658A)\
 [ ](fg:#33658A)\
@@ -147,9 +148,18 @@ style = "bg:#86BBD8"
 format = '[ $symbol ($version) ]($style)'
 
 [python]
-#symbol = ""
+symbol = ""
 style = "bg:#86BBD8"
 format = '[ $symbol ($version) ($virtualenv) ]($style)'
+
+[nix_shell]
+symbol = '❆ '
+style = "bg:#06969A"
+impure_msg = '[impure](bold red)'
+pure_msg = '[pure](bold green)'
+unknown_msg = '[unknown]($style bold yellow)'
+format = '[ $symbol via $state(\($name\)) ]($style)'
+heuristic = true
 
 [time]
 disabled = true

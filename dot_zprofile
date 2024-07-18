@@ -1,5 +1,9 @@
 . "$HOME/.profile"
 
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-	exec startx
+    # Xorg
+	# exec startx
+
+    # Wayland
+    # exec Hyprland
 fi

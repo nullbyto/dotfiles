@@ -87,6 +87,8 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+export VCPKG_ROOT=/opt/vcpkg
+export PATH=$VCPKG_ROOT:$PATH
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -114,12 +116,22 @@ source $ZSH/oh-my-zsh.sh
 alias open="xdg-open"
 alias cp="cp -v"
 alias mv="mv -v"
+alias sude="sudo -E"
+
+# Utils
+alias ip="ip -c"
 
 # Emacs
 alias enw="emacs -nw"
 alias ec="emacsclient -c -a 'emacs'"
 alias ecnw="emacsclient -nw -a 'emacs'"
 
-#export STARSHIP_CONFIG=~/.config/starship/starship.toml
+# Neovim
+alias svim="sudo -E nvim"
 
+# fzf
+eval "$(fzf --zsh)"
+
+# starship
+#export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"

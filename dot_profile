@@ -1,3 +1,4 @@
+. "$HOME/.cargo/env"
 # Profile file. Runs on login. Environmental variables are set here.
 
 # Add `~/.local/bin` and `~/bin` to $PATH
@@ -14,5 +15,10 @@ export TERMINAL="alacritty"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 
-. "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+export VCPKG_ROOT=/opt/vcpkg
+export PATH=$VCPKG_ROOT:$PATH
+
+# fix distrobox gui apps
+xhost +local:$USER > /dev/null

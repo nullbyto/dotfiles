@@ -22,7 +22,7 @@ super + r
 
 # launch broswer
 super + a
-    vivaldi || vivaldi-stable
+    microsoft-edge-stable || vivaldi || vivaldi-stable
 
 # launch emacs
 super + backslash
@@ -44,12 +44,16 @@ super + shift + x
 	betterlockscreen -l dimblur || i3lock || xlock
 
 # screenshot snip tool
-super + shift s
+super + shift + s
 	flameshot gui
 
 # screenshot to ~/Pictures/Screenshots/
 Print
 	flameshot screen --path ~/Pictures/Screenshots/
+
+# launch alacritty with ubuntu (distrobox)
+super + shift + u
+    alacritty --class distrobox -e distrobox enter ubuntu
 
 ###################################
 # Media keys

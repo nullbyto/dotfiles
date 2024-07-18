@@ -37,6 +37,10 @@ fi
 [ -n "$(cat /sys/class/net/tun*/operstate 2>/dev/null)" ] && tunicon="🔒"
 # Wireguard
 [ -n "$(cat /sys/class/net/wg*/operstate 2>/dev/null)" ] && tunicon="🔒"
+# Tailscale
+if command tailscale status &>/dev/null; then
+    tunicon="🔒"
+fi
 
 #printf "%s%s%s\n" "$wifiicon" "$ethericon" "$tunicon"
 printf "%s%s%s" "$wifiicon" "$ethericon" "$tunicon"

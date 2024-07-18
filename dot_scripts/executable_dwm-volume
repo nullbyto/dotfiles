@@ -7,14 +7,12 @@ case $BLOCK_BUTTON in
 	5) pactl set-sink-volume @DEFAULT_SINK@ -1% ;;
 esac
 
-
 if [ "$(pamixer --get-mute)" = true ]; then
     echo " M"
     exit
 fi
 
 vol="$(pamixer --get-volume)"
-[ $? -ne 0 ] && [ -z "$vol" ] && exit 1
 
 if [ "$vol" -gt 40 ]; then
     icon=" "
@@ -23,5 +21,8 @@ elif [ "$vol" -gt 15 ]; then
 else
     icon=" "
 fi
+
+# Edited
+[ $? -ne 0 ] && [ -z "$vol" ] && echo "$icon" && exit 1
 
 echo "$icon$vol%"

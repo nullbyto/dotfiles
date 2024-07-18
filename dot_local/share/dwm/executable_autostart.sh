@@ -7,7 +7,7 @@ run() {
   fi
 }
 
-#systemctl --user start xremap &
+systemctl --user start xremap &
 setxkbmap -layout "eu" &
 
 # Screen settings
@@ -17,11 +17,12 @@ setxkbmap -layout "eu" &
 feh --bg-fill ~/Pictures/Wallpapers/wallpaper.jpg &
 #nitrogen --restore &
 
-#run picom -b
+run picom -b
 run nm-applet
 run blueman-applet
 run dunst
-run insync start
 run emacs --daemon
 run dwmblocks
 run sxhkd
+run /usr/lib/xfce-polkit/xfce-polkit
+XDG_CURRENT_DESKTOP=GNOME run insync start

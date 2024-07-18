@@ -8,6 +8,12 @@ notify() {
         "Battery" "$1" -t 4000
 }
 
+notify_critical() {
+    notify-send -u critical -i battery-good-symbolic \
+        -h string:x-canonical-private-synchronous:battery \
+        "Battery very low. Please charge!" "$1" -t 4000
+}
+
 case "$BLOCK_BUTTON" in
     1) notify "$(acpi -b | awk -F ': |, ' '{printf "%s\n%s\n", $2, $4}')" ;;
     6) "$TERMINAL" -e "$EDITOR" "$0" ;;
@@ -30,6 +36,9 @@ for battery in /sys/class/power_supply/BAT?*; do
     elif [ "$capacity" -gt 10 ]; then
         status=" "
     else
+        # if [ "$capacity" -eq 10 ]; then
+        #     notify_critical "$(acpi -b | awk -F ': |, ' '{printf "%s\n%s\n", $2, $4}')"
+        # fi
         status=" "
     fi
 
@@ -40,6 +49,9 @@ for battery in /sys/class/power_supply/BAT?*; do
             if [ "$capacity" -le 20 ]; then
                 status="$status"
                 color=1
+            fi
+            if [ "$capacity" -eq 10 ]; then
+                notify_critical "$(acpi -b | awk -F ': |, ' '{printf "%s\n%s\n", $2, $4}')"
             fi
             ;;
         Charging) status="󰚥$status" ;;

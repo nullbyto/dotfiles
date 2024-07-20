@@ -4,19 +4,19 @@ local config = {
     audible_bell = "Disabled",
     check_for_updates = false,
     -- color_scheme = "Builtin Solarized Dark",
-    -- color_scheme = "tokyonight_night",
+    color_scheme = "tokyonight_night",
     inactive_pane_hsb = {
         hue = 1.0,
         saturation = 1.0,
         brightness = 1.0,
     },
-    default_prog = { '/bin/bash', '-l' },
+    -- default_prog = { '/bin/zsh', '-l' },
     font_size = 16.0,
     launch_menu = {},
     enable_scroll_bar = true,
     leader = { key="a", mods="CTRL" },
     disable_default_key_bindings = true,
-    window_background_opacity = 1,
+    window_background_opacity = 0.9,
     keys = {
         -- Send "CTRL-A" to the terminal when pressing CTRL-A, CTRL-A
         { key = "a", mods = "LEADER|CTRL",  action=wezterm.action{SendString="\x01"}},

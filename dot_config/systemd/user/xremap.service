@@ -3,4 +3,4 @@ Description=xremap
 
 [Service]
 Restart=always
-ExecStart=%h/bin/xremap %h/.config/xremap.yml --watch
+ExecStart=%h/bin/xremap %h/.config/xremap.yml --watch=device,config

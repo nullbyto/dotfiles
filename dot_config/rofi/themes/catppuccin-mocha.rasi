@@ -9,7 +9,7 @@
     grey: #6c7086;
 
     //width: 800;
-    font: "JetBrainsMono NL Nerd Font 14";
+    font: "JetBrainsMono NL Nerd Font 12";
 }
 
 element-text, element-icon , mode-switcher {
@@ -81,7 +81,7 @@ element selected {
 
 mode-switcher {
     spacing: 0;
-  }
+}
 
 button {
     padding: 10px;

@@ -12,7 +12,7 @@ local config = {
         brightness = 1.0,
     },
     -- default_prog = { '/bin/zsh', '-l' },
-    font_size = 16.0,
+    font_size = 12.0,
     launch_menu = {},
     enable_scroll_bar = true,
     leader = { key="a", mods="CTRL" },

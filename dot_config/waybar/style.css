@@ -24,8 +24,8 @@
 }
 
 window#waybar {
-    /* background: @theme_base_color; */
-    background: transparent;
+    background: @theme_base_color;
+    /* background: transparent; */
     /* border-bottom: 1px solid @unfocused_borders; */
 	border-radius: 12px;
     color: @theme_text_color;

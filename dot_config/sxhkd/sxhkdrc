@@ -59,9 +59,10 @@ super + shift + u
 # Media keys
 ###################################
 XF86MonBrightnessDown
-	brightnessctl set 5%-; dunstify -a "Brightnessctl" -r 909090 "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%"
+    brightnessctl set 5%-; notify-send -a "Brightnessctl" -i "brightness" -r 909090 -h int:value:"$(brightnessctl -m | cut -d, -f4 | tr -d %)" -h string:x-canonical-private-synchronous:brightness "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%" -t 3000 -e
 XF86MonBrightnessUp
-	brightnessctl set +5%; dunstify -a "Brightnessctl" -r 909090 "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%"
+    brightnessctl set +5%; notify-send -a "Brightnessctl" -i "brightness" -r 909090 -h int:value:"$(brightnessctl -m | cut -d, -f4 | tr -d %)" -h string:x-canonical-private-synchronous:brightness "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%" -t 3000 -e
+
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle; kill -38 $(pidof dwmblocks)
 XF86AudioMicMute

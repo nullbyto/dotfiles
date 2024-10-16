@@ -15,11 +15,12 @@
 	box-shadow: none;
 	/* font-family: "JetBrainsMono Nerd Font"; */
 	font-family: "FontAwesome", "JetBrainsMono Nerd Font";
-	font-size: 11px;
+	font-size: 14px;
 	color: #fff;
 	/* color: #439DE5; */
-    transition-property: background-color;
-    transition-duration: .2s;
+    /* transition-property: background-color; */
+    /* transition-duration: .2s; */
+    /* transition: all 0.3s ease-in-out; */
     min-height: 0;
 }
 
@@ -63,7 +64,7 @@ window#waybar.empty #window {
     border-radius: 12px;
 	/* background-color: transparent; */
 	background-color: @unfocused_borders;
-    transition: all 0.3s ease-in-out;
+    /* transition: all 0.3s ease-in-out; */
     /* transition: padding 0.1s; */
     /* transition: all 0.2s cubic-bezier(0.55, -0.68, 0.48, 1.682); */
     /* animation: gradient_f 5s ease-in-out infinite; */
@@ -72,7 +73,7 @@ window#waybar.empty #window {
 #workspaces button.active {
     padding: 0 8px;
 	background-color: @blue2;
-    transition: all 0.3s ease-in-out;
+    /* transition: all 0.3s ease-in-out; */
 }
 
 #workspaces button:hover {
@@ -97,7 +98,7 @@ window#waybar.empty #window {
 }
 
 #tray menu {
-	background-color: @theme_base_color;
+	/* background-color: @theme_base_color; */
 }
 
 #tray * {
@@ -111,6 +112,7 @@ window#waybar.empty #window {
 #disk,
 #backlight,
 #custom-nightlight,
+#custom-workspace-count,
 #mode,
 #network,
 #pulseaudio,
@@ -119,7 +121,7 @@ window#waybar.empty #window {
 #language,
 #clock {
 	margin: 4px 2px;
-	padding: 0 5px;
+	padding: 2px 6px;
 	border-radius: 20px;
 	min-width: 15px;
 	/* background-color: transparent; */
@@ -132,9 +134,9 @@ window#waybar.empty #window {
 
 #custom-launcher {
 	margin: 4px 1px 4px 5px;
-	padding: 0 5px;
+	padding: 0 6px;
 	background-color: @blue3;
-	border-radius: 8px;
+	border-radius: 10px;
 	min-width: 15px;
 }
 
@@ -142,7 +144,7 @@ window#waybar.empty #window {
 	margin: 4px 5px 4px 1px;
 	padding: 0 6px 0 4px;
 	background-color: @blue3;
-	border-radius: 8px;
+	border-radius: 10px;
 	min-width: 15px;
 }
 
@@ -152,13 +154,14 @@ window#waybar.empty #window {
 
 #custom-hardware {
 	margin: 4px 2px;
-    padding: 0 4px;
+    padding: 0 6px;
 	border-radius: 20px;
     background-color: transparent;
 }
 
 #custom-nightlight,
-#power-profiles-daemon {
+#power-profiles-daemon,
+#idle_inhibitor {
 	margin: 4px 2px;
 	padding: 0 8px;
     border-radius: 8px;

@@ -1,6 +1,3 @@
-import = [
-    "~/.config/alacritty/catppuccin-mocha.toml"
-]
 
 [font]
 size = 10.0
@@ -10,3 +7,8 @@ family = "Terminess Nerd Font Mono"
 
 [window]
 opacity = 0.9
+
+[general]
+import = [
+    "~/.config/alacritty/catppuccin-mocha.toml"
+]

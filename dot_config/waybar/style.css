@@ -121,7 +121,7 @@ window#waybar.empty #window {
 #language,
 #clock {
 	margin: 4px 2px;
-	padding: 2px 6px;
+	padding: 2px 7px;
 	border-radius: 20px;
 	min-width: 15px;
 	/* background-color: transparent; */
@@ -134,7 +134,7 @@ window#waybar.empty #window {
 
 #custom-launcher {
 	margin: 4px 1px 4px 5px;
-	padding: 0 6px;
+	padding: 0 8px 0 4px;
 	background-color: @blue3;
 	border-radius: 10px;
 	min-width: 15px;

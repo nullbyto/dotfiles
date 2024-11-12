@@ -3,7 +3,7 @@
 	"position": "top",
 	"height": 28,
 	// "margin": "10, 20, 0, 20",
-	"margin": "4, 10, -5, 10",
+	"margin": "5, 10, 0, 10",
 	"modules-left": [
 		"custom/launcher",
 		"hyprland/workspaces",
@@ -60,26 +60,26 @@
         "icon-size": 15
     },
     "hyprland/language": {
-        "format": " {}",
+        "format": "  {}",
         "format-eu": "eu"
     },
 	"cpu": {
 		"interval": 10,
 		"format": " {usage}%",
 		"max-length": 10,
-		"on-click": "alacritty --class htop -e htop"
+		"on-click": "kitty --class htop -e htop"
 	},
     "memory": {
         "interval": 30,
         "format": " {}%",
         "max-length": 10,
-		"on-click": "alacritty --class htop -e htop"
+		"on-click": "kitty --class htop -e htop"
     },
     "disk": {
         "interval": 30,
-        "format": "  {}%",
+        "format": " {}%",
         "max-length": 10,
-		"on-click": "alacritty --class gdu -e gdu"
+		"on-click": "kitty --class gdu -e gdu"
     },
 	"custom/player": {
 		"exec": "/usr/bin/python3 ~/.config/waybar/scripts/mediaplayer.py 2> /dev/null",
@@ -101,7 +101,7 @@
 		"format": "{icon}",
 		"format-icons": [
 			"☼",
-			""
+			" "
 		],
 		"on-scroll-down": "brightnessctl -c backlight set 1%-",
 		"on-scroll-up": "brightnessctl -c backlight set +1%"
@@ -117,13 +117,13 @@
 		"on-scroll-up": "brightnessctl -c backlight set +1%"
 	},
 	"pulseaudio": {
-		"format": "{icon} {volume}% {format_source}",
-		"format-bluetooth": "{icon} {volume}% {format_source}",
-		"format-bluetooth-muted": " {format_source}",
+		"format": "{icon}  {volume}% {format_source}",
+		"format-bluetooth": "{icon}  {volume}% {format_source}",
+		"format-bluetooth-muted": "  {format_source}",
 		"format-muted": "  {format_source}",
 		// "format-source": " {volume}%",
 		"format-source": "",
-		"format-source-muted": "",
+		"format-source-muted": " ",
 		"format-icons": {
 			"headphone": "",
 			"hands-free": "",
@@ -147,7 +147,7 @@
 		"format": "{icon}",
 		"format-alt": "{icon} {ipaddr}/{cidr}",
 		"format-alt-click": "click-right",
-		"format-wifi": "{icon} {signalStrength}%",
+		"format-wifi": "{icon}  {signalStrength}%",
 		"format-icons": {
 			"wifi": [
 				""
@@ -156,10 +156,10 @@
 				""
 			],
 			"disconnected": [
-				""
+				" "
 			]
 		},
-		"on-click": "alacritty --class nmtui -e nmtui",
+		"on-click": "kitty --class nmtui -e nmtui",
 		"tooltip-format": "Network: {essid}\nIp: {ipaddr}/{cidr}"
 	},
     "network#tailscale": {
@@ -183,7 +183,8 @@
 			"",
 			"",
 			""
-		]
+		],
+        "on-click": "gnome-power-statistics"
 	},
 	"battery#bat1": {
         "bat": "BAT1",
@@ -200,7 +201,8 @@
 			"",
 			"",
 			""
-		]
+		],
+        "on-click": "gnome-power-statistics"
 	},
 	"clock": {
 		// "format": "{:%I:%M %p}",
@@ -227,7 +229,7 @@
 			"on-scroll-up": "shift_down",
 			"on-scroll-down": "shift_up"
 		},
-        "on-click-middle": "alacritty --class ikhal -e ikhal --color"
+        "on-click-middle": "kitty --class ikhal -e ikhal --color"
 	},
     "power-profiles-daemon": {
         "format": " {icon}",
@@ -236,13 +238,20 @@
         "format-icons": {
             "default": "",
             "performance": "",
-            "balanced": "",
-            "power-saver": ""
+            "balanced": " ",
+            "power-saver": " "
+        }
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": " ",
+            "deactivated": " "
         }
     },
 	"custom/swaync": {
 		"tooltip": true,
-		"format": "{icon} {} ",
+		"format": "{icon} {0} ",
 		"format-icons": {
 			"notification": "<span foreground='red'><sup></sup></span>",
 			"none": "",
@@ -262,14 +271,26 @@
 	},
 	"custom/power": {
 		"format": "⏻",
-		"on-click": "exec wlogout -b 5 -T 300 -B 300",
+		"on-click": "exec wlogout -b 5 -T 400 -B 400",
 		"tooltip": false
 	},
-	"custom/nightlight": {
-		"format": "",
-		"on-click": "pkill -USR1 gammastep || gammastep -O 2000",
-		"tooltip": false
-	},
+    "custom/nightlight": {
+        // "format": "",
+        // "format": "{}",
+        // "exec": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py info; pkill -SIGRTMIN+10 waybar",
+        // "signal": 10,
+        "exec": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py info",
+        "exec-on-event": true,
+        "interval": "once",
+        "return-type": "json",
+        "tooltip": true,
+		// "on-click": "pkill -USR1 gammastep || gammastep -O 2000",
+        "on-click": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py toggle",
+        "on-click-middle": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py dim",
+        "on-scroll-up": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py up",
+        "on-scroll-down": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py down"
+    },
+
 	"custom/hardware": {
 		"format": "",
 		"tooltip": true,
@@ -295,6 +316,7 @@
 		"modules": [
 			"battery",
             "power-profiles-daemon",
+            "idle_inhibitor",
             "battery#bat1"
 		]
 	},

@@ -70,3 +70,4 @@ vim.keymap.set("n", "<leader>w", "<cmd>WhichKey<c-w><cr>")
 
 -- quit
 vim.keymap.set("n", "<leader>qq", ":qa <cr>", { desc = "Quit all" })
+vim.keymap.set("n", "<leader>qQ", ":qa! <cr>", { desc = "Quit all without saving" })

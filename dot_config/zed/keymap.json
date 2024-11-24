@@ -1,0 +1,43 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      // "j k": ["workspace::SendKeystrokes", "escape"]
+      "ctrl-b": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "context": "Editor && vim_operator == none && !VimWaiting",
+    "bindings": {
+      "space e": "workspace::ToggleLeftDock",
+      "space t": "workspace::ToggleBottomDock",
+      "space /": "editor::ToggleComments",
+      "space space": "file_finder::Toggle",
+      "space .": "file_finder::Toggle",
+      "space ,": "tab_switcher::Toggle",
+      "space b p": "pane::ActivatePrevItem",
+      "space b n": "pane::ActivateNextItem",
+      "space b k": "pane::CloseActiveItem"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "escape": "workspace::ToggleLeftDock",
+      "space e": "workspace::ToggleLeftDock"
+    }
+  }
+]

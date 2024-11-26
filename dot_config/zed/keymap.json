@@ -20,7 +20,7 @@
     }
   },
   {
-    "context": "Editor && vim_operator == none && !VimWaiting",
+    "context": "Editor && vim_operator == none && !VimWaiting && vim_mode != insert",
     "bindings": {
       "space e": "workspace::ToggleLeftDock",
       "space t": "workspace::ToggleBottomDock",

@@ -1,0 +1,407 @@
+{
+	"custom/seperator": {
+		"format": "|",
+		"tooltip": false
+	},
+	"custom/space": {
+		"format": " ",
+		"tooltip": false
+	},
+	"custom/brackl": {
+		"format": "[",
+		"tooltip": false
+	},
+	"custom/brackr": {
+		"format": "]",
+		"tooltip": false
+	},
+	"custom/launcher": {
+		// "format": "⋏",
+		"format": "",
+		// "on-click": "exec rofi -modi drun -show drun",
+		"on-click": "anyrun",
+		"tooltip": false
+	},
+	"hyprland/workspaces": {
+		"format": "{icon}",
+        "disable-scroll": true,
+        // "on-scroll-up": "hyprctl dispatch workspace m-1",
+        // "on-scroll-down": "hyprctl dispatch workspace m+1",
+		"on-click": "activate",
+		"all-outputs": true,
+		// "persistent-workspaces": {
+        //     "*": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+        // }
+        // "format-icons": {
+        //     "active": "",
+        //     "default": ""
+        // }
+	},
+    "hyprland/window": {
+        "icon": true,
+        "icon-size": 15
+    },
+    "hyprland/language": {
+        "format": "  {}",
+        "format-eu": "eu"
+    },
+	"sway/workspaces": {
+		"format": "{icon}",
+        "disable-scroll": true,
+		"on-click": "activate",
+		// "all-outputs": true,
+		// "persistent-workspaces": {
+        //     "1": [],
+        //     "2": [],
+        //     "3": [],
+        //     "4": [],
+        //     "5": [],
+        //     "6": [],
+        //     "7": [],
+        //     "8": [],
+        //     "9": [],
+        //     "10": []
+        // }
+    },
+    "sway/window": {
+        "icon": true,
+        "icon-size": 15
+    },
+    "sway/language": {
+        "format": "  {short} {variant}",
+        "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
+    },
+    "sway/mode": {
+        "format": " {}",
+        "max-length": 50
+    },
+    "dwl/window": {
+        "format": "{title}",
+        "max-length": 50
+    },
+	"cpu": {
+		"interval": 10,
+		"format": " {usage}%",
+		"max-length": 10,
+		"on-click": "kitty --class htop -e htop"
+	},
+    "memory": {
+        "interval": 30,
+        "format": " {}%",
+        "max-length": 10,
+		"on-click": "kitty --class htop -e htop"
+    },
+    "disk": {
+        "interval": 30,
+        "format": " {percentage_used}%",
+        "max-length": 10,
+		"on-click": "kitty --class gdu -e gdu"
+    },
+	"custom/player": {
+		"exec": "/usr/bin/python3 ~/.config/waybar/scripts/mediaplayer.py 2> /dev/null",
+        "max-length": 10,
+        "tooltip": true,
+		"format": "{}",
+		"format-tooltip": "{}",
+		"return-type": "json",
+		"on-click": "playerctl play-pause",
+		"on-scroll-up": "playerctl previous",
+		"on-scroll-down": "playerctl next"
+	},
+	"tray": {
+		"icon-size": 13
+	},
+	"backlight": {
+		"device": "intel_backlight",
+		// "format": "{icon} {percent}%",
+		"format": "{icon}",
+		"format-icons": [
+			"☼",
+			" "
+		],
+		"on-scroll-down": "brightnessctl -c backlight set 1%-",
+		"on-scroll-up": "brightnessctl -c backlight set +1%"
+	},
+	"backlight#number": {
+		"device": "intel_backlight",
+		"format": "{percent}%",
+		"format-icons": [
+			"☼",
+			""
+		],
+		"on-scroll-down": "brightnessctl -c backlight set 1%-",
+		"on-scroll-up": "brightnessctl -c backlight set +1%"
+	},
+	"pulseaudio": {
+		"format": "{icon} {volume}% {format_source}",
+		"format-bluetooth": "{icon}  {volume}% {format_source}",
+		"format-bluetooth-muted": "  {format_source}",
+		"format-muted": "  {format_source}",
+		// "format-source": " {volume}%",
+		"format-source": "",
+		"format-source-muted": " ",
+		"format-icons": {
+			"headphone": "",
+			"hands-free": "",
+			"headset": "",
+			"phone": "",
+			"portable": "",
+			"car": "",
+			"default": [
+				"",
+				"",
+				" "
+			]
+		},
+		"on-scroll-up": "amixer -D pulse sset Master 1%+",
+		"on-scroll-down": "amixer -D pulse sset Master 1%-",
+    "on-click": "amixer -q -D pulse sset Master toggle",
+    "on-click-right": "amixer -D pulse sset Capture toggle",
+    "on-click-middle": "pavucontrol"
+	},
+	"network": {
+		"format": "{icon}",
+		"format-alt": "{icon} {ipaddr}/{cidr}",
+		"format-alt-click": "click-right",
+		"format-wifi": "{icon}  {signalStrength}%",
+		"format-icons": {
+			"wifi": [
+				""
+			],
+			"ethernet": [
+				""
+			],
+			"disconnected": [
+				" "
+			]
+		},
+		"on-click": "kitty --class nmtui -e nmtui",
+		"tooltip-format": "Network: {essid}\nIp: {ipaddr}/{cidr}"
+	},
+    "network#tailscale": {
+        "interval": 5,
+        "interface": "tailscale*",
+        "format": "\uf3ed",
+        "format-disconnected": "",
+        "tooltip-format": "Tailscale Connected: {ipaddr}"
+    },
+	"battery": {
+		"states": {
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+		"format-charging": " {capacity}%",
+		"format-plugged": "  {capacity}%",
+		"format-icons": [
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+			// "",
+			// "",
+			// "",
+			// "",
+			// ""
+		],
+        "on-click": "gnome-power-statistics"
+	},
+	"battery#bat1": {
+        "bat": "BAT1",
+		"states": {
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+		"format-charging": " {capacity}%",
+		"format-plugged": "  {capacity}%",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+        "on-click": "gnome-power-statistics"
+	},
+	"clock": {
+		// "format": "{:%I:%M %p}",
+		// "format": "{:%H:%M}",
+		"format": "{:%H:%M - %a %d.}",
+		"rotate": 0,
+		// "format-alt": " {:%a,%b %d}",
+		"tooltip-format": "<tt>{calendar}</tt>",
+		"calendar": {
+			"mode": "month",
+			"mode-mon-col": 3,
+			"on-scroll": 1,
+			"on-click-right": "mode",
+			"format": {
+				"months": "<span color='#09ace3'><b>{}</b></span>",
+				"weekdays": "<span color='#00bfff'><b>{}</b></span>",
+				"today": "<span color='#ff6699'><b>{}</b></span>"
+			}
+		},
+		"actions": {
+			"on-click-right": "mode",
+			"on-click-forward": "tz_up",
+			"on-click-backward": "tz_down",
+			"on-scroll-up": "shift_down",
+			"on-scroll-down": "shift_up"
+		},
+        "on-click-middle": "kitty --class ikhal -e ikhal --color"
+	},
+    "power-profiles-daemon": {
+        "format": " {icon}",
+        "tooltip-format": "Power profile: {profile}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "",
+            "balanced": " ",
+            "power-saver": " "
+        }
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": " ",
+            "deactivated": " "
+        }
+    },
+	"custom/swaync": {
+		"tooltip": true,
+		"format": "{icon} {0} ",
+		"format-icons": {
+			"notification": "<span foreground='red'><sup></sup></span>",
+			"none": "",
+			"dnd-notification": "<span foreground='red'><sup></sup></span>",
+			"dnd-none": "",
+			"inhibited-notification": "<span foreground='red'><sup></sup></span>",
+			"inhibited-none": "",
+			"dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+			"dnd-inhibited-none": ""
+		},
+		"return-type": "json",
+		"exec-if": "which swaync-client",
+		"exec": "swaync-client -swb",
+		"on-click": "sleep 0.1 && swaync-client -t -sw",
+		"on-click-right": "swaync-client -d -sw",
+		"escape": true
+	},
+	"custom/power": {
+		"format": "⏻",
+		"on-click": "exec wlogout -b 5 -T 400 -B 400",
+		"tooltip": false
+	},
+    "custom/nightlight": {
+        // "format": "",
+        // "format": "{}",
+        // "exec": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py info; pkill -SIGRTMIN+10 waybar",
+        // "signal": 10,
+        "exec": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py info",
+        "exec-on-event": true,
+        "interval": "once",
+        "return-type": "json",
+        "tooltip": true,
+		// "on-click": "pkill -USR1 gammastep || gammastep -O 2000",
+        "on-click": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py toggle",
+        "on-click-middle": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py dim",
+        "on-scroll-up": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py up",
+        "on-scroll-down": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py down"
+    },
+
+	"custom/hardware": {
+		"format": "",
+		"tooltip": true,
+        "tooltip-format": "Hardware stats"
+	},
+    "custom/dwl-layout": {
+      "exec": "~/.config/waybar/scripts/dwl.sh '' layout",
+      "format": "{}",
+      // "on-click": "wtype -M alt ' ' -m alt",
+      "return-type": "json"
+    },
+
+    "group/audio": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+		"modules": [
+			"pulseaudio",
+            "custom/player"
+		]
+	},
+    "group/batteries": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+		"modules": [
+			"battery",
+            "power-profiles-daemon",
+            "idle_inhibitor",
+            "battery#bat1"
+		]
+	},
+    "group/hardware": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+		"modules": [
+            "custom/hardware",
+            // "group/stats"
+            "disk",
+			"cpu",
+            "memory"
+		]
+	},
+    "group/stats": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+		"modules": [
+            "memory",
+            "disk",
+			"cpu"
+		]
+	},
+    "group/power": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+		"modules": [
+            "custom/power",
+			// "cpu",
+			// "memory"
+            "group/stats"
+		]
+	},
+    "group/screen": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+		"modules": [
+            "backlight",
+            "custom/nightlight",
+            "backlight#number"
+		]
+	}
+}

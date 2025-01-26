@@ -1,0 +1,223 @@
+/* =============================== */
+/* Import colors */
+@import 'theme.css';
+/* =============================== */
+
+/* =============================== */
+/* Define colors */
+@define-color blue0 #96CDFB;
+@define-color blue1 #439DE5;
+@define-color blue2 #139cdb;
+@define-color blue3 #163d63;
+/* =============================== */
+
+
+* {
+	/* box-shadow: none; */
+	/* font-family: "JetBrainsMono Nerd Font"; */
+	font-family: "FontAwesome", "Terminess Nerd Font";
+	font-size: 14px;
+	/* color: #fff; */
+	/* color: #439DE5; */
+    transition: off;
+    min-height: 0;
+}
+
+window#waybar {
+    background: #000;
+    background-color: #000;
+    /* background: transparent; */
+    /* border-bottom: 1px solid @unfocused_borders; */
+	/* border-radius: 12px; */
+    color: #fff;
+}
+
+
+button {
+    /* Use box-shadow instead of border so the text isn't offset */
+    /* box-shadow: inset 0 -3px transparent; */
+    /* Avoid rounded borders under each button name */
+    border: none;
+    border-radius: 0;
+}
+
+tooltip {
+	border-radius: 0px;
+	border: 1px solid @blue3;
+}
+
+/* Fix sway workspace padding */
+window box box widget box button {
+    min-width: 0px;
+}
+
+/* Make window module transparent when no windows present */
+window#waybar.empty #window {
+    /* background-color: transparent; */
+}
+
+/* =============================== */
+/* Workspaces */
+#workspaces {
+	margin: 0 0px;
+	padding: 0 0px;
+	/* color: transparent; */
+    /* border-radius: 12px; */
+}
+
+#workspaces button {
+	margin: 0px 0px;
+	padding: 0px 7px;
+    color: @blue2;
+}
+
+#workspaces button.empty {
+    color: #777;
+}
+
+#workspaces button.active {
+    /* padding: 0 0px; */
+	color: lime;
+}
+
+#workspaces button.focused {
+	color: lime;
+    /* transition: all 0.3s ease-in-out; */
+}
+
+#workspaces button:hover {
+    /* background-color: @overlay2; */
+    color: cyan;
+}
+
+#workspaces button.urgent * {
+	color: rgba(246, 71, 71, 0.8);
+}
+
+/* Tags  */
+#tags {
+	margin: 0 0px;
+	padding: 0 0px;
+	/* color: transparent; */
+    /* border-radius: 12px; */
+}
+
+#tags button {
+	margin: 0px 0px;
+	padding: 0px 7px;
+    /* color: #fff; */
+    color: #777;
+}
+
+#tags button.empty {
+}
+
+
+#tags button.occupied {
+	color: @blue2;
+}
+
+#tags button.focused {
+	color: lime;
+}
+
+#tags button:hover {
+    color: @blue1;
+}
+
+#tags button.urgent * {
+	color: rgba(246, 71, 71, 0.8);
+}
+/* =============================== */
+
+
+#tray {
+	margin: 0px 2px;
+	border-radius: 0px;
+}
+
+#tray menu {
+	/* background-color: @theme_base_color; */
+	border-radius: 0px;
+}
+
+#tray * {
+	padding: 0 3px;
+}
+
+#window {
+	margin: 4px 5px;
+	padding: 0px 10px;
+	min-width: 15px;
+}
+
+#battery,
+#power-profiles-daemon,
+#backlight,
+#custom-nightlight,
+#custom-workspace-count,
+#mode,
+#network,
+#pulseaudio,
+#custom-player,
+#language,
+#clock {
+	margin: 4px 2px;
+	padding: 0px 0px;
+	min-width: 15px;
+}
+
+#cpu,
+#memory,
+#disk {
+	margin: 4px 2px;
+	padding: 0px 3px;
+}
+
+#battery.critical {
+    color: #f38ba8;
+}
+
+#clock {
+	margin: 4px 2px;
+}
+
+#custom-launcher {
+	margin: 4px 5px 4px 5px;
+	padding: 0 10px 0 4px;
+	/* background-color: @blue3; */
+	border-radius: 8px;
+	min-width: 15px;
+}
+
+#custom-power {
+	margin: 4px 5px 4px 1px;
+	padding: 0 6px 0 4px;
+	/* background-color: @blue3; */
+	border-radius: 8px;
+	min-width: 15px;
+}
+
+#custom-swaync {
+	margin: 0px 0px 0px 5px;
+}
+
+#custom-hardware {
+	margin: 4px 2px;
+    padding: 0 6px;
+}
+
+#custom-nightlight,
+#power-profiles-daemon,
+#idle_inhibitor {
+	margin: 4px 2px;
+	padding: 0 7px;
+}
+
+#custom-brackl {
+	margin: 0px 0px 0px 5px;
+}
+#custom-brackr {
+	margin: 0px 5px 0px 0px;
+}
+

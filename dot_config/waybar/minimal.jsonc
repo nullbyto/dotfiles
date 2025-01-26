@@ -9,30 +9,45 @@
 	"margin": "0, 0, 0, 0",
 	"modules-left": [
 		"custom/launcher",
+        "custom/brackl",
 		"hyprland/workspaces",
+        "sway/workspaces",
+        "custom/brackr",
         "hyprland/window",
-		"sway/workspaces",
-        "sway/window",
-        "sway/mode"
+        "sway/mode",
+        "sway/window"
 	],
 	"modules-center": [
 		// "custom/player"
         "clock"
 	],
 	"modules-right": [
+        "custom/brackl",
 		"tray",
-        "hyprland/language",
+        "custom/brackr",
+        "custom/brackl",
+        // "hyprland/language",
         "sway/language",
+        "custom/brackr",
+        "custom/brackl",
 		"network",
-		// "pulseaudio",
+        "custom/brackr",
+        "custom/brackl",
         "group/audio",
+        "custom/brackr",
+        "custom/brackl",
         "group/screen",
+        "custom/brackr",
+        "custom/brackl",
         "group/batteries",
-        "group/hardware",
+        "custom/brackr",
+        "custom/brackl",
+        // "group/hardware",
+        "group/stats",
+        "custom/brackr",
         "custom/swaync",
         "custom/power"
 	],
-
     "include": [
         "~/.config/waybar/modules.jsonc"
     ]

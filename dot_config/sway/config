@@ -19,6 +19,8 @@ set $term kitty -1
 set $menu dmenu
 set $browser microsoft-edge-stable || vivaldi || vivaldi-stable
 set $fileManager thunar
+set $lock 'swaylock -f -c 000000'
+set $waybar "waybar -c ~/.config/waybar/minimal.jsonc -s ~/.config/waybar/minimal.css"
 
 ### Output configuration
 #
@@ -35,20 +37,24 @@ output 'AOC 24G1WG4 0x00017C65' resolution 1920x1080@60Hz position 0,0
 output eDP-1 resolution 1920x1200@60Hz position 4480,0
 
 ### Autostart
-exec waybar
-exec hypridle
-exec swaync
+exec $waybar
+exec kanshi
 exec swaync
 exec nm-applet
 exec blueman-applet
 exec emacs --daemon
 exec /usr/lib/xfce-polkit/xfce-polkit
-# Power notifications
 exec = poweralertd -Ss
 exec XDG_CURRENT=GNOME insync start
 exec systemctl --user start xremap
 exec swww-daemon
 exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
+exec swayidle -w \
+	timeout 300 $lock \
+	timeout 600 'swaymsg "output * power off"' \
+	resume 'swaymsg "output * power on"' \
+    before-sleep 'bash ~/.scripts/suspend.sh' \
+	after-resume $lock
 
 ### Idle configuration
 #
@@ -77,8 +83,9 @@ exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
-    input * {
+    input "type:keyboard" {
         xkb_layout "eu"
+        xkb_options grp:alt_space_toggle
     }
     input "type:touchpad" {
         dwt enabled
@@ -87,7 +94,7 @@ exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
         middle_emulation enabled
     }
     input "13652:62728:pulsar_X2_V2" {
-        pointer_accel -0.85
+        pointer_accel -0.9
     }
 
 ### Key bindings
@@ -107,12 +114,14 @@ exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
     bindsym $mod+Tab exec "rofi -modi window -show window"
 # bindsym $mod+Delete exec "rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu"
     bindsym $mod+Delete exec "wlogout -b 5 -T 400 -B 400"
-    bindsym $mod+Escape exec "wlogout -b 5 -T 400 -B 400"
     bindsym $mod+n exec "swaync-client -t -sw"
+    bindsym $mod+Shift+n exec "swaync-client -d -sw"
     # bindsym $mod+Control+r exec "killall -SIGUSR2 waybar"
-    bindsym $mod+Control+r exec "killall waybar; swaymsg exec waybar"
-    bindsym $mod+Shift+x exec "hyprlock"
+    bindsym $mod+Control+r exec "killall waybar; swaymsg exec \$waybar; notify-send -a Waybar -i settings 'Waybar reloaded' -r 909091 -h string:x-canonical-private-synchronous:waybar"
+    bindsym $mod+b exec "killall -SIGUSR1 waybar"
+    bindsym $mod+Shift+x exec $lock
     bindsym $mod+Shift+p exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
+    bindsym $mod+Control+n exec "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py toggle"
 
     # Apps
     bindsym $mod+a exec $browser
@@ -126,7 +135,7 @@ exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
     floating_modifier $mod normal
 
     # Reload the configuration file
-    bindsym $mod+Shift+r reload
+    bindsym $mod+Shift+r reload; exec "notify-send -a 'Sway' -i 'settings' 'Sway' 'Configuration reloaded' -r 909099 -h string:x-canonical-private-synchronous:sway"
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
@@ -143,6 +152,9 @@ exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
+
+    bindsym $mod+g focus parent; focus left
+    bindsym $mod+semicolon focus parent; focus right
 
     # Move the focused window with the same, but add Shift
     bindsym $mod+Shift+$left move left
@@ -168,33 +180,61 @@ exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
     bindsym $mod+Control+$down resize grow height 50px
     bindsym $mod+Control+$up resize shrink height 50px
     bindsym $mod+Control+$right resize grow width 50px
+
+    bindsym $mod+grave workspace back_and_forth
 #
 # Workspaces:
 #
+    # Define names for default workspaces for which we configure key bindings later on.
+    # We use variables to avoid repeating the names in multiple places.
+    set $ws1 "1"
+    set $ws2 "2"
+    set $ws3 "3"
+    set $ws4 "4"
+    set $ws5 "5"
+    set $ws6 "6"
+    set $ws7 "7"
+    set $ws8 "8"
+    set $ws9 "9"
+    set $ws10 "10"
+
     # Switch to workspace
-    bindsym $mod+1 workspace number 1
-    bindsym $mod+2 workspace number 2
-    bindsym $mod+3 workspace number 3
-    bindsym $mod+4 workspace number 4
-    bindsym $mod+5 workspace number 5
-    bindsym $mod+6 workspace number 6
-    bindsym $mod+7 workspace number 7
-    bindsym $mod+8 workspace number 8
-    bindsym $mod+9 workspace number 9
-    bindsym $mod+0 workspace number 10
+    bindsym $mod+1 workspace number $ws1
+    bindsym $mod+2 workspace number $ws2
+    bindsym $mod+3 workspace number $ws3
+    bindsym $mod+4 workspace number $ws4
+    bindsym $mod+5 workspace number $ws5
+    bindsym $mod+6 workspace number $ws6
+    bindsym $mod+7 workspace number $ws7
+    bindsym $mod+8 workspace number $ws8
+    bindsym $mod+9 workspace number $ws9
+    bindsym $mod+0 workspace number $ws10
+
     # Move focused container to workspace
-    bindsym $mod+Shift+1 move container to workspace number 1
-    bindsym $mod+Shift+2 move container to workspace number 2
-    bindsym $mod+Shift+3 move container to workspace number 3
-    bindsym $mod+Shift+4 move container to workspace number 4
-    bindsym $mod+Shift+5 move container to workspace number 5
-    bindsym $mod+Shift+6 move container to workspace number 6
-    bindsym $mod+Shift+7 move container to workspace number 7
-    bindsym $mod+Shift+8 move container to workspace number 8
-    bindsym $mod+Shift+9 move container to workspace number 9
-    bindsym $mod+Shift+0 move container to workspace number 10
+    bindsym $mod+Shift+1 move container to workspace number $ws1
+    bindsym $mod+Shift+2 move container to workspace number $ws2
+    bindsym $mod+Shift+3 move container to workspace number $ws3
+    bindsym $mod+Shift+4 move container to workspace number $ws4
+    bindsym $mod+Shift+5 move container to workspace number $ws5
+    bindsym $mod+Shift+6 move container to workspace number $ws6
+    bindsym $mod+Shift+7 move container to workspace number $ws7
+    bindsym $mod+Shift+8 move container to workspace number $ws8
+    bindsym $mod+Shift+9 move container to workspace number $ws9
+    bindsym $mod+Shift+0 move container to workspace number $ws10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
+
+    # Move workspace to current output/monitor
+    bindsym $mod+Control+1 [workspace=$ws1] move workspace to output current
+    bindsym $mod+Control+2 [workspace=$ws2] move workspace to output current
+    bindsym $mod+Control+3 [workspace=$ws3] move workspace to output current
+    bindsym $mod+Control+4 [workspace=$ws4] move workspace to output current
+    bindsym $mod+Control+5 [workspace=$ws5] move workspace to output current
+    bindsym $mod+Control+6 [workspace=$ws6] move workspace to output current
+    bindsym $mod+Control+7 [workspace=$ws7] move workspace to output current
+    bindsym $mod+Control+8 [workspace=$ws8] move workspace to output current
+    bindsym $mod+Control+9 [workspace=$ws9] move workspace to output current
+    bindsym $mod+Control+0 [workspace=$ws10] move workspace to output current
 #
 # Layout stuff:
 #
@@ -207,13 +247,15 @@ exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
     bindsym $mod+quotedbl splitv
 
     # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+t layout toggle split
-    bindsym $mod+m layout toggle split tabbed
+    # bindsym $mod+s layout stacking
+    bindsym $mod+t layout tabbed
+    bindsym $mod+s layout toggle split
+    bindsym $mod+y layout toggle split tabbed
 
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
+    # Fake maximize
+    bindsym $mod+m [con_mark="maximize"] floating disable; [con_mark="float"] floating enable, unmark "float"; [con_id=__focused__] mark --add --toggle "maximize"; [con_mark="maximize" floating] mark --add "float"; [con_mark="maximize"] floating enable, resize set 100 ppt 100 ppt, move position 0 0
 
     # Toggle the current focus between tiling and floating mode
     # bindsym $mod+Shift+space floating toggle
@@ -225,6 +267,7 @@ exec_always = swww img ~/Pictures/Wallpapers/wallpaper.jpg
 
     # Move focus to the parent container
     bindsym $mod+q focus parent
+    bindsym $mod+w focus child
 #
 # Scratchpad:
 #
@@ -270,9 +313,14 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
     bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
     bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+    bindsym --locked XF86AudioPlay exec playerctl play-pause
+    bindsym --locked XF86AudioNext exec playerctl next
+    bindsym --locked XF86AudioPrev exec playerctl previous
     # Special keys to adjust brightness via brightnessctl
-    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
-    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+    # bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+    # bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+    bindsym --locked XF86MonBrightnessDown exec 'brightnessctl set 5%-; notify-send -a "Brightnessctl" -i "brightness" -r 909090 -h int:value:"$(brightnessctl -m | cut -d, -f4 | tr -d %)" -h string:x-canonical-private-synchronous:brightness "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%" -t 3000 -e'
+    bindsym --locked XF86MonBrightnessUp exec 'brightnessctl set +5%; notify-send -a "Brightnessctl" -i "brightness" -r 909090 -h int:value:"$(brightnessctl -m | cut -d, -f4 | tr -d %)" -h string:x-canonical-private-synchronous:brightness "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%" -t 3000 -e'
     # Special key to take a screenshot with grim
     bindsym Print exec grim
 
@@ -293,6 +341,13 @@ bindsym $mod+r mode "resize"
 #         inactive_workspace #32323200 #32323200 #5c5c5c
 #     }
 # }
+# bar {
+#     swaybar_command $waybar
+#     position top
+#     hidden_state hide
+#     mode hide
+#     modifier Mod4
+# }
 
 ### General settings
 focus_follows_mouse always
@@ -300,18 +355,29 @@ mouse_warping container
 #
 # Look and feel
 #
-    gaps inner 5
-    gaps outer 5
+    font JetBrainsMono Nerd Font 8
+    # 5
+    set $inner_gaps 0
+    set $outer_gaps 0
+    gaps inner $inner_gaps
+    gaps outer $outer_gaps
+    # font pango:monospace 0.001
+    # titlebar_border_thickness 0
+    # titlebar_padding 0
 #
 # No titlebars
 #
-    default_border pixel 2 
+    # 2 default size
+    default_border pixel 1
 #
 # Colors
 #
     # class                 border  bground text    indicator child_border
-    client.focused          #4C7899 #163D63 #FFFFFF #94E2D5   #285577
-    # maroon #CBA6F7, muave #CBA6F7
+    client.focused          #163D63 #163D63 #FFFFFF #00FFFF   #285577
+    # client.focused          #163D63 #163D63 #FFFFFF #00FF00   #285577
+    # maroon #EBA0AC, muave #CBA6F7
+    #4C7899
+    #94E2D5
 
 ### Window rules
 for_window [app_id="xfce-polkit"] floating enable, move position center
@@ -329,11 +395,23 @@ for_window [app_id="nm-connection-editor"] floating enable, move position center
 for_window [app_id="xdg-desktop-portal-gtk"] floating enable, move position center
 for_window [app_id="gnome-power-statistics"] floating enable, move position center
 for_window [app_id="waypaper"] floating enable, move position center
+
+# Set floating for all kind of pop ups and dialogs
+for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable;
+for_window [title="(?:Open|Save) (?:File|Folder|As)"] resize set 800 600
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+
 #
 # Assign applications to workspaces
 #
-assign [app_id=".*Vivaldi.*"] workspace number 2
-assign [app_id=".*edge.*"] workspace number 2
+assign [class=".*Vivaldi.*"] $ws2
+assign [class=".*edge.*"] $ws2
 
+for_window [urgent="latest"] focus
 
 include /etc/sway/config.d/*

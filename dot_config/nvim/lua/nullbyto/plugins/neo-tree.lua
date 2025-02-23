@@ -74,6 +74,7 @@ return {
             mappings = {
                 ["<space>"] = "none",
             },
+            width = 28,
         },
     },
 }

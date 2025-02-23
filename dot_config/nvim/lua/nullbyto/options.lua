@@ -18,3 +18,6 @@ vim.opt.colorcolumn = "100"
 vim.opt.incsearch = true
 --vim.opt.hlsearch = false
 
+vim.o.exrc = true
+vim.o.secure = true -- Prevents malicious scripts in exrc scripts
+

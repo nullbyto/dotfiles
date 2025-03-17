@@ -120,7 +120,6 @@ exec swayidle -w \
     bindsym $mod+Control+r exec "killall waybar; swaymsg exec \$waybar; notify-send -a Waybar -i settings 'Waybar reloaded' -r 909091 -h string:x-canonical-private-synchronous:waybar"
     bindsym $mod+b exec "killall -SIGUSR1 waybar"
     bindsym $mod+Shift+x exec $lock
-    bindsym $mod+Shift+p exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
     bindsym $mod+Control+n exec "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py toggle"
 
     # Apps
@@ -323,6 +322,8 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86MonBrightnessUp exec 'brightnessctl set +5%; notify-send -a "Brightnessctl" -i "brightness" -r 909090 -h int:value:"$(brightnessctl -m | cut -d, -f4 | tr -d %)" -h string:x-canonical-private-synchronous:brightness "Brightness" "$(brightnessctl -m | cut -d, -f4 | tr -d %)%" -t 3000 -e'
     # Special key to take a screenshot with grim
     bindsym Print exec grim
+    bindsym $mod+Shift+p exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
+    bindsym $mod+Shift+s exec grim -g "$(slurp)" -t ppm - | satty --filename - --fullscreen --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H:%M:%S').png
 
 #
 # Status Bar:
@@ -395,6 +396,7 @@ for_window [app_id="nm-connection-editor"] floating enable, move position center
 for_window [app_id="xdg-desktop-portal-gtk"] floating enable, move position center
 for_window [app_id="gnome-power-statistics"] floating enable, move position center
 for_window [app_id="waypaper"] floating enable, move position center
+for_window [app_id="satty"] floating enable, move position center
 
 # Set floating for all kind of pop ups and dialogs
 for_window [title="(?:Open|Save) (?:File|Folder|As)"] floating enable;

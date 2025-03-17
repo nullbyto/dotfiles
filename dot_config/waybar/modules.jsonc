@@ -297,7 +297,7 @@
 	},
 	"custom/power": {
 		"format": "⏻",
-		"on-click": "exec wlogout -b 5 -T 400 -B 400",
+		"on-click": "exec wlogout -b 6 -T 400 -B 400",
 		"tooltip": false
 	},
     "custom/nightlight": {

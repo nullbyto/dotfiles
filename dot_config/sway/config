@@ -113,7 +113,7 @@ exec swayidle -w \
     bindsym $mod+space exec "anyrun"
     bindsym $mod+Tab exec "rofi -modi window -show window"
 # bindsym $mod+Delete exec "rofi -theme ~/.config/rofi/configPower.rasi -show power-menu -modi power-menu:~/.scripts/rofi-power-menu"
-    bindsym $mod+Delete exec "wlogout -b 5 -T 400 -B 400"
+    bindsym $mod+Delete exec "wlogout -b 6 -T 400 -B 400"
     bindsym $mod+n exec "swaync-client -t -sw"
     bindsym $mod+Shift+n exec "swaync-client -d -sw"
     # bindsym $mod+Control+r exec "killall -SIGUSR2 waybar"

@@ -14,7 +14,7 @@ button {
 	transition: all 0.3s ease-in;
 	box-shadow: 0 0 10px 2px transparent;
 	border-radius: 36px;
-    margin: 0px 0px 0px 10px;
+    margin: 0px 0px 100px 0px;
 }
 
 button:focus {
@@ -68,8 +68,14 @@ button:hover {
 }
 
 #sleep {
-	background-image: image(url("./icons/hibernate.png"));
+	background-image: image(url("./icons/sleep.png"));
 }
 #sleep:hover {
+	background-image: image(url("./icons/sleep-hover.png"));
+}
+#hibernate {
+	background-image: image(url("./icons/hibernate.png"));
+}
+#hibernate:hover {
 	background-image: image(url("./icons/hibernate-hover.png"));
 }

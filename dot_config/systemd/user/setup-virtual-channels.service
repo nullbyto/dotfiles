@@ -1,0 +1,13 @@
+[Unit]
+Description=Setup PipeWire Virtual Channels
+After=pipewire.service pipewire-pulse.service
+Requires=pipewire.service pipewire-pulse.service
+
+[Service]
+Type=oneshot
+ExecStart=%h/.scripts/setup-virtual-channels.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
+

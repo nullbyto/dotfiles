@@ -153,11 +153,14 @@
 				" "
 			]
 		},
-		"on-scroll-up": "amixer -D pulse sset Master 1%+",
-		"on-scroll-down": "amixer -D pulse sset Master 1%-",
-    "on-click": "amixer -q -D pulse sset Master toggle",
-    "on-click-right": "amixer -D pulse sset Capture toggle",
-    "on-click-middle": "pavucontrol"
+		// "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%",
+		// "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%",
+        // "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+		"on-scroll-up": "pactl set-sink-volume MasterChannel +1%",
+		"on-scroll-down": "pactl set-sink-volume MasterChannel -1%",
+        "on-click": "pactl set-sink-mute MasterChannel toggle",
+        "on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-click-middle": "pavucontrol"
 	},
 	"network": {
 		"format": "{icon}",
@@ -316,7 +319,17 @@
         "on-scroll-up": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py up",
         "on-scroll-down": "/usr/bin/python3 ~/.config/waybar/scripts/nightlight.py down"
     },
-
+    "custom/hyprshade": {
+        "exec": "/usr/bin/python3 ~/.config/waybar/scripts/hyprshade.py info",
+        "exec-on-event": true,
+        "interval": "once",
+        "return-type": "json",
+        "tooltip": true,
+        "on-click": "/usr/bin/python3 ~/.config/waybar/scripts/hyprshade.py toggle",
+        "on-click-right": "/usr/bin/python3 ~/.config/waybar/scripts/hyprshade.py reset",
+        "on-scroll-up": "/usr/bin/python3 ~/.config/waybar/scripts/hyprshade.py up",
+        "on-scroll-down": "/usr/bin/python3 ~/.config/waybar/scripts/hyprshade.py down"
+    },
 	"custom/hardware": {
 		"format": "",
 		"tooltip": true,
@@ -353,6 +366,17 @@
             "battery#bat1"
 		]
 	},
+    "group/power": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false
+        },
+		"modules": [
+            "power-profiles-daemon",
+            "idle_inhibitor"
+		]
+	},
     "group/hardware": {
         "orientation": "inherit",
         "drawer": {
@@ -379,7 +403,7 @@
 			"cpu"
 		]
 	},
-    "group/power": {
+    "group/exit": {
         "orientation": "inherit",
         "drawer": {
             "transition-duration": 500,
@@ -400,7 +424,8 @@
         },
 		"modules": [
             "backlight",
-            "custom/nightlight",
+            // "custom/nightlight",
+            "custom/hyprshade",
             "backlight#number"
 		]
 	}

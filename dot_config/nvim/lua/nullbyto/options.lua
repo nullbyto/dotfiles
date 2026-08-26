@@ -21,3 +21,8 @@ vim.opt.incsearch = true
 vim.o.exrc = true
 vim.o.secure = true -- Prevents malicious scripts in exrc scripts
 
+vim.filetype.add({
+    pattern = {
+        [".*%.sh%.tmpl"] = "sh",
+    }
+})

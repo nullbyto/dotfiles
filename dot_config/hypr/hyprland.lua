@@ -26,7 +26,7 @@ local lock = "noctalia msg session lock"
 local oldLock = "hyprlock || swaylock -f -c 000000"
 
 -- ==========================================
--- Environment Variables
+-- Environment variables
 -- ==========================================
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
@@ -40,13 +40,13 @@ hl.env("XCURSOR_SIZE", 20)
 -- Events (Autostart & Reload)
 -- ==========================================
 hl.on("hyprland.start", function()
-    hl.exec_cmd("hypridle")
+    -- hl.exec_cmd("hypridle")
     hl.exec_cmd(shell)
     -- hl.exec_cmd(bar)
     hl.exec_cmd("~/.config/hypr/scripts/xdg.sh")
     hl.exec_cmd("systemctl --user start xremap &")
     hl.exec_cmd("sleep 1 && awww-daemon")
-    hl.exec_cmd("swaync &")
+    -- hl.exec_cmd("swaync &")
     hl.exec_cmd("nm-applet &")
     hl.exec_cmd("blueman-applet &")
     hl.exec_cmd("emacs --daemon")
@@ -58,11 +58,10 @@ end)
 
 hl.on("config.reloaded", function()
     hl.exec_cmd("awww img ~/Pictures/Wallpapers/wallpaper.jpg")
-    hl.exec_cmd("~/.config/waybar/scripts/hyprshade.py check")
 end)
 
 -- ==========================================
--- Core Configuration
+-- Core configuration
 -- ==========================================
 hl.config({
     general = {
@@ -78,7 +77,7 @@ hl.config({
         },
     },
     decoration = {
-        rounding = 10, -- 1
+        rounding = 12, -- 1
         active_opacity = 1.0,
         inactive_opacity = 1.0,
         shadow = {
@@ -140,7 +139,7 @@ hl.gesture({ fingers = 3, direction = "vertical", action = "fullscreen", mode = 
 hl.gesture({ fingers = 3, direction = "swipe", mods = "SUPER", action = "resize" })
 
 -- ==========================================
--- Animations (Fixed Native Implementation)
+-- Animations
 -- ==========================================
 -- Custom Curves mapped from your original config (0.05, 0.9, 0.1, 1.05) -> { {x1, y1}, {x2, y2} }
 hl.curve("myBezier", { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.05} } })
@@ -182,11 +181,13 @@ hl.bind("CTRL + Print", hl.dsp.exec_cmd("hyprshot -m output -m active --raw | sa
 -- Utility
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("noctalia msg bar-toggle"))
 hl.bind(mainMod .. " + delete", hl.dsp.exec_cmd("noctalia msg panel-toggle session"))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
-hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -d -sw"))
-hl.bind(mainMod .. " + CTRL + N", hl.dsp.exec_cmd("/usr/bin/python3 ~/.config/waybar/scripts/hyprshade.py toggle"))
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("noctalia msg panel-toggle control-center notifications"))
+hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("noctalia msg notification-dnd-toggle"))
+hl.bind(mainMod .. " + CTRL + N", hl.dsp.exec_cmd("noctalia msg nightlight-force-toggle"))
+-- hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
+-- hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -d -sw"))
 
--- Window Layouts & States
+-- Window layouts & States
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + ALT + V", hl.dsp.exec_cmd("hyprctl dispatch workspaceopt allfloat"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
@@ -232,7 +233,7 @@ end
 hl.bind(mainMod .. " + SHIFT + tab", hl.dsp.window.cycle_next({ next = false }))
 hl.bind(mainMod .. " + tab", hl.dsp.window.cycle_next())
 
--- Resize Windows
+-- Resize windows
 hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.resize({ x = 30, y = 0, relative = true }), { repeating = true })
 hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.resize({ x = -30, y = 0, relative = true }), { repeating = true })
 hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.resize({ x = 0, y = -30, relative = true }), { repeating = true })
@@ -254,7 +255,7 @@ hl.bind(mainMod .. " + SHIFT + I", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + SHIFT + U", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + grave", hl.dsp.focus({ workspace = "previous" }))
 
--- Monitor Movement
+-- Monitor movement
 hl.bind(mainMod .. " + comma", hl.dsp.focus({ monitor = "l" }))
 hl.bind(mainMod .. " + period", hl.dsp.focus({ monitor = "r" }))
 hl.bind(mainMod .. " + SHIFT + comma", hl.dsp.window.move({ monitor = "-1" }))
@@ -262,12 +263,12 @@ hl.bind(mainMod .. " + SHIFT + period", hl.dsp.window.move({ monitor = "+1" }))
 hl.bind(mainMod .. " + CTRL + comma", hl.dsp.workspace.move({ monitor = "l" }))
 hl.bind(mainMod .. " + CTRL + period", hl.dsp.workspace.move({ monitor = "r" }))
 
--- Mouse Binds
+-- Mouse binds
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- ==========================================
--- Window Rules
+-- Window rules
 -- ==========================================
 local float_apps = {
     "^(xfce-polkit)$", "^(htop)$", "^(gdu)$", "^(nmtui)$", "^(ikhal)$",

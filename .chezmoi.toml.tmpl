@@ -8,3 +8,26 @@
 
 [data]
     osid = {{ $osid | quote }}
+
+{{- /*
+  The "prompt*Once" functions take 4 arguments:
+  1. Context (.)
+  2. The variable key to store it under
+  3. The prompt text displayed to the user
+  4. The default value
+*/ -}}
+
+{{/* Variables prompt */}}
+{{ $setup_desktop := promptBoolOnce . "config.setup_custom_desktop" "Setup custom desktop (+extra packages)? (true/false)" true }}
+{{ $protocols_str := promptStringOnce . "config.protocols_input" "Protocols (space-separated: wayland xorg)" "wayland" }}
+{{ $wm_str := promptStringOnce . "config.wm_input" "Window managers (space-separated: hyprland dwm i3wm awesome qtile)" "hyprland" }}
+
+[data.config]
+    setup_custom_desktop = {{ $setup_desktop }}
+
+    # splitList: Breaks space-separated string into items
+    # compact: Removes any accidental double-spaces (empty items)
+    # toJson: Formats it perfectly as ["item1", "item2"]
+    desktop_protocols = {{ $protocols_str | splitList " " | compact | toJson }}
+
+    wm = {{ $wm_str | splitList " " | compact | toJson }}

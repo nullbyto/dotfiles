@@ -1,0 +1,148 @@
+config:
+  setup_custom_desktop: true
+
+  # Select one or more protocols
+  display_protocols:
+    - "wayland"
+
+  # Select one or more window managers
+  wms:
+    - "hyprland"
+
+packages:
+  # ---------------------------------------------------------
+  # Core & CLI packages
+  # ---------------------------------------------------------
+  common:
+    - git
+    - zsh
+    - neovim
+    - emacs
+    - python3
+    - nodejs
+    - npm
+    - fastfetch
+    - bat
+    - dnsutils
+    - htop
+    - fzf
+    - khal
+    - ranger
+    - man-db
+    - curl
+    - tmux
+
+  # ---------------------------------------------------------
+  # GUI / Desktop tools (works on both Wayland and Xorg)
+  # ---------------------------------------------------------
+  desktop_common:
+    - alacritty
+    - pipewire
+    - pavucontrol
+    - playerctl
+    - alsa-utils
+    - pamixer
+    - brightnessctl
+    - blueman
+    - thunar
+    - thunar-volman
+    - gvfs
+    - xarchiver
+    - xreader
+    - qalculate-gtk
+    - thunderbird
+    - font-manager
+    - gpick
+    - lxappearance
+    - python-pywal
+    - polkit
+    - dunst
+
+  # ---------------------------------------------------------
+  # X11-specific setup
+  # ---------------------------------------------------------
+  desktop_xorg:
+    - feh
+    - nitrogen
+    - rofi
+    - dmenu
+    - picom
+    - polybar
+    - redshift
+    - flameshot
+    - xclip
+    - arandr
+    - xdotool
+    - sxhkd
+    - ueberzug
+    - sx
+    - lightdm
+    - lightdm-gtk-greeter
+    - lightdm-gtk-greeter-settings
+
+  # ---------------------------------------------------------
+  # Wayland-specific equivalents
+  # ---------------------------------------------------------
+  desktop_wayland:
+    - waybar
+    - wofi
+    - wl-clipboard
+    - swaybg
+    - grim
+    - slurp
+    - wtype
+    - gammastep
+    - noctalia
+
+  # ---------------------------------------------------------
+  # Distro-specific base overrides
+  # ---------------------------------------------------------
+  distros:
+    arch:
+      packages:
+        - python-pynvim
+
+      aur_packages:
+        - j4-dmenu-desktop
+        - xfce-polkit
+
+      aur_xorg:
+        - betterlockscreen
+
+      wm_packages:
+        i3wm:
+          - i3-wm
+          - i3status-rust
+        awesome: ["awesome"]
+        hyprland:
+          - hyprland
+          - xdg-desktop-portal-hyprland
+          - qt5-wayland
+          - qt6-wayland
+        qtile:
+          - qtile
+          - python-psutil
+          - python-dbus-next
+        dwm: []
+
+    fedora:
+      packages:
+        - python3-pynvim
+        - NetworkManager-tui
+        - xfce-polkit
+
+      wm_packages:
+        i3wm:
+        - i3
+        - i3status-rust
+        awesome: ["awesome"]
+        hyprland:
+          - hyprland
+          - xdg-desktop-portal-hyprland
+          - qt5-qtwayland
+          - qt6-qtwayland
+        qtile:
+          - qtile
+          - python3-psutil
+        dwm: []
+

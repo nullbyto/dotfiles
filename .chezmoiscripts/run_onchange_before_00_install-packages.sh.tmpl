@@ -1,0 +1,147 @@
+#!/bin/bash
+set -euo pipefail
+
+# Hash: {{ includeTemplate ".chezmoidata.yaml" | sha256sum }}
+
+# ==========================================
+# OS detection & Normalization (chezmoi level)
+# ==========================================
+{{ $osid := .chezmoi.osRelease.id }}
+{{ $idLike := default "" (get .chezmoi.osRelease "idLike") }}
+
+# If the distro is based on Arch, treat it as 'arch'
+{{ if or (contains "arch" $idLike) (eq $osid "cachyos") }}
+    {{ $osid = "arch" }}
+{{ end -}}
+
+# Extract the distro dictionary globally (defaults to empty dict if OS not found)
+{{ $distro := dict }}
+{{ if hasKey .packages.distros $osid }}
+    {{ $distro = index .packages.distros $osid }}
+{{ end }}
+
+NC="\033[0m"
+BLUE="\033[0;34m"
+YELLOW="\033[33m"
+GREEN="\033[0;32m"
+
+# Hand over the chezmoi variable to bash
+CURRENT_OS="{{ $osid }}"
+
+echo -e "${BLUE}==> Assembling packages for OS: ${CURRENT_OS}...${NC}"
+
+declare -A PKG_MANAGERS=(
+    ["arch"]="sudo pacman -S --needed --noconfirm"
+    ["fedora"]="sudo dnf install -y --skip-broken"
+    ["ubuntu"]="sudo apt-get install -y"
+)
+
+INSTALL_CMD="${PKG_MANAGERS[$CURRENT_OS]:-}"
+if [ -z "$INSTALL_CMD" ]; then
+    echo -e "${YELLOW}Error: No package manager defined for OS '$CURRENT_OS'.${NC}"
+    exit 1
+fi
+
+# ==========================================
+# Dynamically assemble the package arrays
+# ==========================================
+SYSTEM_PKGS=( {{ range .packages.common }}"{{ . }}" {{ end }} )
+AUR_PKGS=()
+
+# Base distro packages
+{{ if hasKey .packages.distros $osid }}
+    {{ if hasKey $distro "packages" }}
+        SYSTEM_PKGS+=( {{ range $distro.packages }}"{{ . }}" {{ end }} )
+    {{ end }}
+{{ end }}
+
+# Base AUR packages (arch only)
+{{ if eq $osid "arch" }}
+    {{ if hasKey $distro "aur_packages" }}
+        AUR_PKGS+=( {{ range $distro.aur_packages }}"{{ . }}" {{ end }} )
+    {{ end }}
+{{ end }}
+
+# Desktop environment packages
+{{ if .config.setup_custom_desktop }}
+    SYSTEM_PKGS+=( {{ range .packages.desktop_common }}"{{ . }}" {{ end }} )
+
+    # Protocols (Wayland / Xorg)
+    {{ range .config.display_protocols }}
+
+        # Global protocol packages (e.g., packages.desktop_wayland)
+        {{ $global_proto_key := printf "desktop_%s" . }}
+        {{ if hasKey $.packages $global_proto_key }}
+            SYSTEM_PKGS+=( {{ range index $.packages $global_proto_key }}"{{ . }}" {{ end }} )
+        {{ end }}
+
+        # Distro-specific protocol packages
+        {{ if hasKey $.packages.distros $osid }}
+            {{ $distro := index $.packages.distros $osid }}
+
+            # Add system packages (e.g., desktop_wayland under distros.arch)
+            {{ if hasKey $distro $global_proto_key }}
+                SYSTEM_PKGS+=( {{ range index $distro $global_proto_key }}"{{ . }}" {{ end }} )
+            {{ end }}
+
+            # Add AUR packages (e.g., aur_wayland under distros.arch)
+            {{ $aur_proto_key := printf "aur_%s" . }}
+            {{ if hasKey $distro $aur_proto_key }}
+                AUR_PKGS+=( {{ range index $distro $aur_proto_key }}"{{ . }}" {{ end }} )
+            {{ end }}
+        {{ end }}
+    {{ end }}
+
+    # Window manager dependencies
+    {{ if hasKey .packages.distros $osid }}
+        {{ $distro := index .packages.distros $osid }}
+        {{ if hasKey $distro "wm_packages" }}
+            {{ range $.config.wm }}
+                {{ if hasKey $distro.wm_packages . }}
+                    SYSTEM_PKGS+=( {{ range index $distro.wm_packages . }}"{{ . }}" {{ end }} )
+                {{ end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+# ==========================================
+# Execute primary installation (bash level)
+# ==========================================
+if [[ "$CURRENT_OS" == "ubuntu" || "$CURRENT_OS" == "debian" ]]; then
+    sudo apt-get update
+fi
+
+# If arch, filter missing packages safely
+if [[ "$CURRENT_OS" == "arch" ]]; then
+    VALID_SYSTEM_PKGS=()
+    for pkg in "${SYSTEM_PKGS[@]}"; do
+        if pacman -Ssq "^$pkg$" > /dev/null; then
+            VALID_SYSTEM_PKGS+=("$pkg")
+        else
+            echo -e "${YELLOW}Warning: $pkg not found in arch repos, skipping.${NC}"
+        fi
+    done
+    echo -e "${BLUE}Running: $INSTALL_CMD${NC}"
+    $INSTALL_CMD "${VALID_SYSTEM_PKGS[@]}"
+else
+    echo -e "${BLUE}Running: $INSTALL_CMD${NC}"
+    $INSTALL_CMD "${SYSTEM_PKGS[@]}"
+fi
+
+# ==========================================
+# Handle AUR (arch only)
+# ==========================================
+if [[ "$CURRENT_OS" == "arch" && ${#AUR_PKGS[@]} -gt 0 ]]; then
+    echo -e "${BLUE}Installing AUR packages...${NC}"
+    if ! command -v yay &> /dev/null; then
+        sudo pacman -S --needed --noconfirm base-devel git
+        rm -rf /tmp/yay
+        git clone https://aur.archlinux.org/yay-bin.git /tmp/yay
+        (cd /tmp/yay && makepkg -si --noconfirm)
+        rm -rf /tmp/yay
+    fi
+    yay -S --needed --noconfirm "${AUR_PKGS[@]}"
+fi
+
+echo -e "${GREEN}Package installation complete!${NC}"

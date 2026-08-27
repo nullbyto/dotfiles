@@ -1,0 +1,34 @@
+#!/bin/bash
+set -euo pipefail
+
+# Re-run if config changes: {{ .config.setup_custom_desktop }} | {{ .config.wm }}
+
+NC='\033[0m'
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+
+
+{{ if .config.setup_custom_desktop }}
+
+    {{/* Check if "dwm" exists in your selected wm array */}}
+    {{ $compile_dwm := false }}
+    {{ range .config.wm }}
+        {{ if eq . "dwm" }}{{ $compile_dwm = true }}{{ end }}
+    {{ end }}
+
+    {{ if $compile_dwm }}
+        echo -e "${BLUE}==> Setting up DWM from source...${NC}"
+        echo -e "${BLUE}DWM selected in config. Checking source repositories...${NC}"
+        for repo in dwm dwmblocks-async dmenu-flexipatch; do
+            if [ ! -d "$HOME/.$repo" ]; then
+                echo "Cloning and compiling $repo..."
+                git clone "https://github.com/nullbyto/$repo.git" "$HOME/.$repo"
+                cd "$HOME/.$repo"
+                [ "$repo" == "dwm" ] && git checkout config || true
+                sudo make install
+            else
+                echo -e "${GREEN}$repo is already cloned at ~/.$repo${NC}"
+            fi
+        done
+    {{ end }}
+{{ end }}

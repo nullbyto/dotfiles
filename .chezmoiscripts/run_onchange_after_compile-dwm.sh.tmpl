@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# Re-run if config changes: {{ .config.setup_custom_desktop }} | {{ .config.wm }}
+# Re-run if config changes: {{ .config.setup_custom_desktop }} | {{ .config.wms }}
 
 NC='\033[0m'
 BLUE='\033[0;34m'
@@ -12,7 +12,7 @@ GREEN='\033[0;32m'
 
     {{/* Check if "dwm" exists in your selected wm array */}}
     {{ $compile_dwm := false }}
-    {{ range .config.wm }}
+    {{ range .config.wms }}
         {{ if eq . "dwm" }}{{ $compile_dwm = true }}{{ end }}
     {{ end }}
 

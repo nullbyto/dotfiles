@@ -30,4 +30,4 @@
     # toJson: Formats it perfectly as ["item1", "item2"]
     desktop_protocols = {{ $protocols_str | splitList " " | compact | toJson }}
 
-    wm = {{ $wm_str | splitList " " | compact | toJson }}
+    wms = {{ $wm_str | splitList " " | compact | toJson }}

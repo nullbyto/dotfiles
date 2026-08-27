@@ -96,7 +96,7 @@ AUR_PKGS=()
     {{ if hasKey .packages.distros $osid }}
         {{ $distro := index .packages.distros $osid }}
         {{ if hasKey $distro "wm_packages" }}
-            {{ range $.config.wm }}
+            {{ range $.config.wms }}
                 {{ if hasKey $distro.wm_packages . }}
                     SYSTEM_PKGS+=( {{ range index $distro.wm_packages . }}"{{ . }}" {{ end }} )
                 {{ end }}

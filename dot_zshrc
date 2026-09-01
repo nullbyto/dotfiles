@@ -121,6 +121,7 @@ alias sude="sudo -E"
 
 # Utils
 alias ip="ip -c"
+alias ff="fastfetch"
 
 # Emacs
 alias enw="emacs -nw"

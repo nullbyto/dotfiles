@@ -1,7 +1,7 @@
 -- ==========================================
 -- Monitors
 -- ==========================================
-require("monitors")
+pcall(require, "monitors")
 
 hl.monitor({
     output   = "",
@@ -17,8 +17,8 @@ local mainMod = "SUPER"
 local terminal = "kitty -1"
 local fileManager = "thunar"
 local browser = "vivaldi || vivaldi-stable"
-local menu = "rofi -modi drun,run -show drun -matching fuzzy"
-local runner = "noctalia msg panel-toggle launcher"
+local menu = "noctalia msg panel-toggle launcher"
+local launcher = "noctalia msg panel-toggle launcher"
 local screenshotDir = "~/Pictures/Screenshots"
 local bar = "waybar"
 local shell = "noctalia"
@@ -40,13 +40,13 @@ hl.env("XCURSOR_SIZE", 20)
 -- Events (Autostart & Reload)
 -- ==========================================
 hl.on("hyprland.start", function()
-    -- hl.exec_cmd("hypridle")
+    -- Auto login to kdewallet on login
+    -- hl.exec_cmd("/usr/lib/pam_kwallet_init")
+    hl.exec_cmd("dbus-update-activation-environment --systemd --all")
     hl.exec_cmd(shell)
-    -- hl.exec_cmd(bar)
     hl.exec_cmd("~/.config/hypr/scripts/xdg.sh")
     hl.exec_cmd("systemctl --user start xremap &")
-    hl.exec_cmd("sleep 1 && awww-daemon")
-    -- hl.exec_cmd("swaync &")
+    -- hl.exec_cmd("sleep 1 && awww-daemon")
     hl.exec_cmd("nm-applet &")
     hl.exec_cmd("blueman-applet &")
     hl.exec_cmd("emacs --daemon")
@@ -54,10 +54,11 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("XDG_CURRENT=GNOME insync start &")
     hl.exec_cmd("poweralertd -Ss &")
     hl.exec_cmd("hyprctl setcursor Bibata-Modern-Ice 20")
+    hl.exec_cmd("thunar --daemon")
 end)
 
 hl.on("config.reloaded", function()
-    hl.exec_cmd("awww img ~/Pictures/Wallpapers/wallpaper.jpg")
+    -- hl.exec_cmd("awww img ~/Pictures/Wallpapers/wallpaper.jpg")
 end)
 
 -- ==========================================
@@ -111,7 +112,7 @@ hl.config({
     misc = {
         force_default_wallpaper = -1,
         disable_hyprland_logo = true,
-        on_focus_under_fullscreen = 2,
+        on_focus_under_fullscreen = 1, -- cycle maximized/fullscreen windows
         disable_autoreload = false,
     },
     xwayland = { force_zero_scaling = true },
@@ -126,6 +127,9 @@ hl.config({
         touchpad = { natural_scroll = true },
     },
     cursor = { no_hardware_cursors = true },
+    binds = {
+        drag_threshold = 10 -- Fire a drag event only after dragging for more than 10px
+    }
 })
 
 -- ==========================================
@@ -165,7 +169,7 @@ hl.bind(mainMod .. " + SHIFT + X", hl.dsp.exec_cmd(lock))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(runner))
+hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(launcher))
 
 -- Screenshots
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region -z -o ~/Pictures/Screenshots --clipboard-only"))
@@ -179,6 +183,7 @@ hl.bind("CTRL + Print", hl.dsp.exec_cmd("hyprshot -m output -m active --raw | sa
 -- hl.bind(mainMod .. " + delete", hl.dsp.exec_cmd("wlogout -b 6 -T 400 -B 400"))
 
 -- Utility
+hl.bind(mainMod .. " + CTRL + R", hl.dsp.exec_cmd("killall noctalia; noctalia -d"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("noctalia msg bar-toggle"))
 hl.bind(mainMod .. " + delete", hl.dsp.exec_cmd("noctalia msg panel-toggle session"))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("noctalia msg panel-toggle control-center notifications"))
@@ -265,6 +270,7 @@ hl.bind(mainMod .. " + CTRL + period", hl.dsp.workspace.move({ monitor = "r" }))
 
 -- Mouse binds
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.float(), { mouse = true, click = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- ==========================================
@@ -279,6 +285,7 @@ local float_apps = {
 for _, app in ipairs(float_apps) do
     hl.window_rule({ match = { class = app }, float = true })
 end
+hl.window_rule({ match = { title = "^(.*Bitwarden.*)*" }, float = true })
 
 hl.window_rule({ match = { class = "^(.*pavucontrol)$" }, float = true, center = true, size = "900 500" })
 hl.window_rule({ match = { class = "^(.*edge.*)$" }, workspace = 2 })
@@ -308,4 +315,16 @@ hl.window_rule({
     },
 
     no_focus = true,
+})
+
+-- Fix noctalia blur issues
+hl.layer_rule({
+  name = "noctalia",
+  match = {
+    namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd|window-switcher)$",
+  },
+  no_anim = true,
+  ignore_alpha = 0.5,
+  blur = true,
+  blur_popups = true,
 })

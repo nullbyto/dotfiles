@@ -31,6 +31,7 @@ packages:
     - man-db
     - curl
     - tmux
+    - starship
 
   # ---------------------------------------------------------
   # GUI / Desktop tools (works on both Wayland and Xorg)
@@ -57,6 +58,7 @@ packages:
     - python-pywal
     - polkit
     - dunst
+    - kitty
 
   # ---------------------------------------------------------
   # X11-specific setup
@@ -81,7 +83,7 @@ packages:
     - lightdm-gtk-greeter-settings
 
   # ---------------------------------------------------------
-  # Wayland-specific equivalents
+  # Wayland-specific setup
   # ---------------------------------------------------------
   desktop_wayland:
     - waybar
@@ -93,6 +95,9 @@ packages:
     - wtype
     - gammastep
     - noctalia
+    - nwg-displays
+    - nwg-look
+    - wev
 
   # ---------------------------------------------------------
   # Distro-specific base overrides

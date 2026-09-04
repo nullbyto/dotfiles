@@ -50,7 +50,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("nm-applet &")
     hl.exec_cmd("blueman-applet &")
     hl.exec_cmd("emacs --daemon")
-    hl.exec_cmd("/usr/lib/xfce-polkit/xfce-polkit &")
+    -- hl.exec_cmd("/usr/lib/xfce-polkit/xfce-polkit &")
     hl.exec_cmd("XDG_CURRENT=GNOME insync start &")
     hl.exec_cmd("poweralertd -Ss &")
     hl.exec_cmd("hyprctl setcursor Bibata-Modern-Ice 20")
@@ -145,7 +145,7 @@ hl.gesture({ fingers = 3, direction = "swipe", mods = "SUPER", action = "resize"
 -- ==========================================
 -- Animations
 -- ==========================================
--- Custom Curves mapped from your original config (0.05, 0.9, 0.1, 1.05) -> { {x1, y1}, {x2, y2} }
+-- Custom curves mapped from original config (0.05, 0.9, 0.1, 1.05) -> { {x1, y1}, {x2, y2} }
 hl.curve("myBezier", { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.05} } })
 hl.curve("overshot", { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.1}  } })
 
@@ -201,8 +201,6 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }), { descrip
 -- hl.bind(mainMod .. " + ALT + V", hl.dsp.exec_cmd("hyprctl dispatch workspaceopt allfloat"), { description = "Toggle all windows float" })
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo(), { description = "Toggle pseudo tiling" })
 hl.bind(mainMod .. " + semicolon", hl.dsp.layout("togglesplit"), { description = "Toggle split direction" })    -- dwindle only
-hl.bind(mainMod .. " + S", function() hl.config({ general = { layout = "dwindle" }}) end)
-hl.bind(mainMod .. " + T", function() hl.config({ general = { layout = "master" }}) end)
 -- hl.bind(mainMod .. " + S", function() hl.config({ general = { layout = "dwindle" }}) end, { description = "Set layout to dwindle" })
 -- hl.bind(mainMod .. " + T", function() hl.config({ general = { layout = "master" }}) end, { description = "Set layout to master" })
 -- hl.bind(mainMod .. " + M", function() hl.config({ general = { layout = "monocle" }}) end, { description = "Set layout to monocle" })
@@ -228,9 +226,9 @@ hl.bind(mainMod .. " + M", function()
     hl.bind(mainMod .. " + K", hl.dsp.layout("cycleprev"))
 end, { description = "Set layout to monocle" })
 
--- hl.bind(mainMod .. " + M", hl.dsp.window.fullscreen({ mode = "maximized"}))
-hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized"}), { description = "Toggle maximize" })
+-- hl.bind(mainMod .. " + M", hl.dsp.window.fullscreen({ mode = "maximized"}), { description = "Toggle maximize" })
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.window.fullscreen({ mode = "maximized"}), { description = "Toggle maximize" })
+hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized"}), { description = "Toggle maximize" })
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen(), { description = "Toggle fullscreen" })
 hl.bind(mainMod .. " + CTRL + F", hl.dsp.window.fullscreen_state({ internal = 2, client = -1 }), { description = "Fake fullscreen" })
 hl.bind(mainMod .. " + CTRL + SHIFT + F", hl.dsp.window.fullscreen_state({ internal = -1, client = 2 }), { description = "Fake fullscreen (client only)" })

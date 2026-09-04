@@ -242,8 +242,44 @@ hl.bind(mainMod .. " + slash", hl.dsp.workspace.toggle_special("magic"), { descr
 hl.bind(mainMod .. " + SHIFT + slash", hl.dsp.window.move({ workspace = "special:magic" }), { description = "Move window to special workspace (magic)" })
 
 -- Scripts
-hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd("~/.config/hypr/scripts/noanim.sh"), { description = "Toggle no animations script" })
-hl.bind(mainMod .. " + CTRL + F1", hl.dsp.exec_cmd("~/.config/hypr/scripts/gamemode.sh"), { description = "Toggle gamemode script" })
+hl.bind(mainMod .. " + F1", function()
+    local animations = (hl.get_config("animations.enabled") == false)
+
+    if animations then
+        hl.exec_cmd("hyprctl reload")
+        return
+    end
+
+    hl.config({
+        animations = {
+            enabled = false
+        }
+    })
+end, { description = "Toggle no animations" })
+hl.bind(mainMod .. " + CTRL + F1", function()
+    local game_mode = (hl.get_config("animations.enabled") == false)
+
+    if game_mode then
+        hl.exec_cmd("hyprctl reload")
+        return
+    end
+
+    hl.config({
+        general = {
+            gaps_in = 0,
+            gaps_out = 0,
+            border_size = 1
+        },
+        animations = {
+            enabled = false
+        },
+        decoration = {
+            shadow = { enabled = true },
+            blur = { enabled = true },
+            rounding = 0
+        }
+    })
+end, { description = "Toggle gamemode" })
 
 -- Multimedia
 -- hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set +5%; notify-send -a 'Brightnessctl' -i 'brightness' -h int:value:\"$(brightnessctl -m | cut -d, -f4 | tr -d %)\" 'Brightness' \"$(brightnessctl -m | cut -d, -f4 | tr -d %)%\" -t 3000 -e"), { locked = true, repeating = true })

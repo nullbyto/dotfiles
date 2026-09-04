@@ -9,16 +9,40 @@ set -euo pipefail
 {{ $osid := .chezmoi.osRelease.id }}
 {{ $idLike := default "" (get .chezmoi.osRelease "idLike") }}
 
-# If the distro is based on Arch, treat it as 'arch'
-{{ if or (contains "arch" $idLike) (eq $osid "cachyos") }}
-    {{ $osid = "arch" }}
-{{ end -}}
-
-# Extract the distro dictionary globally (defaults to empty dict if OS not found)
-{{ $distro := dict }}
-{{ if hasKey .packages.distros $osid }}
-    {{ $distro = index .packages.distros $osid }}
+# Determine the OS family (for package manager selection & base packages)
+{{ $osFamily := $osid }}
+{{ if contains "arch" $idLike }}
+    {{ $osFamily = "arch" }}
+{{ else if contains "debian" $idLike }}
+    {{ $osFamily = "debian" }}
+{{ else if or (contains "fedora" $idLike) (contains "rhel" $idLike) (contains "centos" $idLike) }}
+    {{ $osFamily = "fedora" }}
 {{ end }}
+
+# Create a list of distros to pull packages from (e.g., ["debian", "ubuntu"])
+# This allows inheritance!
+{{- $distroKeys := list $osFamily -}}
+
+{{- if ne $osid $osFamily -}}
+    {{- $standalone := false -}}
+
+    # Check if the specific OS is defined in YAML and has the standalone flag
+    {{- if hasKey $.packages.distros $osid -}}
+        {{- $specificDistro := index $.packages.distros $osid -}}
+        {{- if hasKey $specificDistro "standalone" -}}
+            {{- $standalone = $specificDistro.standalone -}}
+        {{- end -}}
+    {{- end -}}
+
+    # If standalone is true, overwrite the list so it ONLY contains the specific OS
+    {{- if $standalone -}}
+        {{- $distroKeys = list $osid -}}
+    # Otherwise, inherit normally (e.g., ["arch", "cachyos"])
+    {{- else -}}
+        {{- $distroKeys = append $distroKeys $osid -}}
+    {{- end -}}
+{{- end }}
+
 
 NC="\033[0m"
 BLUE="\033[0;34m"
@@ -26,7 +50,7 @@ YELLOW="\033[33m"
 GREEN="\033[0;32m"
 
 # Hand over the chezmoi variable to bash
-CURRENT_OS="{{ $osid }}"
+CURRENT_OS="{{ $osFamily }}"
 
 echo -e "${BLUE}==> Assembling packages for OS: ${CURRENT_OS}...${NC}"
 
@@ -34,6 +58,7 @@ declare -A PKG_MANAGERS=(
     ["arch"]="sudo pacman -S --needed --noconfirm"
     ["fedora"]="sudo dnf install -y --skip-broken"
     ["ubuntu"]="sudo apt-get install -y"
+    ["debian"]="sudo apt-get install -y"
 )
 
 INSTALL_CMD="${PKG_MANAGERS[$CURRENT_OS]:-}"
@@ -48,63 +73,64 @@ fi
 SYSTEM_PKGS=( {{ range .packages.common }}"{{ . }}" {{ end }} )
 AUR_PKGS=()
 
-# Base distro packages
-{{ if hasKey .packages.distros $osid }}
-    {{ if hasKey $distro "packages" }}
-        SYSTEM_PKGS+=( {{ range $distro.packages }}"{{ . }}" {{ end }} )
-    {{ end }}
-{{ end }}
+# Loop over BOTH the base OS (arch) and specific OS (cachyos)
+{{ range $distroKey := $distroKeys }}
+    {{ if hasKey $.packages.distros $distroKey }}
+        {{ $distro := index $.packages.distros $distroKey }}
 
-# Base AUR packages (arch only)
-{{ if eq $osid "arch" }}
-    {{ if hasKey $distro "aur_packages" }}
-        AUR_PKGS+=( {{ range $distro.aur_packages }}"{{ . }}" {{ end }} )
-    {{ end }}
-{{ end }}
+        # Base distro packages
+        {{ if hasKey $distro "packages" }}
+            SYSTEM_PKGS+=( {{ range $distro.packages }}"{{ . }}" {{ end }} )
+        {{ end }}
 
-# Desktop environment packages
+        # Base AUR packages (only valid if OS family is arch)
+        {{ if eq $osFamily "arch" }}
+            {{ if hasKey $distro "aur_packages" }}
+                AUR_PKGS+=( {{ range $distro.aur_packages }}"{{ . }}" {{ end }} )
+            {{ end }}
+        {{ end }}
+
+        # Desktop environment packages
+        {{ if $.config.setup_custom_desktop }}
+            # Protocols (Wayland / Xorg)
+            {{ range $.config.display_protocols }}
+
+                # Distro-specific system packages
+                {{ $global_proto_key := printf "desktop_%s" . }}
+                {{ if hasKey $distro $global_proto_key }}
+                    SYSTEM_PKGS+=( {{ range index $distro $global_proto_key }}"{{ . }}" {{ end }} )
+                {{ end }}
+
+                # Distro-specific AUR packages
+                {{ $aur_proto_key := printf "aur_%s" . }}
+                {{ if hasKey $distro $aur_proto_key }}
+                    AUR_PKGS+=( {{ range index $distro $aur_proto_key }}"{{ . }}" {{ end }} )
+                {{ end }}
+            {{ end }}
+
+            # Window manager dependencies
+            {{ if hasKey $distro "wm_packages" }}
+                {{ range $.config.wms }}
+                    {{ if hasKey $distro.wm_packages . }}
+                        SYSTEM_PKGS+=( {{ range index $distro.wm_packages . }}"{{ . }}" {{ end }} )
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+
+        {{ end }} # End desktop setup
+    {{ end }} # End if hasKey
+{{ end }} # End distro loop
+
+# Global desktop packages (run once outside the distro loop)
 {{ if .config.setup_custom_desktop }}
     SYSTEM_PKGS+=( {{ range .packages.desktop_common }}"{{ . }}" {{ end }} )
-
-    # Protocols (Wayland / Xorg)
     {{ range .config.display_protocols }}
-
-        # Global protocol packages (e.g., packages.desktop_wayland)
         {{ $global_proto_key := printf "desktop_%s" . }}
         {{ if hasKey $.packages $global_proto_key }}
             SYSTEM_PKGS+=( {{ range index $.packages $global_proto_key }}"{{ . }}" {{ end }} )
         {{ end }}
-
-        # Distro-specific protocol packages
-        {{ if hasKey $.packages.distros $osid }}
-            {{ $distro := index $.packages.distros $osid }}
-
-            # Add system packages (e.g., desktop_wayland under distros.arch)
-            {{ if hasKey $distro $global_proto_key }}
-                SYSTEM_PKGS+=( {{ range index $distro $global_proto_key }}"{{ . }}" {{ end }} )
-            {{ end }}
-
-            # Add AUR packages (e.g., aur_wayland under distros.arch)
-            {{ $aur_proto_key := printf "aur_%s" . }}
-            {{ if hasKey $distro $aur_proto_key }}
-                AUR_PKGS+=( {{ range index $distro $aur_proto_key }}"{{ . }}" {{ end }} )
-            {{ end }}
-        {{ end }}
-    {{ end }}
-
-    # Window manager dependencies
-    {{ if hasKey .packages.distros $osid }}
-        {{ $distro := index .packages.distros $osid }}
-        {{ if hasKey $distro "wm_packages" }}
-            {{ range $.config.wms }}
-                {{ if hasKey $distro.wm_packages . }}
-                    SYSTEM_PKGS+=( {{ range index $distro.wm_packages . }}"{{ . }}" {{ end }} )
-                {{ end }}
-            {{ end }}
-        {{ end }}
     {{ end }}
 {{ end }}
-
 # ==========================================
 # Execute primary installation (bash level)
 # ==========================================
@@ -122,11 +148,19 @@ if [[ "$CURRENT_OS" == "arch" ]]; then
             echo -e "${YELLOW}Warning: $pkg not found in arch repos, skipping.${NC}"
         fi
     done
-    echo -e "${BLUE}Running: $INSTALL_CMD${NC}"
-    $INSTALL_CMD "${VALID_SYSTEM_PKGS[@]}"
+    if [ ${#VALID_SYSTEM_PKGS[@]} -gt 0 ]; then
+        echo -e "${BLUE}Running: $INSTALL_CMD${NC}"
+        $INSTALL_CMD "${VALID_SYSTEM_PKGS[@]}"
+    else
+        echo -e "${YELLOW}No valid system packages to install.${NC}"
+    fi
 else
-    echo -e "${BLUE}Running: $INSTALL_CMD${NC}"
-    $INSTALL_CMD "${SYSTEM_PKGS[@]}"
+    if [ ${#SYSTEM_PKGS[@]} -gt 0 ]; then
+        echo -e "${BLUE}Running: $INSTALL_CMD${NC}"
+        $INSTALL_CMD "${SYSTEM_PKGS[@]}"
+    else
+        echo -e "${YELLOW}No system packages to install.${NC}"
+    fi
 fi
 
 # ==========================================
@@ -135,6 +169,7 @@ fi
 if [[ "$CURRENT_OS" == "arch" && ${#AUR_PKGS[@]} -gt 0 ]]; then
     echo -e "${BLUE}Installing AUR packages...${NC}"
     if ! command -v yay &> /dev/null; then
+        echo -e "${YELLOW}yay not found, installing yay-bin...${NC}"
         sudo pacman -S --needed --noconfirm base-devel git
         rm -rf /tmp/yay
         git clone https://aur.archlinux.org/yay-bin.git /tmp/yay

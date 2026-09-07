@@ -32,9 +32,9 @@ hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 hl.env("HYPRCURSOR_THEME", "Bibata-Modern-Ice")
-hl.env("HYPRCURSOR_SIZE", 20)
+hl.env("HYPRCURSOR_SIZE", 24)
 hl.env("XCURSOR_THEME", "Bibata-Modern-Ice")
-hl.env("XCURSOR_SIZE", 20)
+hl.env("XCURSOR_SIZE", 24)
 
 -- ==========================================
 -- Events (Autostart & Reload)
@@ -45,7 +45,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
     hl.exec_cmd(shell)
     hl.exec_cmd("~/.config/hypr/scripts/xdg.sh")
-    hl.exec_cmd("systemctl --user start xremap &")
+    -- hl.exec_cmd("systemctl --user start xremap &")
     -- hl.exec_cmd("sleep 1 && awww-daemon")
     hl.exec_cmd("nm-applet &")
     hl.exec_cmd("blueman-applet &")
@@ -53,7 +53,6 @@ hl.on("hyprland.start", function()
     -- hl.exec_cmd("/usr/lib/xfce-polkit/xfce-polkit &")
     hl.exec_cmd("XDG_CURRENT=GNOME insync start &")
     hl.exec_cmd("poweralertd -Ss &")
-    hl.exec_cmd("hyprctl setcursor Bibata-Modern-Ice 20")
     hl.exec_cmd("thunar --daemon")
 end)
 
@@ -126,7 +125,7 @@ hl.config({
         accel_profile = "adaptive",
         touchpad = { natural_scroll = true },
     },
-    cursor = { no_hardware_cursors = true },
+    cursor = { no_hardware_cursors = 2 },
     binds = {
         drag_threshold = 10 -- Fire a drag event only after dragging for more than 10px
     }
@@ -303,6 +302,7 @@ end
 
 hl.bind(mainMod .. " + SHIFT + tab", hl.dsp.window.cycle_next({ next = false }), { description = "Cycle to previous window" })
 hl.bind(mainMod .. " + tab", hl.dsp.window.cycle_next(), { description = "Cycle to next window" })
+hl.bind("ALT + Tab", hl.dsp.exec_cmd("noctalia msg window-switcher"), { description = "Window switcher"})
 
 -- Resize windows
 hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.resize({ x = 30, y = 0, relative = true }), { repeating = true, description = "Resize window right" })
@@ -318,13 +318,28 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + CTRL + " .. key, hl.dsp.window.move({ workspace = i, follow = false }), { description = "Move window to workspace " .. i .. " silently" })
 end
 
-hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }), { description = "Scroll to next workspace" })
-hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { description = "Scroll to previous workspace" })
+hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "m+1" }), { description = "Scroll to next workspace" })
+hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "m-1" }), { description = "Scroll to previous workspace" })
 hl.bind(mainMod .. " + I", hl.dsp.focus({ workspace = "m+1" }), { description = "Focus next workspace on monitor" })
 hl.bind(mainMod .. " + U", hl.dsp.focus({ workspace = "m-1" }), { description = "Focus previous workspace on monitor" })
 hl.bind(mainMod .. " + SHIFT + I", hl.dsp.focus({ workspace = "e+1" }), { description = "Focus next empty workspace" })
 hl.bind(mainMod .. " + SHIFT + U", hl.dsp.focus({ workspace = "e-1" }), { description = "Focus previous empty workspace" })
 hl.bind(mainMod .. " + grave", hl.dsp.focus({ workspace = "previous" }), { description = "Focus previous workspace" })
+
+-- Empty workspace
+hl.bind(mainMod .. " + minus", hl.dsp.focus({ workspace = "empty"}), { description = "Focus next empty workspace" })
+hl.bind(mainMod .. " + SHIFT + minus", hl.dsp.window.move({ workspace = "empty"}), { description = "Move window to next empty workspace" })
+hl.bind(mainMod .. " + CTRL + minus", function()
+    hl.dispatch(hl.dsp.window.move({ workspace = "empty", follow = false }))
+
+    -- Send a desktop notification
+    hl.notification.create({
+        text = "Window moved to an empty workspace",
+        timeout = 2500,
+        icon = "info",
+        font_size = 13
+    })
+end, { description = "Move window to next empty workspace silently" })
 
 -- Monitor movement
 hl.bind(mainMod .. " + comma", hl.dsp.focus({ monitor = "l" }), { description = "Focus left monitor" })

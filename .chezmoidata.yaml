@@ -32,6 +32,8 @@ packages:
     - curl
     - tmux
     - starship
+    - gdu
+    - dust
 
   # ---------------------------------------------------------
   # GUI / Desktop tools (works on both Wayland and Xorg)

@@ -68,66 +68,122 @@ if [ -z "$INSTALL_CMD" ]; then
 fi
 
 # ==========================================
+# The Universal Replace/Exclude Engine
+# ==========================================
+{{- define "process_pkgs" -}}
+    {{- $distroKeys := .distroKeys -}}
+    {{- $distrosData := .distrosData -}}
+
+    {{- range $pkg := .pkgs -}}
+        {{- $final_pkg := $pkg -}}
+        {{- $skip := false -}}
+
+        {{- range $distroKey := $distroKeys -}}
+            {{- if hasKey $distrosData $distroKey -}}
+                {{- $d := index $distrosData $distroKey -}}
+
+                {{- if hasKey $d "exclude" -}}
+                    {{- if has $pkg $d.exclude }}{{ $skip = true }}{{ end -}}
+                {{- end -}}
+
+                {{- if hasKey $d "replace" -}}
+                    {{- if hasKey $d.replace $pkg }}{{ $final_pkg = index $d.replace $pkg }}{{ end -}}
+                {{- end -}}
+            {{- end -}}
+        {{- end -}}
+
+        {{- if not $skip }}"{{ $final_pkg }}" {{ end -}}
+    {{- end -}}
+{{- end }}
+
+# ==========================================
 # Dynamically assemble the package arrays
 # ==========================================
-SYSTEM_PKGS=( {{ range .packages.common }}"{{ . }}" {{ end }} )
+SYSTEM_PKGS=()
 AUR_PKGS=()
 
-# Loop over BOTH the base OS (arch) and specific OS (cachyos)
+# Global Common Packages
+SYSTEM_PKGS+=( {{ template "process_pkgs" dict "pkgs" .packages.common "distroKeys" $distroKeys "distrosData" .packages.distros }} )
+
+# Distro-specific additions (e.g. packages under distros.arch.packages)
 {{ range $distroKey := $distroKeys }}
     {{ if hasKey $.packages.distros $distroKey }}
         {{ $distro := index $.packages.distros $distroKey }}
 
-        # Base distro packages
         {{ if hasKey $distro "packages" }}
             SYSTEM_PKGS+=( {{ range $distro.packages }}"{{ . }}" {{ end }} )
         {{ end }}
 
-        # Base AUR packages (only valid if OS family is arch)
         {{ if eq $osFamily "arch" }}
             {{ if hasKey $distro "aur_packages" }}
                 AUR_PKGS+=( {{ range $distro.aur_packages }}"{{ . }}" {{ end }} )
             {{ end }}
         {{ end }}
+    {{ end }}
+{{ end }}
 
-        # Desktop environment packages
-        {{ if $.config.setup_custom_desktop }}
-            # Protocols (Wayland / Xorg)
-            {{ range $.config.display_protocols }}
+# Global Desktop Packages
+{{ if .config.setup_custom_desktop }}
+    SYSTEM_PKGS+=( {{ template "process_pkgs" dict "pkgs" .packages.desktop_common "distroKeys" $distroKeys "distrosData" .packages.distros }} )
 
-                # Distro-specific system packages
-                {{ $global_proto_key := printf "desktop_%s" . }}
+    # Protocols (Wayland / Xorg)
+    {{ range .config.display_protocols }}
+        {{ $global_proto_key := printf "desktop_%s" . }}
+        {{ if hasKey $.packages $global_proto_key }}
+            SYSTEM_PKGS+=( {{ template "process_pkgs" dict "pkgs" (index $.packages $global_proto_key) "distroKeys" $distroKeys "distrosData" $.packages.distros }} )
+        {{ end }}
+
+        # Distro-specific protocol additions (e.g. desktop_wayland, aur_wayland)
+        {{ range $distroKey := $distroKeys }}
+            {{ if hasKey $.packages.distros $distroKey }}
+                {{ $distro := index $.packages.distros $distroKey }}
+
+                # System protocol packages
                 {{ if hasKey $distro $global_proto_key }}
                     SYSTEM_PKGS+=( {{ range index $distro $global_proto_key }}"{{ . }}" {{ end }} )
                 {{ end }}
 
-                # Distro-specific AUR packages
-                {{ $aur_proto_key := printf "aur_%s" . }}
-                {{ if hasKey $distro $aur_proto_key }}
-                    AUR_PKGS+=( {{ range index $distro $aur_proto_key }}"{{ . }}" {{ end }} )
-                {{ end }}
-            {{ end }}
-
-            # Window manager dependencies
-            {{ if hasKey $distro "wm_packages" }}
-                {{ range $.config.wms }}
-                    {{ if hasKey $distro.wm_packages . }}
-                        SYSTEM_PKGS+=( {{ range index $distro.wm_packages . }}"{{ . }}" {{ end }} )
+                # AUR protocol packages (arch only)
+                {{ if eq $osFamily "arch" }}
+                    {{ $aur_proto_key := printf "aur_%s" . }}
+                    {{ if hasKey $distro $aur_proto_key }}
+                        AUR_PKGS+=( {{ range index $distro $aur_proto_key }}"{{ . }}" {{ end }} )
                     {{ end }}
                 {{ end }}
             {{ end }}
+        {{ end }}
+    {{ end }}
 
-        {{ end }} # End desktop setup
-    {{ end }} # End if hasKey
-{{ end }} # End distro loop
+    # Window Managers
+    {{ range $.config.wms }}
+        {{ $wm := . }}
+        {{ $pkgList := list }}
+        {{ $foundDistroWm := false }}
 
-# Global desktop packages (run once outside the distro loop)
-{{ if .config.setup_custom_desktop }}
-    SYSTEM_PKGS+=( {{ range .packages.desktop_common }}"{{ . }}" {{ end }} )
-    {{ range .config.display_protocols }}
-        {{ $global_proto_key := printf "desktop_%s" . }}
-        {{ if hasKey $.packages $global_proto_key }}
-            SYSTEM_PKGS+=( {{ range index $.packages $global_proto_key }}"{{ . }}" {{ end }} )
+        # Check if any active distro defines its own custom wm_packages
+        {{ range $distroKey := $distroKeys }}
+            {{ if hasKey $.packages.distros $distroKey }}
+                {{ $d := index $.packages.distros $distroKey }}
+                {{ if hasKey $d "wm_packages" }}
+                    {{ $dWm := index $d "wm_packages" }}
+                    {{ if hasKey $dWm $wm }}
+                        {{ $pkgList = index $dWm $wm }}
+                        {{ $foundDistroWm = true }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
+
+        # If a distro-specific override exists, use it directly
+        {{ if $foundDistroWm }}
+            SYSTEM_PKGS+=( {{ range $pkgList }}"{{ . }}" {{ end }} )
+        # Otherwise, fallback to the global wm_packages and run through the Replace/Exclude engine
+        {{ else }}
+            {{ if hasKey $.packages "wm_packages" }}
+                {{ if hasKey $.packages.wm_packages $wm }}
+                    SYSTEM_PKGS+=( {{ template "process_pkgs" dict "pkgs" (index $.packages.wm_packages $wm) "distroKeys" $distroKeys "distrosData" $.packages.distros }} )
+                {{ end }}
+            {{ end }}
         {{ end }}
     {{ end }}
 {{ end }}
@@ -175,6 +231,7 @@ if [[ "$CURRENT_OS" == "arch" && ${#AUR_PKGS[@]} -gt 0 ]]; then
         git clone https://aur.archlinux.org/yay-bin.git /tmp/yay
         (cd /tmp/yay && makepkg -si --noconfirm)
         rm -rf /tmp/yay
+        hash -r
     fi
     yay -S --needed --noconfirm "${AUR_PKGS[@]}"
 fi

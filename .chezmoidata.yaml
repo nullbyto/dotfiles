@@ -99,6 +99,22 @@ packages:
     - nwg-look
     - wev
 
+  wm_packages:
+    i3wm:
+      - i3-wm
+      - i3status-rust
+    awesome: ["awesome"]
+    hyprland:
+      - hyprland
+      - qt5-wayland
+      - qt6-wayland
+      - xdg-desktop-portal-hyprland
+    qtile:
+      - qtile
+      - python-psutil
+      - python-dbus-next
+    dwm: []
+
   # ---------------------------------------------------------
   # Distro-specific base overrides
   # ---------------------------------------------------------
@@ -111,43 +127,15 @@ packages:
         - j4-dmenu-desktop
         - xfce-polkit
 
-      aur_xorg:
-        - betterlockscreen
-
-      wm_packages:
-        i3wm:
-          - i3-wm
-          - i3status-rust
-        awesome: ["awesome"]
-        hyprland:
-          - hyprland
-          - xdg-desktop-portal-hyprland
-          - qt5-wayland
-          - qt6-wayland
-        qtile:
-          - qtile
-          - python-psutil
-          - python-dbus-next
-        dwm: []
-
     fedora:
       packages:
         - python3-pynvim
         - NetworkManager-tui
         - xfce-polkit
 
-      wm_packages:
-        i3wm:
-        - i3
-        - i3status-rust
-        awesome: ["awesome"]
-        hyprland:
-          - hyprland
-          - xdg-desktop-portal-hyprland
-          - qt5-qtwayland
-          - qt6-qtwayland
-        qtile:
-          - qtile
-          - python3-psutil
-        dwm: []
+      replace:
+        i3-wm: i3
+        qt5-wayland: qt5-qtwayland
+        qt6-wayland: qt6-qtwayland
+        python-psutil: python3-psutil
 

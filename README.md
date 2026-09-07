@@ -70,13 +70,19 @@ packages:
         - wlogout
 
       # Window manager specific dependencies mapped to 'wms' config
+      # Overrides global wm_packages if defined here
       wm_packages:
-        hyprland:
-          - hyprland
-          - xdg-desktop-portal-hyprland
         i3wm:
           - i3-wm
           - i3status-rust
+
+    fedora:
+      # Exclude packages from 'common' or global lists that don't apply to Fedora
+      exclude:
+        - some-arch-only-package
+      # Replace a common package name with the Fedora equivalent
+      replace:
+        qt6-wayland: qt6-qtwayland
 
     # Target specific distributions (e.g., cachyos, ubuntu)
     # By default, distros inherit packages from their parent family (e.g., arch, debian)
@@ -84,6 +90,14 @@ packages:
       standalone: true # Set to true to bypass parent family inheritance
       packages:
         - some-cachyos-exclusive-package
+
+  # Global Window Manager definitions (Processed through replace/exclude engine)
+  # Fallback used if the active distro doesn't define its own 'wm_packages' block
+  wm_packages:
+    hyprland:
+      - hyprland
+      - qt6-wayland
+      - xdg-desktop-portal-hyprland
 ```
 
 The bootstrap script will automatically read this file, resolve the appropriate packages for your OS family (e.g., Arch, Debian, Fedora), and intelligently install only what is required based on your config flags.

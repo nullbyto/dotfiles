@@ -1,4 +1,33 @@
 -- ==========================================
+-- Helper functions
+-- ==========================================
+local function layout_bind(bind_table)
+    return function ()
+        local workspace = hl.get_active_special_workspace() or
+                          hl.get_active_workspace()
+
+        if not workspace then
+            return
+        end
+
+        local layout = workspace.tiled_layout
+
+        if bind_table[layout] then
+            hl.dispatch(bind_table[layout])
+        end
+    end
+end
+
+local function set_workspace_layout(layout_name)
+  return function()
+    local ws = hl.get_active_workspace()
+    if ws then
+      hl.workspace_rule({ workspace = ws.name, layout = layout_name })
+    end
+  end
+end
+
+-- ==========================================
 -- Keybindings
 -- ==========================================
 -- Core apps
@@ -43,30 +72,10 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }), { descrip
 -- hl.bind(mainMod .. " + ALT + V", hl.dsp.exec_cmd("hyprctl dispatch workspaceopt allfloat"), { description = "Toggle all windows float" })
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo(), { description = "Toggle pseudo tiling" })
 hl.bind(mainMod .. " + semicolon", hl.dsp.layout("togglesplit"), { description = "Toggle split direction" })    -- dwindle only
--- hl.bind(mainMod .. " + S", function() hl.config({ general = { layout = "dwindle" }}) end, { description = "Set layout to dwindle" })
--- hl.bind(mainMod .. " + T", function() hl.config({ general = { layout = "master" }}) end, { description = "Set layout to master" })
--- hl.bind(mainMod .. " + M", function() hl.config({ general = { layout = "monocle" }}) end, { description = "Set layout to monocle" })
-hl.bind(mainMod .. " + S", function()
-    hl.config({ general = { layout = "dwindle" }})
-    hl.unbind(mainMod .. " + J")
-    hl.unbind(mainMod .. " + K")
-    hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
-    hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
-end, { description = "Set layout to dwindle" })
-hl.bind(mainMod .. " + T", function()
-    hl.config({ general = { layout = "master" }})
-    hl.unbind(mainMod .. " + J")
-    hl.unbind(mainMod .. " + K")
-    hl.bind(mainMod .. " + J", hl.dsp.layout("cyclenext"))
-    hl.bind(mainMod .. " + K", hl.dsp.layout("cycleprev"))
-end, { description = "Set layout to master" })
-hl.bind(mainMod .. " + M", function()
-    hl.config({ general = { layout = "monocle" }})
-    hl.unbind(mainMod .. " + J")
-    hl.unbind(mainMod .. " + K")
-    hl.bind(mainMod .. " + J", hl.dsp.layout("cyclenext"))
-    hl.bind(mainMod .. " + K", hl.dsp.layout("cycleprev"))
-end, { description = "Set layout to monocle" })
+hl.bind(mainMod .. " + S", set_workspace_layout("dwindle"), { description = "Set active workspace layout to dwindle" })
+hl.bind(mainMod .. " + T", set_workspace_layout("master"), { description = "Set active workspace layout to master" })
+hl.bind(mainMod .. " + M", set_workspace_layout("monocle"), { description = "Set active workspace layout to monocle" })
+hl.bind(mainMod .. " + Y", set_workspace_layout("scrolling"), { description = "Set active workspace layout to monocle" })
 
 -- hl.bind(mainMod .. " + M", hl.dsp.window.fullscreen({ mode = "maximized"}), { description = "Toggle maximize" })
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.window.fullscreen({ mode = "maximized"}), { description = "Toggle maximize" })
@@ -139,9 +148,25 @@ hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pactl set-sink-mute @DEFAULT_SINK@ tog
 -- Movement & Focus
 local move_keys = { left = "left", right = "right", up = "up", down = "down", H = "left", L = "right", K = "up", J = "down" }
 for key, dir in pairs(move_keys) do
-    hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ direction = dir }), { description = "Focus window in direction" })
+    -- Dont bind K,J for layout specific bindings below
+    if key ~= "K" and key ~= "J" then
+        hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ direction = dir }), { description = "Focus window in direction" })
+    end
     hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ direction = string.sub(dir, 1, 1) }), { description = "Move window in direction" })
 end
+
+hl.bind(mainMod .. " + J", layout_bind({
+    scrolling = hl.dsp.focus({ direction = "down" }),
+    dwindle   = hl.dsp.focus({ direction = "down" }),
+    monocle   = hl.dsp.layout("cyclenext"),
+    master    = hl.dsp.layout("cyclenext"),
+}))
+hl.bind(mainMod .. " + K", layout_bind({
+    scrolling = hl.dsp.focus({ direction = "up" }),
+    dwindle   = hl.dsp.focus({ direction = "up" }),
+    monocle   = hl.dsp.layout("cycleprev"),
+    master    = hl.dsp.layout("cycleprev"),
+}))
 
 hl.bind(mainMod .. " + SHIFT + tab", hl.dsp.window.cycle_next({ next = false }), { description = "Cycle to previous window" })
 hl.bind(mainMod .. " + tab", hl.dsp.window.cycle_next(), { description = "Cycle to next window" })

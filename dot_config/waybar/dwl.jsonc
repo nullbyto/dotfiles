@@ -1,0 +1,53 @@
+{
+    "bar_id": "bar-0",
+    "ipc": true,
+	"layer": "bottom",
+	"position": "top",
+	"height": 28,
+	// "margin": "10, 20, 0, 20",
+	// "margin": "5, 10, 0, 10",
+	"margin": "0, 0, 0, 0",
+	"modules-left": [
+		"custom/launcher",
+        "custom/brackl",
+		"hyprland/workspaces",
+        "sway/workspaces",
+        "dwl/tags",
+        "custom/brackr",
+        "hyprland/window",
+        "sway/window",
+        "sway/mode",
+        "dwl/window"
+	],
+	"modules-center": [
+		// "custom/player"
+        "clock"
+	],
+	"modules-right": [
+        "custom/brackl",
+		"tray",
+        "custom/brackr",
+        // "custom/brackl",
+        // "hyprland/language",
+        // "sway/language",
+        // "custom/brackr",
+        "custom/brackl",
+		"network",
+        "custom/brackr",
+        "custom/brackl",
+        "group/audio",
+        "custom/brackr",
+        "custom/brackl",
+        "group/screen",
+        "custom/brackr",
+        "custom/brackl",
+        "group/batteries",
+        "custom/brackr",
+        "group/hardware",
+        "custom/swaync",
+        "custom/power"
+	],
+    "include": [
+        "~/.config/waybar/modules.jsonc"
+    ]
+}

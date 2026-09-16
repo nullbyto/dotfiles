@@ -100,6 +100,7 @@ packages:
     - nwg-displays
     - nwg-look
     - wev
+    - wl-mirror
 
   wm_packages:
     i3wm:
@@ -111,6 +112,10 @@ packages:
       - qt5-wayland
       - qt6-wayland
       - xdg-desktop-portal-hyprland
+    niri:
+      - niri
+      - xwayland-satellite
+      - xdg-desktop-portal-gnome
     qtile:
       - qtile
       - python-psutil

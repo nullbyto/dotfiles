@@ -307,9 +307,8 @@ environment {
 spawn-at-startup "noctalia"
 // Export Wayland display and desktop session to D-Bus
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
-spawn-at-startup "/usr/lib/pam_kwallet_init"
-spawn-at-startup "thunar --daemon"
-spawn-at-startup "systemctl --user start xremap &"
+//spawn-at-startup "/usr/lib/pam_kwallet_init"
+spawn-at-startup "thunar" "--daemon"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"

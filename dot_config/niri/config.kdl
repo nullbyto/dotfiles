@@ -134,6 +134,8 @@ layout {
     //   together with the previously focused column.
     center-focused-column "never"
 
+    always-center-single-column
+
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
         // Proportion sets the width as a fraction of the output width, taking gaps into account.
@@ -268,8 +270,8 @@ layout {
     // Top and bottom struts will simply add outer gaps in addition to the area occupied by
     // layer-shell panels and regular gaps.
     struts {
-        // left 64
-        // right 64
+        left 15
+        right 15
         // top 64
         // bottom 64
     }
@@ -307,8 +309,9 @@ environment {
 spawn-at-startup "noctalia"
 // Export Wayland display and desktop session to D-Bus
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
-//spawn-at-startup "/usr/lib/pam_kwallet_init"
+spawn-at-startup "/usr/lib/pam_kwallet_init"
 spawn-at-startup "thunar" "--daemon"
+spawn-at-startup "insync" "start"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -398,6 +401,7 @@ window-rule {
     open-floating true
 }
 
+
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
 window-rule {
@@ -411,6 +415,12 @@ window-rule {
     open-floating true
     default-column-width { fixed 1080; }
     default-window-height { fixed 920; }
+}
+
+window-rule {
+    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=0 y=0 relative-to="bottom-right"
+    open-focused false
 }
 
 binds {
@@ -514,6 +524,8 @@ binds {
     Mod+Alt+K     { focus-monitor-up; }
     Mod+Alt+L     { focus-monitor-right; }
 
+    Mod+Shift+Comma      { move-column-to-monitor-left; }
+    Mod+Shift+Period     { move-column-to-monitor-right; }
     Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
     Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
     Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
@@ -530,6 +542,9 @@ binds {
     // And you can also move a whole workspace to another monitor:
     // Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
     // ...
+
+    Mod+Ctrl+Comma  { move-workspace-to-monitor-left; }
+    Mod+Ctrl+Period { move-workspace-to-monitor-right; }
 
     Mod+Page_Down       { focus-workspace-down; }
     Mod+Page_Up         { focus-workspace-up; }
@@ -599,16 +614,26 @@ binds {
     Mod+8 { focus-workspace 8; }
     Mod+9 { focus-workspace 9; }
     Mod+0 { focus-workspace 10; }
-    Mod+Ctrl+1 { move-column-to-workspace 1; }
-    Mod+Ctrl+2 { move-column-to-workspace 2; }
-    Mod+Ctrl+3 { move-column-to-workspace 3; }
-    Mod+Ctrl+4 { move-column-to-workspace 4; }
-    Mod+Ctrl+5 { move-column-to-workspace 5; }
-    Mod+Ctrl+6 { move-column-to-workspace 6; }
-    Mod+Ctrl+7 { move-column-to-workspace 7; }
-    Mod+Ctrl+8 { move-column-to-workspace 8; }
-    Mod+Ctrl+9 { move-column-to-workspace 9; }
-    Mod+Ctrl+0 { move-column-to-workspace 10; }
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    Mod+Shift+0 { move-column-to-workspace 10; }
+    Mod+Ctrl+1 { move-column-to-workspace 1 focus=false; }
+    Mod+Ctrl+2 { move-column-to-workspace 2 focus=false; }
+    Mod+Ctrl+3 { move-column-to-workspace 3 focus=false; }
+    Mod+Ctrl+4 { move-column-to-workspace 4 focus=false; }
+    Mod+Ctrl+5 { move-column-to-workspace 5 focus=false; }
+    Mod+Ctrl+6 { move-column-to-workspace 6 focus=false; }
+    Mod+Ctrl+7 { move-column-to-workspace 7 focus=false; }
+    Mod+Ctrl+8 { move-column-to-workspace 8 focus=false; }
+    Mod+Ctrl+9 { move-column-to-workspace 9 focus=false; }
+    Mod+Ctrl+0 { move-column-to-workspace 10 focus=false; }
 
     // Alternatively, there are commands to move just a single window:
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
